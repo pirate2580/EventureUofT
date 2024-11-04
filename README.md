@@ -1,8 +1,18 @@
-The broad purpose of this project is to create an interactive map of the UofT campus, where students can view where events are being held and potentially sign up for any they find interesting.
-This project follows clean architecture and SOLID design principles. 
+# EventureUofT - UofT Campus Interactive Event Map
 
-Group members:
-Fiona Verzivolli (FionaVerzivolli)
-Andrew Sasmito (AndrewSasmito)
-Naoroj Farhan (pirate2580)
-Edric Ho (Edric.main(cryingFace))
+**EventureUofT** is an interactive campus map that allows University of Toronto students to explore, discover, and sign up for events happening across the campus.
+
+## Project Overview
+EventureUofT aims to enhance student engagement by providing a visually intuitive way to view and participate in campus events, following **Clean Architecture** and **SOLID design principles**.
+
+## Key Features
+- **Interactive Map**: Visualize campus locations with ongoing events.
+- **Event Filtering**: Search events by type, date, or location.
+- **RSVP and Event Details**: Sign up for events and view comprehensive details.
+- **Event Posting**: Enable students to post and share events.
+
+## Group Members
+- Fiona Verzivolli (FionaVerzivolli)
+- Andrew Sasmito (AndrewSasmito)
+- Naoroj Farhan (pirate2580)
+- Edric Ho (Edric.main(cryingFace))
