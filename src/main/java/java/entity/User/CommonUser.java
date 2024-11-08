@@ -3,7 +3,8 @@ import main.java.java.entity.Event.Event;
 
 import java.util.List;
 // TODO: is this clean architecture for entities to rely on another?
-
+// TODO: 12am stupid question, is it clean architecture to have an implementation of adding events to a user
+// This doesn't rely on the database but still idk?
 /**
  * Implementation of the User interface
  */
