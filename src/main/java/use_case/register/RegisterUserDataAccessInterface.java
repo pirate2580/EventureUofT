@@ -1,6 +1,6 @@
 package use_case.register;
 
-import java.entity.User.User;
+import entity.User.User;
 
 /**
  * Data Access Object for the Register Use Case.

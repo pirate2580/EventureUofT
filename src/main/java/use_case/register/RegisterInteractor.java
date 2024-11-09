@@ -1,8 +1,8 @@
 package use_case.register;
 
 
-import java.entity.User.User;
-import java.entity.User.UserFactory;
+import entity.User.User;
+import entity.User.UserFactory;
 
 /**
  * The Register Interactor
@@ -44,7 +44,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     }
 
     @Override
-    public void switchToLoginView() {
-        userPresenter.switchToLoginView();
+    public void switchToCreateEventView() {
+        userPresenter.switchToCreateEventView();
     }
 }

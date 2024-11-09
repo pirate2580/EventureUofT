@@ -1,8 +1,8 @@
 package interface_adapter.register;
 
 
-import java.use_case.register.RegisterInputBoundary;
-import java.use_case.register.RegisterInputData;
+import use_case.register.RegisterInputBoundary;
+import use_case.register.RegisterInputData;
 
 
 /**

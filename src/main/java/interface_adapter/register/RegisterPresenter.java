@@ -1,9 +1,9 @@
 package interface_adapter.register;
 
-import java.use_case.register.RegisterOutputBoundary;
+import use_case.register.RegisterOutputBoundary;
 import interface_adapter.ViewManagerModel;
 
-import java.use_case.register.RegisterOutputData;
+import use_case.register.RegisterOutputData;
 import interface_adapter.create_event.CreateEventViewModel;
 
 // TODO: GO STRAIGHT TO THE CREATE_EVENT VIEW
@@ -55,13 +55,9 @@ public class RegisterPresenter implements RegisterOutputBoundary {
     // TODO: switch to createEventview
     @Override
     public void switchToCreateEventView() {
-        viewManagerModel.setState(createEventViewModel.getViewName());
+        // viewManagerModel.setState(createEventViewModel.getViewName());
+        // TODO fix this later
+        viewManagerModel.setState("THIS IS A TEST, THIS IS A TEST");
         viewManagerModel.firePropertyChanged();
     }
-
-//    @Override
-//    public void switchToLoginView() {
-//        viewManagerModel.setState(loginViewModel.getViewName());
-//        viewManagerModel.firePropertyChanged();
-//    }
 }

@@ -14,9 +14,13 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
 
         // TODO build the application with AppBuilder class
-        // final JFrame application = (...)
+        final JFrame application = appBuilder.addRegisterView()
+                .addRegisterUseCase()
+                .build(); // Add this if required by your setup
 
-        // application.pack();
-        // application.setVisible(true);
+         application.pack();
+         application.setVisible(true);
+
+        System.out.println("1. Running Main!");
     }
 }
