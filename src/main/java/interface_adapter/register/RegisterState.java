@@ -22,13 +22,6 @@ public class RegisterState {
         return passwordError;
     }
 
-    public String getRepeatPassword() {
-        return repeatPassword;
-    }
-
-    public String getRepeatPasswordError() {
-        return repeatPasswordError;
-    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -51,7 +44,6 @@ public class RegisterState {
         return "SignupState{"
                 + "username='" + username + '\''
                 + ", password='" + password + '\''
-                + ", repeatPassword='" + repeatPassword + '\''
                 + '}';
     }
 }
