@@ -1,4 +1,4 @@
-package java;
+package entity;
 
 public interface ProvidedFood {
 }
