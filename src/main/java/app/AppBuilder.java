@@ -7,8 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
-import entity.User.CommonUserFactory;
-import entity.User.UserFactory;
+import app.entity.User.CommonUserFactory;
+import app.entity.User.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
@@ -19,6 +19,7 @@ import use_case.register.RegisterInteractor;
 import use_case.register.RegisterOutputBoundary;
 import view.RegisterView;
 import view.ViewManager;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -27,6 +28,7 @@ import view.ViewManager;
  *  * <p/>
  *  * This is done by adding each View and then adding related Use Cases.
  */
+@Component
 public class AppBuilder {
     //TODO: This is the last part that we should work on after developing
     // the the other folders

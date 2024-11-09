@@ -3,7 +3,7 @@ package data_access;
 import java.util.HashMap;
 import java.util.Map;
 
-import entity.User.User;
+import app.entity.User.User;
 import use_case.register.RegisterUserDataAccessInterface;
 
 //import use_case.change_password.ChangePasswordUserDataAccessInterface;

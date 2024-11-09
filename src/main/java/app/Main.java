@@ -1,26 +1,35 @@
 package app;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import javax.swing.JFrame;
 
 /**
  * The Main class of our application
  */
+@SpringBootApplication(scanBasePackages = {"app", "entity.User"})
 public class Main {
     /**
      * Builds and runs CA architecture of application
      * @param args unused argument
      */
     public static void main(String[] args) {
-        final AppBuilder appBuilder = new AppBuilder();
+        // start the Spring Boot application context
+        var context = SpringApplication.run(Main.class, args);
 
-        // TODO build the application with AppBuilder class
+        // get the AppBuilder bean from the Spring context
+        AppBuilder appBuilder = context.getBean(AppBuilder.class);
+
+        // build the application using AppBuilder
         final JFrame application = appBuilder.addRegisterView()
                 .addRegisterUseCase()
-                .build(); // Add this if required by your setup
+                .build();
 
-         application.pack();
-         application.setVisible(true);
+        // set up the application window
+        application.pack();
+        application.setVisible(true);
 
-        System.out.println("1. Running Main!");
+        System.out.println("1. Running Main!"); // testing
     }
 }

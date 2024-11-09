@@ -1,8 +1,8 @@
 package use_case.register;
 
 
-import entity.User.User;
-import entity.User.UserFactory;
+import app.entity.User.User;
+import app.entity.User.UserFactory;
 
 /**
  * The Register Interactor

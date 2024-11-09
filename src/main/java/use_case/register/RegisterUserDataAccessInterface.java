@@ -1,6 +1,6 @@
 package use_case.register;
 
-import entity.User.User;
+import app.entity.User.User;
 
 /**
  * Data Access Object for the Register Use Case.
