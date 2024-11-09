@@ -72,6 +72,16 @@ public class RegisterView extends JPanel implements ActionListener, PropertyChan
             if (evt.getSource().equals(register)) {
                 final RegisterState currentState = registerViewModel.getState();
                 registerController.execute(currentState.getUsername(), currentState.getPassword());
+
+                register.setBackground(new Color(0, 153, 76)); // Darker green for clicked state
+                Timer timer = new Timer(200, new ActionListener() { // Revert after 200ms
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        register.setBackground(new Color(72, 191, 103)); // Original color
+                    }
+                });
+                timer.setRepeats(false); // Only execute once
+                timer.start();
             }
         });
 
