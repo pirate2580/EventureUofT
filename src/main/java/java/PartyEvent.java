@@ -1,5 +1,5 @@
-package java;
+package entity;
 
-public class PartyEvent extends Event implements ProvidedFood, Category{
+public class PartyEvent extends Event implements ProvidedFood, Category {
     private int ageLimit;
 }
