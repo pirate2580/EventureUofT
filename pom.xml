@@ -16,24 +16,18 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version> <!-- Shortened property -->
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Starter -->
+        <!-- Spring Boot starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents.core5</groupId>
-            <artifactId>httpcore5-reactive</artifactId>
-            <version>5.1.5</version>
-        </dependency>
-
-        <!-- Firebase Admin SDK -->
+        <!-- Firebase admin SDK -->
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
@@ -47,23 +41,33 @@
             <version>3.7.2</version>
         </dependency>
 
-        <!-- Spring Boot Starter Web -->
+        <!-- spring boot starter web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Jackson Databind (optional, for JSON parsing) -->
+        <!-- jackson databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <!-- Apache HttpComponents -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>5.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5-reactive</artifactId>
+            <version>5.1.5</version>
+        </dependency>
     </dependencies>
 </project>
