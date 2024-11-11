@@ -1,7 +1,5 @@
-package app.use_case.create_event;
+package app.use_case.register;
 
-
-import app.use_case.create_event.RegisterOutputData;
 
 /**
  * The output boundary for the Register User Use Case
@@ -28,5 +26,5 @@ public interface RegisterOutputBoundary {
     /**
      * Switches to Login View
      */
-    void switchToLoginView();
+    void switchToCreateEventView();
 }
