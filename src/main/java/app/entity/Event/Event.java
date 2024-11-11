@@ -1,6 +1,6 @@
-package app.entity.Event;
+package main.java.java.entity.Event;
 
-import app.entity.User.User;
+import main.java.java.entity.User.User;
 
 import java.util.List;
 

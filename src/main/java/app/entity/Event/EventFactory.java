@@ -1,4 +1,4 @@
-package app.entity.Event;
+package main.java.java.entity.Event;
 
 import java.util.List;
 

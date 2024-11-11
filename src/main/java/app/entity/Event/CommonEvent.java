@@ -1,6 +1,6 @@
-package app.entity.Event;
+package main.java.java.entity.Event;
 
-import app.entity.User.User;
+import main.java.java.entity.User.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CommonEvent implements Event {
     private String eventId, organizer, title, description, dateTime;
-    private List<app.entity.User.User> attendeesIdList;
+    private List<main.java.java.entity.User.User> attendeesIdList;
     private int capacity, latitude, longitude;
     private List<String> tags;
 

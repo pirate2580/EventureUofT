@@ -1,4 +1,4 @@
-package app.use_case.create_event;
+package app.use_case.register;
 
 
 /**
@@ -6,17 +6,17 @@ package app.use_case.create_event;
  */
 public class RegisterOutputData {
 
-    private String title;
+    private final String username;
 
     private final boolean useCaseFailed;
 
-    public RegisterOutputData(String title, boolean useCaseFailed) {
-        this.title = title;
+    public RegisterOutputData(String username, boolean useCaseFailed) {
+        this.username = username;
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getTitle() {
-        return title;
+    public String getUsername() {
+        return username;
     }
 
     public boolean isUseCaseFailed() {
