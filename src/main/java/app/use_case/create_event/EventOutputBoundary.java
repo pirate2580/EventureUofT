@@ -1,13 +1,11 @@
 package app.use_case.create_event;
 
 
-import app.use_case.create_event.RegisterOutputData;
-
 /**
  * The output boundary for the Register User Use Case
  * TODO: Note: this is implemented in RegisterPresenter
  */
-public interface RegisterOutputBoundary {
+public interface EventOutputBoundary {
 
     /**
      * Prepares the success view for the Register user use case
@@ -15,7 +13,7 @@ public interface RegisterOutputBoundary {
      * whatever that ends up being
      * @param outputData the output data
      */
-    void prepareSuccessView(RegisterOutputData outputData);
+    void prepareSuccessView(EventOutputData outputData);
 
     /**
      * Prepares the failure view for the Register user use case.

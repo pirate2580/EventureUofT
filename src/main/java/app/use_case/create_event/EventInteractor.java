@@ -15,14 +15,14 @@ import app.entity.Event.EventFactory;
  * NOTE: userPresenter is just the outputBoundary class
  * Note: RegisterInteractor is an implementation of the inputBoundary interface
  */
-public class RegisterInteractor implements RegisterInputBoundary {
-    RegisterUserDataAccessInterface eventDataAccessObject;
-    RegisterOutputBoundary eventPresenter;
+public class EventInteractor implements EventInputBoundary {
+    EventUserDataAccessInterface eventDataAccessObject;
+    EventOutputBoundary eventPresenter;
     EventFactory eventFactory;
 
-    public RegisterInteractor(RegisterUserDataAccessInterface eventDataAccessObject,
-                              RegisterOutputBoundary eventPresenter,
-                              EventFactory eventFactory) {
+    public EventInteractor(EventUserDataAccessInterface eventDataAccessObject,
+                           EventOutputBoundary eventPresenter,
+                           EventFactory eventFactory) {
 
         this.eventDataAccessObject = eventDataAccessObject;
         this.eventPresenter = eventPresenter;
@@ -30,7 +30,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     }
 
     @Override
-    public void execute(RegisterInputData registerInputData) {
+    public void execute(EventInputData registerInputData) {
         if (eventDataAccessObject.valid_coordinates(registerInputData.getLatitude(), registerInputData.getLongitude())) {
             eventPresenter.prepareFailView("Invalid coordinates");
         }
@@ -41,7 +41,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
                     registerInputData.getTags());
             eventDataAccessObject.save(event);
 
-            final RegisterOutputData registerOutputData = new RegisterOutputData(event.getTitle(), false);
+            final EventOutputData registerOutputData = new EventOutputData(event.getTitle(), false);
             eventPresenter.prepareSuccessView(registerOutputData);
         }
     }
