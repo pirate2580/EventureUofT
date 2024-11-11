@@ -6,19 +6,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import data_access.InMemoryUserDataAccessObject;
+import app.data_access.InMemoryUserDataAccessObject;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.register.RegisterController;
-import interface_adapter.register.RegisterPresenter;
-import interface_adapter.register.RegisterViewModel;
-import interface_adapter.create_event.CreateEventViewModel;
-import use_case.register.RegisterInputBoundary;
-import use_case.register.RegisterInteractor;
-import use_case.register.RegisterOutputBoundary;
-import view.RegisterView;
-import view.ViewManager;
+import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.register.RegisterController;
+import app.interface_adapter.register.RegisterPresenter;
+import app.interface_adapter.register.RegisterViewModel;
+import app.interface_adapter.create_event.CreateEventViewModel;
+import app.use_case.register.RegisterInputBoundary;
+import app.use_case.register.RegisterInteractor;
+import app.use_case.register.RegisterOutputBoundary;
+import app.view.RegisterView;
+import app.view.ViewManager;
 import org.springframework.stereotype.Component;
 
 
@@ -78,11 +78,6 @@ public class AppBuilder {
         registerView.setSignupController(controller);
         return this;
     }
-
-
-
-
-
 
 
     /**
