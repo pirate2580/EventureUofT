@@ -1,4 +1,5 @@
-package app.use_case.create_event;
+package app.use_case.register;
+
 
 /**
  * Input Boundary for the actions relating to registration.
@@ -17,5 +18,5 @@ public interface RegisterInputBoundary {
      * TODO note this idea of switching to different usecases after a certain
      * use case outcome
      */
-    void switchToLoginView();
+    void switchToCreateEventView();
 }

@@ -1,8 +1,8 @@
 package app.interface_adapter.register;
 
 
-import app.use_case.register.RegisterInputBoundary;
-import app.use_case.register.RegisterInputData;
+import app.use_case.create_event.RegisterInputBoundary;
+import app.use_case.create_event.RegisterInputData;
 
 
 /**

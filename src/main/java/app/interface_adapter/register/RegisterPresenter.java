@@ -1,9 +1,9 @@
 package app.interface_adapter.register;
 
-import app.use_case.register.RegisterOutputBoundary;
+import app.use_case.create_event.RegisterOutputBoundary;
 import app.interface_adapter.ViewManagerModel;
 
-import app.use_case.register.RegisterOutputData;
+import app.use_case.create_event.RegisterOutputData;
 import app.interface_adapter.create_event.CreateEventViewModel;
 
 // TODO: GO STRAIGHT TO THE CREATE_EVENT VIEW

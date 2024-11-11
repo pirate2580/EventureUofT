@@ -1,7 +1,7 @@
-package main.java.java.use_case.create_event;
+package app.use_case.create_event;
 
 
-import main.java.java.entity.Event.Event;
+import app.entity.Event.Event;
 
 /**
  * Data Access Object for the Register Use Case.

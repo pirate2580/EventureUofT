@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.entity.User.User;
-import app.use_case.register.RegisterUserDataAccessInterface;
+import app.use_case.create_event.RegisterUserDataAccessInterface;
 
 //import use_case.change_password.ChangePasswordUserDataAccessInterface;
 //import use_case.login.LoginUserDataAccessInterface;

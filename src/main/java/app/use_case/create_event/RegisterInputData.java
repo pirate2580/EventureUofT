@@ -1,4 +1,4 @@
-package main.java.java.use_case.create_event;
+package app.use_case.create_event;
 
 import java.util.List;
 
