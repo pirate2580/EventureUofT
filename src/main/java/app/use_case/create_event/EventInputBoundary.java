@@ -3,13 +3,13 @@ package app.use_case.create_event;
 /**
  * Input Boundary for the actions relating to registration.
  */
-public interface RegisterInputBoundary {
+public interface EventInputBoundary {
 
     /**
      * Execute the registration use case.
      * @param registerInputData the input data
      */
-    void execute(RegisterInputData registerInputData);
+    void execute(EventInputData registerInputData);
 
     /**
      * Executes the switch to the login view use case once

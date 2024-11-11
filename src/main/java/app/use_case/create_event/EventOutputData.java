@@ -4,13 +4,13 @@ package app.use_case.create_event;
 /**
  * Output data for the register user use case
  */
-public class RegisterOutputData {
+public class EventOutputData {
 
     private String title;
 
     private final boolean useCaseFailed;
 
-    public RegisterOutputData(String title, boolean useCaseFailed) {
+    public EventOutputData(String title, boolean useCaseFailed) {
         this.title = title;
         this.useCaseFailed = useCaseFailed;
     }

@@ -7,7 +7,7 @@ import java.util.List;
  * The View sends data to the controller which should have an actionListener, and then
  * will prepare data one triggered
  */
-public class RegisterInputData {
+public class EventInputData {
     private String title;
     private String description;
     private String dateTime;
@@ -33,8 +33,8 @@ public class RegisterInputData {
      * @param eventId
      * @param organizer
      */
-    public RegisterInputData(String title, String description, String dateTime, int capacity, int latitude,
-                             int longitude, List<String> tags, String eventId, String organizer) {
+    public EventInputData(String title, String description, String dateTime, int capacity, int latitude,
+                          int longitude, List<String> tags, String eventId, String organizer) {
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;

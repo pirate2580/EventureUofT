@@ -8,7 +8,7 @@ import app.entity.Event.Event;
  * TODO: notice that although this file is in Use Case, it is implemented in the data_access
  * folder
  */
-public interface RegisterUserDataAccessInterface {
+public interface EventUserDataAccessInterface {
     /**
      * Saves the event to the database
      * @param event to save onto the database
