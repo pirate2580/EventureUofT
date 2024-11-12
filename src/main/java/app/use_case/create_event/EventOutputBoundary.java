@@ -23,8 +23,4 @@ public interface EventOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
-    /**
-     * Switches to Login View
-     */
-    void switchToLoginView();
 }

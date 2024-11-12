@@ -22,4 +22,13 @@ public interface EventUserDataAccessInterface {
      * @return True if the coordinates are valid
      */
     boolean valid_coordinates(int latitude, int longitude);
+
+
+    /**
+     * Checks if the capacity is valid, True if it is
+     * @param capacity the latitude coordinate
+     * @return True if the coordinates are valid
+     */
+    boolean valid_capacity(int capacity);
+
 }

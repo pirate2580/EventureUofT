@@ -33,8 +33,9 @@ public class EventInteractor implements EventInputBoundary {
     public void execute(EventInputData eventInputData) {
         if (eventDataAccessObject.valid_coordinates(eventInputData.getLatitude(), eventInputData.getLongitude())) {
             eventPresenter.prepareFailView("Invalid coordinates");
-        }
-        else{
+        } else if (eventDataAccessObject.valid_capacity(eventInputData.getCapacity())) {
+            eventPresenter.prepareFailView("Invalid capacity");
+        } else{
             final Event event = eventFactory.create(eventInputData.getEventId(), eventInputData.getOrganizer(),
                     eventInputData.getTitle(), eventInputData.getDescription(), eventInputData.getDateTime(),
                     eventInputData.getCapacity(), eventInputData.getLatitude(), eventInputData.getLongitude(),
@@ -44,10 +45,5 @@ public class EventInteractor implements EventInputBoundary {
             final EventOutputData eventOutputData = new EventOutputData(event.getTitle(), false);
             eventPresenter.prepareSuccessView(eventOutputData);
         }
-    }
-
-    @Override
-    public void switchToLoginView() {
-        eventPresenter.switchToLoginView();
     }
 }
