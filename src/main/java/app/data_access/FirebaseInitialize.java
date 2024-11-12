@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseOptions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -15,33 +16,35 @@ public class FirebaseInitialize {
     @PostConstruct
     public void initialize() {
         try {
-            // retrieve the path to the service account file from the environment variable
-            String serviceAccountPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+            // path to the service account JSON file
+            String serviceAccountPath = "private/serviceAccount.json";
 
-            if (serviceAccountPath == null || serviceAccountPath.isEmpty()) {
-                throw new IllegalStateException("GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.");
+            // check if the file exists and is readable
+            File file = new File(serviceAccountPath);
+            if (!file.exists() || !file.canRead()) {
+                throw new IllegalStateException("Service account key file not found or unreadable at: " + serviceAccountPath);
             }
 
-            // log the service account path
+            // debugging
             System.out.println("Using service account credentials at: " + serviceAccountPath);
 
-            // load the service account key file
+            // Load the service account key file
             FileInputStream serviceAccount = new FileInputStream(serviceAccountPath);
 
             // build Firebase options with the service account credentials
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://eventureuoft-11db1.firebaseio.com")
+                    .setDatabaseUrl("https://eventureuoft-11db1.firebaseio.com") // Replace with your Firebase database URL
                     .build();
 
-            // initialize Firebase app if it's not already initialized
+            // initialize Firebase app if not already initialized
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
                 System.out.println("Firebase has been initialized successfully.");
             } else {
                 System.out.println("Firebase app already initialized.");
             }
-
+        // error messages
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Failed to initialize Firebase: " + e.getMessage());

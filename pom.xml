@@ -26,18 +26,18 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!--encryption-->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
         <!-- Firebase Admin SDK -->
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
-            <version>9.2.0</version>
-        </dependency>
-
-        <!-- Google Cloud Firestore -->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-firestore</artifactId>
-            <version>3.7.2</version>
+            <version>9.4.1</version>
         </dependency>
 
         <!-- Spring Boot starter web -->
@@ -58,6 +58,7 @@
             <artifactId>httpclient5</artifactId>
             <version>5.2</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents.core5</groupId>
             <artifactId>httpcore5</artifactId>
