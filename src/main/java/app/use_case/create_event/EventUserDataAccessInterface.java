@@ -4,7 +4,7 @@ package app.use_case.create_event;
 import app.entity.Event.Event;
 
 /**
- * Data Access Object for the Register Use Case.
+ * Data Access Object for the Event Use Case.
  * TODO: notice that although this file is in Use Case, it is implemented in the data_access
  * folder
  */

@@ -7,13 +7,13 @@ public interface EventInputBoundary {
 
     /**
      * Execute the registration use case.
-     * @param registerInputData the input data
+     * @param eventInputData the input data
      */
-    void execute(EventInputData registerInputData);
+    void execute(EventInputData eventInputData);
 
     /**
      * Executes the switch to the login view use case once
-     * registered.
+     * event created.
      * TODO note this idea of switching to different usecases after a certain
      * use case outcome
      */

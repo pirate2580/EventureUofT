@@ -3,7 +3,7 @@ package app.use_case.create_event;
 import java.util.List;
 
 /**
- * Input Data for the Register Use Case
+ * Input Data for the Event Use Case
  * The View sends data to the controller which should have an actionListener, and then
  * will prepare data one triggered
  */
@@ -19,7 +19,7 @@ public class EventInputData {
     private String organizer;
 
     /**
-     * Constructor for RegisterInputData, the user registers an event by entering
+     * Constructor for EventInputData, the user registers an event by entering
      * the event title, description, dateTime, capacity, latitude, longitude, tags, eventId
      * and nothing else. The two other attributes createdEvents
      * and rsvpEvents are added to later
