@@ -15,6 +15,13 @@ public class Main {
      * @param args unused argument
      */
     public static void main(String[] args) {
+
+        // Check if running in headless mode
+        if (java.awt.GraphicsEnvironment.isHeadless()) {
+            System.out.println("Headless environment detected. GUI will not be initialized.");
+            return;
+        }
+
         // start the Spring Boot application context
         var context = SpringApplication.run(Main.class, args);
 
@@ -27,8 +34,12 @@ public class Main {
                 .build();
 
         // set up the application window
-        application.pack();
-        application.setVisible(true);
+        if (application != null) {
+            application.pack();
+            application.setVisible(true);
+        } else {
+            System.out.println("Application is running in headless mode. No GUI will be displayed.");
+        }
 
         System.out.println("1. Running Main!"); // testing
     }
