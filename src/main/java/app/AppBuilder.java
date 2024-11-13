@@ -58,6 +58,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addRegisterView() {
+
         this.registerViewModel = new RegisterViewModel();
         this.registerView = new RegisterView(registerViewModel);
         cardPanel.add(registerView, registerView.getViewName());
@@ -85,11 +86,16 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
+        if (java.awt.GraphicsEnvironment.isHeadless()) {
+            System.out.println("Headless environment detected. Skipping GUI initialization.");
+            return null;
+        }
+
         final JFrame application = new JFrame("EventureUofT");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // TODO: this is new, just makes gui take full screen
-        application.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizes the window to full screen
+        // make GUI fullscreen
+        application.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         application.add(cardPanel);
 
