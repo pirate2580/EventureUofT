@@ -2,7 +2,7 @@ package app.use_case.create_event;
 
 
 /**
- * Output data for the register user use case
+ * Output data for the event user use case
  */
 public class EventOutputData {
 
