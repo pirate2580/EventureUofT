@@ -20,6 +20,7 @@ import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
 import app.view.RegisterView;
 import app.view.ViewManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -43,7 +44,9 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     //    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-    private final FirebaseDAO firebaseDAO = new FirebaseDAO();
+//    private final FirebaseDAO firebaseDAO = new FirebaseDAO();
+    @Autowired
+    private FirebaseDAO firebaseDAO;
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
