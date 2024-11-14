@@ -6,7 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import app.data_access.InMemoryUserDataAccessObject;
+//import app.data_access.InMemoryUserDataAccessObject;
+import app.data_access.FirebaseDAO;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
@@ -41,7 +42,8 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    //    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final FirebaseDAO firebaseDAO = new FirebaseDAO();
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
@@ -73,10 +75,10 @@ public class AppBuilder {
         final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel,
                 createEventViewModel, registerViewModel);
         final RegisterInputBoundary userRegisterInteractor = new RegisterInteractor(
-                userDataAccessObject, registerOutputBoundary, userFactory);
+                firebaseDAO, registerOutputBoundary, userFactory);
 
         final RegisterController controller = new RegisterController(userRegisterInteractor);
-        registerView.setSignupController(controller);
+        registerView.setRegisterController(controller);
         return this;
     }
 
