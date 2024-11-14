@@ -8,7 +8,9 @@ import javax.swing.JFrame;
 /**X
  * The Main class of our application
  */
-@SpringBootApplication(scanBasePackages = {"app", "entity.User"})
+//@SpringBootApplication(scanBasePackages = {"app", "entity.User"})
+
+@SpringBootApplication(scanBasePackages = {"app", "app.config"})
 public class Main {
     /**
      * Builds and runs CA architecture of application
