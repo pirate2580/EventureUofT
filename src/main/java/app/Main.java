@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.swing.JFrame;
 
-/**X
+/**
  * The Main class of our application
  */
 @SpringBootApplication(scanBasePackages = {"app", "entity.User"})
