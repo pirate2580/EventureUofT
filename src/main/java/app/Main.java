@@ -8,8 +8,7 @@ import javax.swing.JFrame;
 /**
  * The Main class of our application
  */
-//@SpringBootApplication(scanBasePackages = {"app", "entity.User"})
-
+// TODO: Fix label for sign-up and log-in buttons so its on the left
 @SpringBootApplication(scanBasePackages = {"app", "app.config"})
 public class Main {
     /**

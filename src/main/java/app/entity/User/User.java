@@ -19,6 +19,12 @@ public interface User {
     String getPassword();
 
     /**
+     * Return the email of the user
+     * @return the email of the user
+     */
+    String getEmail();
+
+    /**
      * Add an Event element to the rsvpedList of the user
      * @param event an Event that the user RSVPs to
      */

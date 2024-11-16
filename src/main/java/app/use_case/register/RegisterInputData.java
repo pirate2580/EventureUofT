@@ -9,17 +9,20 @@ package app.use_case.register;
 public class RegisterInputData {
     private final String username;
     private final String password;
+    private final String email;
 
     /**
      * Constructor for RegisterInputData, the user registers by entering in
-     * their username, password, and nothing else. The two other attributes createdEvents
+     * their username, email, password, and nothing else. The two other attributes createdEvents
      * and rsvpEvents are added to later
      * @param username
+     * @param email
      * @param password
      */
-    public RegisterInputData(String username, String password) {
+    public RegisterInputData(String username, String email, String password) {
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     String getUsername() {
@@ -29,4 +32,6 @@ public class RegisterInputData {
     String getPassword() {
         return password;
     }
+
+    String getEmail() { return email; }
 }

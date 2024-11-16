@@ -23,13 +23,14 @@ public class RegisterController {
     /**
      * Execute the Register use Case
      * @param username
+     * @param email
      * @param password
      * TODO: Naoroj: Note that the registerController takes in the use case interactor and once it prepares
      * the data into the data structure inputData, it executes the use case interactor
      */
-    public void execute(String username, String password) {
+    public void execute(String username, String email, String password) {
         final RegisterInputData registerInputData = new RegisterInputData(
-                username, password);
+                username, email, password);
 
         this.userRegisterUseCaseInteractor.execute(registerInputData);
     }
