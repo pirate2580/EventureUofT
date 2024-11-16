@@ -1,5 +1,7 @@
 package app;
 
+import app.view.LoginView;
+import app.view.RegisterView;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -29,10 +31,17 @@ public class Main {
         // get the AppBuilder bean from the Spring context
         AppBuilder appBuilder = context.getBean(AppBuilder.class);
 
-        // build the application using AppBuilder
-        final JFrame application = appBuilder.addRegisterView()
-                .addRegisterUseCase()
-                .build();
+        // create the RegisterView and LoginView
+        RegisterView registerView = appBuilder.addRegisterView(); // Add the RegisterView to the app
+        appBuilder.addRegisterUseCase(); // Add the use case logic for RegisterView
+        LoginView loginView = appBuilder.addLoginView(); // Add the LoginView to the app
+
+        // set parent panels for navigation
+        registerView.setParentPanel(appBuilder.getCardPanel());
+        loginView.setParentPanel(appBuilder.getCardPanel());
+
+        // build the application
+        final JFrame application = appBuilder.build();
 
         // set up the application window
         if (application != null) {

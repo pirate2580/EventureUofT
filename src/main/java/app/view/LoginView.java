@@ -1,82 +1,74 @@
 package app.view;
 
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import app.interface_adapter.login.LoginController;
+import app.interface_adapter.login.LoginState;
+import app.interface_adapter.login.LoginViewModel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import app.interface_adapter.login.LoginController;
-import app.interface_adapter.register.RegisterController;
-import app.interface_adapter.register.RegisterState;
-import app.interface_adapter.register.RegisterViewModel;
-
-public class RegisterView extends JPanel implements PropertyChangeListener {
-    private static final String VIEW_NAME = "register";
-
-    private final RegisterViewModel registerViewModel;
+public class LoginView extends JPanel implements PropertyChangeListener {
+    private static final String VIEW_NAME = "login";
+    private JPanel parentPanel;
+    private final LoginViewModel loginViewModel;
     private final JTextField usernameInputField;
-    private final JTextField emailInputField;
     private final JPasswordField passwordInputField;
     private final JButton signupButton;
     private final JButton loginButton;
-    private JPanel parentPanel;
-    private RegisterController registerController;
+    private LoginController loginController;
 
-    public RegisterView(RegisterViewModel registerViewModel) {
-        this.registerViewModel = registerViewModel;
-        this.registerViewModel.addPropertyChangeListener(this);
+    public LoginView(LoginViewModel loginViewModel) {
 
-        // Configure panel layout
+        this.loginViewModel = loginViewModel;
+        this.loginViewModel.addPropertyChangeListener(this);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.decode("#D3D3D3")); // Light gray background
-        this.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.setBackground(Color.decode("#D3D3D3"));
+        this.setBorder(new EmptyBorder(20, 20, 20 ,20));
 
-        // Add "EventureUofT" heading
         JLabel titleLabel = new JLabel("EventureUofT", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setForeground(Color.decode("#2E4C34"));
+        titleLabel.setForeground(Color.decode("#2E4C34")); // Dark green color
 
         // Build input fields
         usernameInputField = createInputField("username");
-        emailInputField = createInputField("email");
         passwordInputField = createPasswordField();
 
-        // Create buttons
         signupButton = createButton("Sign up", evt -> handleSignupAction());
         loginButton = createButton("Log in", evt -> handleLoginAction());
 
-        // Add listeners to input fields
         addDocumentListener(usernameInputField, () -> updateState("username"));
-        addDocumentListener(emailInputField, () -> updateState("email"));
         addDocumentListener(passwordInputField, () -> updateState("password"));
 
-        // Add components to panel
         this.add(Box.createVerticalStrut(10));
         this.add(titleLabel);
         this.add(Box.createVerticalStrut(20));
         this.add(createLabelTextPanel("username", usernameInputField));
         this.add(Box.createVerticalStrut(10));
-        this.add(createLabelTextPanel("email", emailInputField));
-        this.add(Box.createVerticalStrut(30));
         this.add(createLabelTextPanel("password", passwordInputField));
-        this.add(Box.createVerticalStrut(50));
+        this.add(Box.createVerticalStrut(30));
         this.add(createButtonPanel());
+    }
+    public String getViewName() {
+        return VIEW_NAME; // return string instead of object
     }
 
     public void setParentPanel(JPanel parentPanel) {
         this.parentPanel = parentPanel;
     }
 
-    // navigate to a different view
+    //  navigate to a different view
     public void navigateTo(String viewName) {
         if (parentPanel != null && parentPanel.getLayout() instanceof java.awt.CardLayout) {
-            System.out.println("Navigating to: " + viewName);
+            System.out.println("Navigating to: " + viewName); // Debug log
             java.awt.CardLayout layout = (java.awt.CardLayout) parentPanel.getLayout();
             layout.show(parentPanel, viewName);
         } else {
@@ -89,7 +81,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         configureInputField(inputField, placeholder);
         return inputField;
     }
-
     private JPasswordField createPasswordField() {
         JPasswordField passwordField = new JPasswordField(20);
         configureInputField(passwordField, "password");
@@ -143,13 +134,12 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(Color.decode("#48BF67")); // Original green
+                button.setBackground(Color.decode("#48BF67"));
             }
         });
 
         return button;
     }
-
 
     private JPanel createLabelTextPanel(String labelText, JTextComponent inputField) {
         JPanel panel = new JPanel();
@@ -176,7 +166,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
         return buttonPanel;
     }
-
     private void addDocumentListener(JTextComponent inputField, Runnable updateAction) {
         inputField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -197,39 +186,34 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateState(String fieldType) {
-        RegisterState currentState = registerViewModel.getState();
+        LoginState currentState = loginViewModel.getState();
         if ("username".equals(fieldType)) {
             currentState.setUsername(usernameInputField.getText());
         } else if ("password".equals(fieldType)) {
             currentState.setPassword(new String(passwordInputField.getPassword()));
-        } else if ("email".equals(fieldType)){
-            currentState.setEmail(emailInputField.getText());
         }
-        registerViewModel.setState(currentState);
+        loginViewModel.setState(currentState);
     }
 
     private void handleSignupAction() {
-        RegisterState currentState = registerViewModel.getState();
-        registerController.execute(currentState.getUsername(), currentState.getEmail(), currentState.getPassword());
+        navigateTo("register");
     }
 
     private void handleLoginAction() {
-        navigateTo("login");
+        System.out.println("test");
+        System.out.println("implement firebase logic here");
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        RegisterState state = (RegisterState) evt.getNewValue();
+        LoginState state = (LoginState) evt.getNewValue();
         if (state.getUsernameError() != null) {
             JOptionPane.showMessageDialog(this, state.getUsernameError());
         }
     }
 
-    public String getViewName() {
-        return VIEW_NAME;
-    }
-
-    public void setRegisterController(RegisterController controller) {
-        this.registerController = controller;
+    // TODO: Find way to use this? idk
+    public void setLoginController(LoginController loginController){
+        this.loginController = loginController;
     }
 }
