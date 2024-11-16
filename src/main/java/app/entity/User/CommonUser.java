@@ -11,6 +11,7 @@ import java.util.List;
 public class CommonUser implements User{
     private final String username;
     private final String password;
+    private final String email;
 
     // notice this way of setting up for a general Event interface is better than
     // using a specific implementation
@@ -19,9 +20,10 @@ public class CommonUser implements User{
 
     // Note that the two list attributes are not put in the constructor
 
-    public CommonUser(String username, String password){
+    public CommonUser(String username, String email, String password){
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     @Override
@@ -29,6 +31,10 @@ public class CommonUser implements User{
         return this.username;
     }
 
+    @Override
+    public String getEmail() {
+        return this.email;
+    }
     @Override
     public String getPassword() {
         return this.password;

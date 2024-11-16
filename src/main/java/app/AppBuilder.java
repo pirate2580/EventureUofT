@@ -6,19 +6,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-//import app.data_access.InMemoryUserDataAccessObject;
 import app.data_access.FirebaseDAO;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.login.LoginViewModel;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
-import app.interface_adapter.create_event.CreateEventViewModel;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
+import app.interface_adapter.create_event.CreateEventViewModel;
+
 import app.view.RegisterView;
+import app.view.LoginView;
 import app.view.ViewManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,8 +52,8 @@ public class AppBuilder {
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
-
-    // TODO: NEW FOR OUR PROJECT
+    private LoginView loginView;
+    private LoginViewModel loginViewModel;
     private CreateEventViewModel createEventViewModel;
 
     public AppBuilder() {
@@ -60,31 +62,56 @@ public class AppBuilder {
 
     /**
      * Adds the Signup View to the application.
-     * @return this builder
+     * @return the RegisterView
      */
-    public AppBuilder addRegisterView() {
+    public RegisterView addRegisterView() {
 
         this.registerViewModel = new RegisterViewModel();
         this.registerView = new RegisterView(registerViewModel);
         cardPanel.add(registerView, registerView.getViewName());
-        return this;
+        return this.registerView;
     }
+
+    /**
+     * Adds the Login View to the application.
+     * @return the LoginView
+     */
+    public LoginView addLoginView() {
+        if (this.loginViewModel == null) {
+            this.loginViewModel = new LoginViewModel();
+        }
+
+        this.loginView = new LoginView(this.loginViewModel);
+
+        cardPanel.add(loginView, loginView.getViewName()); // Ensure the view is added with its name
+        return this.loginView;
+    }
+
+
 
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
      */
     public AppBuilder addRegisterUseCase() {
+        // Ensure createEventViewModel is initialized
+        if (this.createEventViewModel == null) {
+            this.createEventViewModel = new CreateEventViewModel();
+        }
+
         final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel,
                 createEventViewModel, registerViewModel);
         final RegisterInputBoundary userRegisterInteractor = new RegisterInteractor(
                 firebaseDAO, registerOutputBoundary, userFactory);
 
         final RegisterController controller = new RegisterController(userRegisterInteractor);
-        registerView.setRegisterController(controller);
+        if (registerView != null) { // Ensure registerView is not null before setting controller
+            registerView.setRegisterController(controller);
+        } else {
+            throw new IllegalStateException("RegisterView is not initialized. Call addRegisterView() first.");
+        }
         return this;
     }
-
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
@@ -107,7 +134,18 @@ public class AppBuilder {
         viewManagerModel.setState(registerView.getViewName());
         viewManagerModel.firePropertyChanged();
 
+        // show the initial view in the CardLayout
+        cardLayout.show(cardPanel, registerView.getViewName());
+
         return application;
     }
 
+    /**
+     * Exposes the CardPanel for navigation.
+     * @return the cardPanel
+     */
+    public JPanel getCardPanel() {
+        return this.cardPanel;
+    }
 }
+
