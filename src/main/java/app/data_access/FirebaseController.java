@@ -23,7 +23,8 @@ public class FirebaseController {
 
     @PostMapping("/createUser")
     public String postUser(@RequestBody CommonUser user) throws Exception {
-        CommonUser createdUser = (CommonUser) userFactory.create(user.getUsername(), user.getPassword());
+        CommonUser createdUser = (CommonUser) userFactory.create(user.getUsername(),
+                user.getEmail(), user.getPassword());
         return firebaseService.saveUserDetails(createdUser);
     }
 }

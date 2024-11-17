@@ -13,4 +13,3 @@ public interface LoginUserData {
      */
     User findUserByUsername(String username);
 }
-

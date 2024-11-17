@@ -49,6 +49,7 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface {
     public void save(User user) {
         Map<String, Object> userData = new HashMap<>();
         userData.put("username", user.getUsername());
+        userData.put("email", user.getEmail());
         userData.put("password", user.getPassword());
 
         try {

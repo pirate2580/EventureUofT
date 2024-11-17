@@ -31,11 +31,11 @@ public class RegisterInteractor implements RegisterInputBoundary {
 
     @Override
     public void execute(RegisterInputData registerInputData) {
-        if (userDataAccessObject.existsByUsername(registerInputData.getUsername())) {
+        if (userDataAccessObject.existsByUsername(registerInputData.getUsername())) { // change it so it uses the DB
             userPresenter.prepareFailView("Username already exists.");
         }
         else{
-            final User user = userFactory.create(registerInputData.getUsername(), registerInputData.getPassword());
+            final User user = userFactory.create(registerInputData.getUsername(), registerInputData.getEmail(), registerInputData.getPassword());
             userDataAccessObject.save(user);
 
             final RegisterOutputData registerOutputData = new RegisterOutputData(user.getUsername(), false);
