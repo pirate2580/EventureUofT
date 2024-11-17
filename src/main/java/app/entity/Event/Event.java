@@ -68,4 +68,12 @@ public interface Event {
      * @return the list of tags
      */
     public List<String> getTags();
+
+    void setTitle(String title);
+    void setDescription(String description);
+    void setDateTime(String dateTime);
+    void setCapacity(int capacity);
+    void setLatitude(int latitude);
+    void setLongitude(int longitude);
+
 }
