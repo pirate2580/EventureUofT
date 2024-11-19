@@ -1,6 +1,6 @@
-# EventHive-UofT - UofT Campus Interactive Event Map
+# EventHiveUofT - UofT Campus Interactive Event Map
 
-**EventHive-UofT** is an interactive campus map that allows University of Toronto students to explore, discover, and sign up for events happening across the campus.
+**EventHiveUofT** is an interactive campus map that allows University of Toronto students to explore, discover, and sign up for events happening across the campus.
 
 ## Project Overview
 EventHive-UofT aims to enhance student engagement by providing a visually intuitive way to view and participate in campus events, following **Clean Architecture** and **SOLID design principles**.
