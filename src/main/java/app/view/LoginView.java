@@ -14,6 +14,8 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+//TODO: Make the labels appear to the left above the text inputs
+
 public class LoginView extends JPanel implements PropertyChangeListener {
     private static final String VIEW_NAME = "login";
     private JPanel parentPanel;
@@ -26,6 +28,9 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
     public LoginView(LoginViewModel loginViewModel) {
 
+        if (loginViewModel == null) {
+            throw new IllegalArgumentException("LoginViewModel cannot be null");
+        }
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
 
@@ -39,7 +44,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         titleLabel.setForeground(Color.decode("#2E4C34")); // Dark green color
 
         // Build input fields
-        usernameInputField = createInputField("username");
+        usernameInputField = createInputField();
         passwordInputField = createPasswordField();
 
         signupButton = createButton("Sign up", evt -> handleSignupAction());
@@ -65,20 +70,36 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.parentPanel = parentPanel;
     }
 
-    //  navigate to a different view
     public void navigateTo(String viewName) {
-        if (parentPanel != null && parentPanel.getLayout() instanceof java.awt.CardLayout) {
-            System.out.println("Navigating to: " + viewName); // Debug log
-            java.awt.CardLayout layout = (java.awt.CardLayout) parentPanel.getLayout();
+        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
+            // debugging:
+            System.out.println("Navigating to: " + viewName);
+
+            // debugging:
+            Component[] components = parentPanel.getComponents();
+            System.out.println("Components in cardPanel:");
+            for (Component component : components) {
+                System.out.println("Component: " + component.getClass().getName());
+                System.out.println("Component name: " + component.getName());
+            }
+            // update screen
+            CardLayout layout = (CardLayout) parentPanel.getLayout();
             layout.show(parentPanel, viewName);
+
+            // force updates
+            parentPanel.revalidate();
+            parentPanel.repaint();
         } else {
-            System.out.println("Navigation failed: parentPanel or layout is null");
+            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
         }
     }
 
-    private JTextField createInputField(String placeholder) {
+
+
+
+    private JTextField createInputField() {
         JTextField inputField = new JTextField(20);
-        configureInputField(inputField, placeholder);
+        configureInputField(inputField, "username");
         return inputField;
     }
     private JPasswordField createPasswordField() {
@@ -88,6 +109,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     }
 
     private void configureInputField(JTextComponent inputField, String placeholder) {
+        // appearance settings
         inputField.setPreferredSize(new Dimension(400, 30));
         inputField.setMaximumSize(new Dimension(400, 30));
         inputField.setMinimumSize(new Dimension(400, 30));
@@ -98,13 +120,14 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
         // Placeholder behavior
         inputField.addFocusListener(new java.awt.event.FocusAdapter() {
+            // once user clicks the input box, remove placeholder
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (inputField.getText().equals(placeholder)) {
                     inputField.setText("");
                     inputField.setForeground(Color.BLACK);
                 }
             }
-
+            // re-add placeholder
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (inputField.getText().isEmpty()) {
                     inputField.setForeground(Color.GRAY);
@@ -115,6 +138,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     }
 
     private JButton createButton(String text, java.awt.event.ActionListener actionListener) {
+        // button settings (appearance)
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150, 40));
         button.setMaximumSize(new Dimension(150, 40));
@@ -127,7 +151,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         button.addActionListener(actionListener);
 
-        // Add hover effect
+        // Add hover effect (simply make bg darker)
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(Color.decode("#2E7A46"));
@@ -157,6 +181,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     }
 
     private JPanel createButtonPanel() {
+        // make panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         buttonPanel.setOpaque(false);
@@ -195,13 +220,16 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         loginViewModel.setState(currentState);
     }
 
+    // go to signup screen if user wants to register instead
     private void handleSignupAction() {
         navigateTo("register");
     }
 
+    // go to the home screen once logged in
     private void handleLoginAction() {
-        System.out.println("test");
-        System.out.println("implement firebase logic here");
+        // TODO: implement login logic
+        System.out.println("make sure to validate login information using DB");
+        navigateTo("Home");
     }
 
     @Override

@@ -10,7 +10,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
-import app.interface_adapter.login.LoginController;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterState;
 import app.interface_adapter.register.RegisterViewModel;
@@ -75,14 +74,30 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
     // navigate to a different view
     public void navigateTo(String viewName) {
-        if (parentPanel != null && parentPanel.getLayout() instanceof java.awt.CardLayout) {
+        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
             System.out.println("Navigating to: " + viewName);
-            java.awt.CardLayout layout = (java.awt.CardLayout) parentPanel.getLayout();
+
+            // debugging:
+            Component[] components = parentPanel.getComponents();
+            System.out.println("Components in cardPanel:");
+            for (Component component : components) {
+                System.out.println("Component: " + component.getClass().getName());
+                System.out.println("Component name: " + component.getName());
+            }
+            // change layout
+            CardLayout layout = (CardLayout) parentPanel.getLayout();
+            // display new view
             layout.show(parentPanel, viewName);
+
+            // force panel to update
+            parentPanel.revalidate();
+            parentPanel.repaint();
         } else {
-            System.out.println("Navigation failed: parentPanel or layout is null");
+            // debug statement
+            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
         }
     }
+
 
     private JTextField createInputField(String placeholder) {
         JTextField inputField = new JTextField(20);
@@ -136,14 +151,14 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         button.addActionListener(actionListener);
 
-        // Add hover effect
+        // Add hover effect (simply make bg darker)
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(Color.decode("#2E7A46"));
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(Color.decode("#48BF67")); // Original green
+                button.setBackground(Color.decode("#48BF67"));
             }
         });
 
