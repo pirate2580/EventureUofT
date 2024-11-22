@@ -26,23 +26,13 @@ public class RegisterPresenter implements RegisterOutputBoundary {
         this.viewManagerModel = viewManagerModel;
         this.createEventViewModel = createEventViewModel;
         this.registerViewModel = registerViewModel;
-        // this.loginViewModel = loginViewModel;
     }
 
     @Override
-    public void prepareSuccessView(RegisterOutputData response) {
+    public void prepareSuccessView(RegisterOutputData response, String s) {
         // OLD: On success, switch to the login view.
         // TODO: ON SUCCESS SWITCH TO THE CREATE EVENT VIEW
         // TODO: Code create_event view
-
-
-        // final LoginState loginState = loginViewModel.getState();
-        // loginState.setUsername(response.getUsername());
-        // this.loginViewModel.setState(loginState);
-        // loginViewModel.firePropertyChanged();
-
-        // viewManagerModel.setState(loginViewModel.getViewName());
-        // viewManagerModel.firePropertyChanged();
     }
 
     @Override
@@ -52,11 +42,10 @@ public class RegisterPresenter implements RegisterOutputBoundary {
         registerViewModel.firePropertyChanged();
     }
 
-    // TODO: switch to createEventview
     @Override
     public void switchToCreateEventView() {
         // viewManagerModel.setState(createEventViewModel.getViewName());
-        // TODO fix this later
+        // TODO fix this later, we don't need this?
         viewManagerModel.setState("THIS IS A TEST, THIS IS A TEST");
         viewManagerModel.firePropertyChanged();
     }

@@ -11,6 +11,7 @@ import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.login.LoginViewModel;
+import app.interface_adapter.home.HomeViewModel;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
@@ -19,9 +20,7 @@ import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
 import app.interface_adapter.create_event.CreateEventViewModel;
 
-import app.view.RegisterView;
-import app.view.LoginView;
-import app.view.ViewManager;
+import app.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,13 +30,9 @@ import org.springframework.stereotype.Component;
  *  * our CA architecture; piece by piece.
  *  * <p/>
  *  * This is done by adding each View and then adding related Use Cases.
- */
-@Component
+ */@Component
 public class AppBuilder {
-    //TODO: This is the last part that we should work on after developing
-    // the the other folders
-
-    // TODO: Note: cardlayout makes it so that one view can be seen at a time, refer to swing docs
+     // initialize layouts
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
 
@@ -45,107 +40,119 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    //    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-//    private final FirebaseDAO firebaseDAO = new FirebaseDAO();
     @Autowired
     private FirebaseDAO firebaseDAO;
 
+    // initialize views and their models
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
-    private LoginView loginView;
-    private LoginViewModel loginViewModel;
     private CreateEventViewModel createEventViewModel;
+    private LoginViewModel loginViewModel;
 
+    // ensure that you are using card layout
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
 
-    /**
-     * Adds the Signup View to the application.
-     * @return the RegisterView
-     */
+    // function to create and add the register view to the card layout
     public RegisterView addRegisterView() {
-
+        // create new RegisterViewModel to manage state of the register view
         this.registerViewModel = new RegisterViewModel();
         this.registerView = new RegisterView(registerViewModel);
+
+        // set the parent panel for navigation purposes (cardPanel contains all views in the card layout)
+        registerView.setParentPanel(cardPanel);
+
         cardPanel.add(registerView, registerView.getViewName());
         return this.registerView;
     }
 
-    /**
-     * Adds the Login View to the application.
-     * @return the LoginView
-     */
+
+
+    public CreateEventView addEventView() {
+        this.createEventViewModel = new CreateEventViewModel();
+        CreateEventView createEventView = new CreateEventView(createEventViewModel);
+        createEventView.setParentPanel(cardPanel); // Set parentPanel
+        cardPanel.add(createEventView, createEventView.getViewName());
+        return createEventView;
+    }
+
+    public HomeView addMainView() {
+        HomeViewModel homeViewModel = new HomeViewModel();
+        HomeView homeView = new HomeView(homeViewModel);
+        homeView.setParentPanel(cardPanel);
+        cardPanel.add(homeView, homeView.getViewName());
+        return homeView;
+    }
+
     public LoginView addLoginView() {
         if (this.loginViewModel == null) {
             this.loginViewModel = new LoginViewModel();
         }
+        LoginView loginView = new LoginView(this.loginViewModel);
+        loginView.setParentPanel(cardPanel);
+        cardPanel.add(loginView, loginView.getViewName());
 
-        this.loginView = new LoginView(this.loginViewModel);
-
-        cardPanel.add(loginView, loginView.getViewName()); // Ensure the view is added with its name
-        return this.loginView;
+        return loginView;
     }
 
 
-
-    /**
-     * Adds the Signup Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addRegisterUseCase() {
-        // Ensure createEventViewModel is initialized
-        if (this.createEventViewModel == null) {
-            this.createEventViewModel = new CreateEventViewModel();
+        // make sure RegisterView and RegisterViewModel are initialized (debugging)
+        if (registerView == null || registerViewModel == null) {
+            throw new IllegalStateException("RegisterView or RegisterViewModel is not initialized.");
         }
-
+        // create input and output boundaries
         final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel,
                 createEventViewModel, registerViewModel);
         final RegisterInputBoundary userRegisterInteractor = new RegisterInteractor(
                 firebaseDAO, registerOutputBoundary, userFactory);
-
+        // create controller
         final RegisterController controller = new RegisterController(userRegisterInteractor);
-        if (registerView != null) { // Ensure registerView is not null before setting controller
-            registerView.setRegisterController(controller);
-        } else {
-            throw new IllegalStateException("RegisterView is not initialized. Call addRegisterView() first.");
-        }
+
+        // set the RegisterController in the RegisterView
+        registerView.setRegisterController(controller);
+
         return this;
     }
 
-    /**
-     * Creates the JFrame for the application and initially sets the SignupView to be displayed.
-     * @return the application
-     */
+
     public JFrame build() {
+        // debugging
+        System.out.println("Setting initial view to: " + registerView.getViewName());
+        cardLayout.show(cardPanel, registerView.getViewName());
+
+        // headless case
         if (java.awt.GraphicsEnvironment.isHeadless()) {
-            System.out.println("Headless environment detected. Skipping GUI initialization.");
+            System.out.println("Headless environment detected, skipping GUI initialization");
             return null;
         }
 
+        // create main application window
         final JFrame application = new JFrame("EventureUofT");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // make GUI fullscreen
+        // set the window to be maximized when the application starts
         application.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        // add the cardPanel to the JFrame, the main container with the CardLayout for switching views
         application.add(cardPanel);
 
+        // set initial viewManagerModel to the register view
         viewManagerModel.setState(registerView.getViewName());
-        viewManagerModel.firePropertyChanged();
 
-        // show the initial view in the CardLayout
+//        // notify any listeners that the state of the ViewManagerModel has changed
+//        viewManagerModel.firePropertyChanged();
+
+        // set the initial visible card (view) in the CardLayout to the register view
         cardLayout.show(cardPanel, registerView.getViewName());
 
+        // return JFrame so it can be displayed in the application
         return application;
+
     }
 
-    /**
-     * Exposes the CardPanel for navigation.
-     * @return the cardPanel
-     */
     public JPanel getCardPanel() {
         return this.cardPanel;
     }
 }
-

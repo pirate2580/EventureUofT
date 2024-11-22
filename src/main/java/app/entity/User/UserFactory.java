@@ -6,7 +6,7 @@ package app.entity.User;
 public interface UserFactory {
     /**
      * Creates a new User
-     * @param username the unique username of a new user    //TODO: handle case so that username stays unique
+     * @param username the unique username of a new user
      * @param email the email of the user
      * @param password the password of the new user
      *

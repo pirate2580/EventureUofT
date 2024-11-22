@@ -14,13 +14,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class CreateEventView extends JPanel implements ActionListener, PropertyChangeListener {
-    private static final String VIEW_NAME = "create event";
+    private static final String VIEW_NAME = "createEvent";
 
     private final CreateEventViewModel createEventViewModel;
     private final JTextField titleInputField, descriptionInputField, capacityInputField, tagsInputField;
     private final JButton createEventButton;
 
     private CreateEventController createEventController;
+    private JPanel parentPanel;
 
     public CreateEventView(CreateEventViewModel createEventViewModel) {
         this.createEventViewModel = createEventViewModel;
@@ -153,5 +154,13 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     public void propertyChange(PropertyChangeEvent evt) {
         final CreateEventState state = (CreateEventState) evt.getNewValue();
         //TODO: Add the potential errors
+    }
+
+    public String getViewName() {
+        return VIEW_NAME;
+    }
+
+    public void setParentPanel(JPanel parentPanel) {
+        this.parentPanel = parentPanel;
     }
 }
