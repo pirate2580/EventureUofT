@@ -2,10 +2,10 @@ package app.use_case.login;
 import app.entity.User.User;
 
 public class LoginInteractor implements LoginInputBoundary {
-    private final LoginUserData userDataAccessObject;
+    private final LoginUserDataAccessInterface userDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
-    public LoginInteractor(LoginUserData userDataAccessObject, LoginOutputBoundary loginPresenter) {
+    public LoginInteractor(LoginUserDataAccessInterface userDataAccessObject, LoginOutputBoundary loginPresenter) {
         this.userDataAccessObject = userDataAccessObject;
         this.loginPresenter = loginPresenter;
     }
@@ -19,7 +19,7 @@ public class LoginInteractor implements LoginInputBoundary {
             loginPresenter.prepareFailView("Incorrect password.");
         } else {
             LoginOutputData outputData = new LoginOutputData(user.getUsername(), true);
-            loginPresenter.prepareSuccessView(outputData);
+            loginPresenter.prepareSuccessView(outputData, "user logged in successfully");
         }
     }
 }

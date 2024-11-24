@@ -5,7 +5,7 @@ public interface LoginOutputBoundary {
      * Prepares the success view for the Login use case.
      * @param outputData The output data including relevant information after successful login.
      */
-    void prepareSuccessView(LoginOutputData outputData);
+    void prepareSuccessView(LoginOutputData outputData, String s);
 
     /**
      * Prepares the failure view for the Login use case.

@@ -1,18 +1,22 @@
 package app.data_access;
 
 import app.entity.Event.CommonEvent;
+import app.entity.User.CommonUserFactory;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 
 import app.entity.User.User;
+import app.entity.User.UserFactory;
 import app.entity.Event.Event;
 import app.use_case.register.RegisterUserDataAccessInterface;
 import app.use_case.create_event.EventUserDataAccessInterface;
+import app.use_case.login.LoginUserDataAccessInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +30,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDataAccessInterface{
+public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDataAccessInterface, LoginUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference usersCollection;
@@ -100,6 +104,40 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
             System.out.println("Event saved at: " + result.getUpdateTime());
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error saving event to Firestore: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        try {
+            // Get a reference to the user document with the given username
+            DocumentReference docRef = usersCollection.document(username);
+
+            // Asynchronously retrieve the document
+            ApiFuture<DocumentSnapshot> future = docRef.get();
+
+            // Block on response to get the document snapshot
+            DocumentSnapshot document = future.get();
+
+            if (document.exists()) {
+                // Convert document data to a User object
+                Map<String, Object> data = document.getData();
+
+                // Extract user fields from the data map
+                String email = (String) data.get("email");
+                String password = (String) data.get("password");
+
+                // Create and return a User object
+                UserFactory userFactory = new CommonUserFactory();
+                User user = userFactory.create(username, email, password);
+                System.out.println("Hello this is Naoroj yo, I'm skyler white yo");
+                return user;
+            } else {
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error finding user in Firestore: " + e.getMessage());
+            return null;
         }
     }
 }
