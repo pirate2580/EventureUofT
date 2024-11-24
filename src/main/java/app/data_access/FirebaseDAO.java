@@ -111,6 +111,7 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
         }
     }
 
+
     @Override
     public User findUserByUsername(String username) {
         try {
@@ -145,12 +146,19 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
         }
     }
 
-    //retrieve username
+
+    // retrieve user by username
+    /**
+     * Retrieves a User from the Firestore database by their username.
+     * @param username The username of the user to be retrieved.
+     * @return A User object if the user exists, null otherwise.
+     */
     public User getUserByUsername(String username) {
         try {
             DocumentReference docRef = usersCollection.document(username);
             var snapshot = docRef.get().get();
             if (snapshot.exists()) {
+                // Retrieve user details from the Firestore snapshot
                 String retrievedUsername = snapshot.getString("username");
                 String email = snapshot.getString("email");
                 String password = snapshot.getString("password");
@@ -167,7 +175,12 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
         }
     }
 
-    //check existence of userId
+    // check if username exists in the database
+    /**
+     * Checks if a given username exists in Firestore.
+     * @param userId The username to be checked.
+     * @return true if the username exists, false otherwise.
+     */
     public boolean doesUsernameExist(String userId) {
         try {
             return usersCollection.document(userId).get().get().exists();
