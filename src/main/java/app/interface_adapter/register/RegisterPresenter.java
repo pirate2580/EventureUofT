@@ -30,9 +30,9 @@ public class RegisterPresenter implements RegisterOutputBoundary {
 
     @Override
     public void prepareSuccessView(RegisterOutputData response, String s) {
-        // OLD: On success, switch to the login view.
         // TODO: ON SUCCESS SWITCH TO THE CREATE EVENT VIEW
         // TODO: Code create_event view
+
     }
 
     @Override

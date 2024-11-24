@@ -54,6 +54,9 @@ public class AppBuilder {
     // initialize views and their models
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
+
+    private CreateEventView createEventView;
+
     private CreateEventViewModel createEventViewModel;
     private LoginViewModel loginViewModel;
     private CreateEventController createEventController;
@@ -78,7 +81,7 @@ public class AppBuilder {
 
 
 
-    public CreateEventView addEventView() {
+    public CreateEventView addCreateEventView() {
         this.createEventViewModel = new CreateEventViewModel();
         EventUserDataAccessInterface eventDataAccessObject = new EventUserDataAccessInterface() {
             @Override
@@ -99,7 +102,7 @@ public class AppBuilder {
                 eventFactory
         );
         this.createEventController = new CreateEventController(createEventInputBoundary);
-        CreateEventView createEventView = new CreateEventView(createEventViewModel, createEventController);
+        this.createEventView = new CreateEventView(createEventViewModel, createEventController);
         createEventView.setParentPanel(cardPanel); // Set parentPanel
         cardPanel.add(createEventView, createEventView.getViewName());
         return createEventView;
@@ -149,6 +152,7 @@ public class AppBuilder {
         // debugging
         System.out.println("Setting initial view to: " + registerView.getViewName());
         cardLayout.show(cardPanel, registerView.getViewName());
+//        cardLayout.show(cardPanel, createEventView.getViewName());
 
         // headless case
         if (GraphicsEnvironment.isHeadless()) {
@@ -172,8 +176,6 @@ public class AppBuilder {
 //        // notify any listeners that the state of the ViewManagerModel has changed
 //        viewManagerModel.firePropertyChanged();
 
-        // set the initial visible card (view) in the CardLayout to the register view
-        cardLayout.show(cardPanel, registerView.getViewName());
 
         // return JFrame so it can be displayed in the application
         return application;

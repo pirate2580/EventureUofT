@@ -36,7 +36,7 @@ public class Main {
         appBuilder.addRegisterUseCase();
         LoginView loginView = appBuilder.addLoginView();
         HomeView homeView = appBuilder.addMainView();
-        CreateEventView createEventView = appBuilder.addEventView();
+        CreateEventView createEventView = appBuilder.addCreateEventView();
 
         // set parent panels for navigation purposes
         registerView.setParentPanel(appBuilder.getCardPanel());

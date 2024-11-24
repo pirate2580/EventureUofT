@@ -51,7 +51,7 @@ public class RegisterState {
 
     @Override
     public String toString() {
-        return "SignupState{"
+        return "RegisterState{"
                 + "username='" + username + '\''
                 + ", email=" + email + '\''
                 + ", password='" + password + '\''
