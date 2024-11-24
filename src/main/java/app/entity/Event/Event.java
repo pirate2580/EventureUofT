@@ -55,13 +55,13 @@ public interface Event {
      * Return the latitude of the event
      * @return the latitude
      */
-    public int getLatitude();
+    public float getLatitude();
 
     /**
      * Return the longitude of the event
      * @return the longitude
      */
-    public int getLongitude();
+    public float getLongitude();
 
     /**
      * Return the list of strings associated with the event
@@ -73,7 +73,7 @@ public interface Event {
     void setDescription(String description);
     void setDateTime(String dateTime);
     void setCapacity(int capacity);
-    void setLatitude(int latitude);
-    void setLongitude(int longitude);
+    void setLatitude(float latitude);
+    void setLongitude(float longitude);
 
 }

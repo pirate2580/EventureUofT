@@ -29,8 +29,8 @@ public class CreateEventController {
      * @param eventId
      * @param organizer
      */
-    public void execute(String title, String description, String dateTime, int capacity, int latitude,
-                        int longitude, List<String> tags, String eventId, String organizer) {
+    public void execute(String title, String description, String dateTime, int capacity, float latitude,
+                        float longitude, List<String> tags, String eventId, String organizer) {
         final EventInputData eventInputData = new EventInputData(
                 title, description, dateTime, capacity, latitude, longitude, tags, eventId, organizer);
 

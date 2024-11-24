@@ -1,20 +1,28 @@
 package app;
 
-import java.awt.CardLayout;
+import java.awt.*;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import app.data_access.FirebaseDAO;
+import app.entity.Event.Event;
+import app.entity.Event.EventFactory;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.create_event.CreateEventController;
+import app.interface_adapter.create_event.CreateEventPresenter;
 import app.interface_adapter.login.LoginViewModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
+import app.use_case.create_event.EventInputBoundary;
+import app.use_case.create_event.EventInteractor;
+import app.use_case.create_event.EventUserDataAccessInterface;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
@@ -48,6 +56,7 @@ public class AppBuilder {
     private RegisterViewModel registerViewModel;
     private CreateEventViewModel createEventViewModel;
     private LoginViewModel loginViewModel;
+    private CreateEventController createEventController;
 
     // ensure that you are using card layout
     public AppBuilder() {
@@ -71,7 +80,26 @@ public class AppBuilder {
 
     public CreateEventView addEventView() {
         this.createEventViewModel = new CreateEventViewModel();
-        CreateEventView createEventView = new CreateEventView(createEventViewModel);
+        EventUserDataAccessInterface eventDataAccessObject = new EventUserDataAccessInterface() {
+            @Override
+            public void saveEvent(Event event) {
+
+            }
+        };
+        CreateEventPresenter eventPresenter = new CreateEventPresenter(null, createEventViewModel);
+        EventFactory eventFactory = new EventFactory() {
+            @Override
+            public Event create(String eventId, String organizer, String title, String description, String dateTime, int capacity, float latitude, float longitude, List<String> tags) {
+                return null;
+            }
+        };
+        EventInputBoundary createEventInputBoundary = new EventInteractor(
+                eventDataAccessObject,
+                eventPresenter,
+                eventFactory
+        );
+        this.createEventController = new CreateEventController(createEventInputBoundary);
+        CreateEventView createEventView = new CreateEventView(createEventViewModel, createEventController);
         createEventView.setParentPanel(cardPanel); // Set parentPanel
         cardPanel.add(createEventView, createEventView.getViewName());
         return createEventView;
@@ -123,7 +151,7 @@ public class AppBuilder {
         cardLayout.show(cardPanel, registerView.getViewName());
 
         // headless case
-        if (java.awt.GraphicsEnvironment.isHeadless()) {
+        if (GraphicsEnvironment.isHeadless()) {
             System.out.println("Headless environment detected, skipping GUI initialization");
             return null;
         }

@@ -12,8 +12,8 @@ public class EventInputData {
     private String description;
     private String dateTime;
     private int capacity;
-    private int latitude;
-    private int longitude;
+    private float latitude;
+    private float longitude;
     private List<String> tags;
     private String eventId;
     private String organizer;
@@ -33,8 +33,8 @@ public class EventInputData {
      * @param eventId
      * @param organizer
      */
-    public EventInputData(String title, String description, String dateTime, int capacity, int latitude,
-                          int longitude, List<String> tags, String eventId, String organizer) {
+    public EventInputData(String title, String description, String dateTime, int capacity, float latitude,
+                          float longitude, List<String> tags, String eventId, String organizer) {
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;
@@ -62,11 +62,11 @@ public class EventInputData {
         return capacity;
     }
 
-    public int getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public int getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
