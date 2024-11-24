@@ -4,9 +4,9 @@ import java.util.List;
 
 public class CreateEventState {
     private String title, description, eventId, organizer;
-    private String dateTimeError, capacityError, latitudeError, longitudeError;
+    private String dateTimeError, capacityError, latitudeError, longitudeError, dateTime;
     private float longitude, latitude;
-    private int dateTime, capacity;
+    private int capacity;
     private List<String> tags;
 
     public String getTitle() { return title; }
@@ -15,8 +15,8 @@ public class CreateEventState {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public int getDateTime() { return dateTime; }
-    public void setDateTime(int dateTime) { this.dateTime = dateTime; }
+    public String getDateTime() { return dateTime; }
+    public void setDateTime(String dateTime) { this.dateTime = dateTime; }
 
     public String getDateTimeError() { return dateTimeError; }
     public void setDateTimeError(String dateTimeError) { this.dateTimeError = dateTimeError; }
