@@ -12,6 +12,6 @@ public class LoginController {
 
     public void execute(String username, String password) {
         final LoginInputData loginInputData = new LoginInputData(username, password);
-        //this.userLoginUseCaseInteractor.execute(loginInputData);
+        this.userLoginUseCaseInteractor.execute(loginInputData);
     }
 }

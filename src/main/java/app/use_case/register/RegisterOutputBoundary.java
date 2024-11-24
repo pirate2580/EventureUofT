@@ -11,9 +11,11 @@ public interface RegisterOutputBoundary {
      * Prepares the success view for the Register user use case
      * This will probably just lead to the main screen of the application
      * whatever that ends up being
+     *
      * @param outputData the output data
+     * @param s
      */
-    void prepareSuccessView(RegisterOutputData outputData);
+    void prepareSuccessView(RegisterOutputData outputData, String s);
 
     /**
      * Prepares the failure view for the Register user use case.

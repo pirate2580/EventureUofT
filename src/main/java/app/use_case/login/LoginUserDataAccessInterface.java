@@ -5,7 +5,7 @@ import app.entity.User.User;
 /**
  * Data Access Object for the Login Use Case.
  */
-public interface LoginUserData {
+public interface LoginUserDataAccessInterface {
     /**
      * Finds a user by the username.
      * @param username The username to search for.

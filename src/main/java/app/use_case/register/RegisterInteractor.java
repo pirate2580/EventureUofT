@@ -31,7 +31,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
 
     @Override
     public void execute(RegisterInputData registerInputData) {
-        if (userDataAccessObject.existsByUsername(registerInputData.getUsername())) { // change it so it uses the DB
+        if (userDataAccessObject.existsByUsername(registerInputData.getUsername())) { // TODO: change it so it uses the DB
             userPresenter.prepareFailView("Username already exists.");
         }
         else{
@@ -39,7 +39,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
             userDataAccessObject.save(user);
 
             final RegisterOutputData registerOutputData = new RegisterOutputData(user.getUsername(), false);
-            userPresenter.prepareSuccessView(registerOutputData);
+            userPresenter.prepareSuccessView(registerOutputData, "User created successfully! Please log in.");
         }
     }
 

@@ -40,7 +40,7 @@ public class LoginState {
 
     @Override
     public String toString() {
-        return "SignupState{"
+        return "LoginState{"
                 + "username='" + username + '\''
                 + ", password='" + password + '\''
                 + '}';

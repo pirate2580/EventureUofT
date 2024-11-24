@@ -14,17 +14,20 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class CreateEventView extends JPanel implements ActionListener, PropertyChangeListener {
-    private static final String VIEW_NAME = "create event";
+    private static final String VIEW_NAME = "createEvent";
 
     private final CreateEventViewModel createEventViewModel;
-    private final JTextField titleInputField, descriptionInputField, capacityInputField, tagsInputField;
+    private final JTextField orgInputField, titleInputField, descriptionInputField, timeInputField,
+            capacityInputField, tagsInputField, latitudeInputField, longitudeInputField;
     private final JButton createEventButton;
 
     private CreateEventController createEventController;
+    private JPanel parentPanel;
 
-    public CreateEventView(CreateEventViewModel createEventViewModel) {
+    public CreateEventView(CreateEventViewModel createEventViewModel, CreateEventController controller) {
         this.createEventViewModel = createEventViewModel;
         this.createEventViewModel.addPropertyChangeListener(this);
+        this.createEventController = controller;
 
         // Configure the layout
         this.setLayout(new BorderLayout());
@@ -42,11 +45,16 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Build components
+        // Build components and generate placeholders
+        orgInputField = createInputField("Enter the organizer(s)...");
         titleInputField = createInputField("Enter your title...");
-        descriptionInputField = createInputField("Enter your description...");
+        descriptionInputField = createInputField("Enter your description... (150 characters max)");
+        timeInputField = createInputField("Please enter the time and date...");
         capacityInputField = createInputField("Enter your capacity...");
+        latitudeInputField = createInputField("Please enter the latitude of the address");
+        longitudeInputField = createInputField("Please enter the longitude of the address");
         tagsInputField = createInputField("Enter event tags (comma-separated)...");
+        // Create an event button
         createEventButton = createEventButton();
 
         // Add document listeners for input validation
@@ -54,30 +62,62 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         addDocumentListener(descriptionInputField, () -> updateState("Description"));
         addDocumentListener(capacityInputField, () -> updateState("Capacity"));
         addDocumentListener(tagsInputField, () -> updateState("Tags"));
+        addDocumentListener(timeInputField, () -> updateState("Date and time"));
+        addDocumentListener(orgInputField, () -> updateState("Organizers"));
+        addDocumentListener(latitudeInputField, () -> updateState("Latitude"));
+        addDocumentListener(longitudeInputField, () -> updateState("Longitude"));
+        createEventButton.addActionListener(this::actionPerformed);
 
-        // Adding labels and fields to the panel
+        // Add labels and fields to the panel, starting with the Title
         gbc.gridx = 0; gbc.gridy = 0;
+        formPanel.add(createLabel("Organizers:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(orgInputField, gbc);
+
+        // Add description input
+        gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(createLabel("Title:"), gbc);
         gbc.gridx = 1;
         formPanel.add(titleInputField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 1;
+        // Add capacity input
+        gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(createLabel("Description:"), gbc);
         gbc.gridx = 1;
         formPanel.add(descriptionInputField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2;
+        // Add tags input
+        gbc.gridx = 0; gbc.gridy = 3;
+        formPanel.add(createLabel("Datetime:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(timeInputField, gbc);
+
+        // Add building input
+        gbc.gridx = 0; gbc.gridy = 4;
         formPanel.add(createLabel("Capacity:"), gbc);
         gbc.gridx = 1;
         formPanel.add(capacityInputField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3;
+        // Add floor number input
+        gbc.gridx = 0; gbc.gridy = 5;
+        formPanel.add(createLabel("Latitude:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(latitudeInputField, gbc);
+
+        // Add room number input
+        gbc.gridx = 0; gbc.gridy = 6;
+        formPanel.add(createLabel("Longitude:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(longitudeInputField, gbc);
+
+        // Add room number input
+        gbc.gridx = 0; gbc.gridy = 7;
         formPanel.add(createLabel("Tags:"), gbc);
         gbc.gridx = 1;
         formPanel.add(tagsInputField, gbc);
 
         // Add the create button
-        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 8; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         formPanel.add(createEventButton, gbc);
 
@@ -85,7 +125,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         this.add(formPanel, BorderLayout.CENTER);
     }
 
-    // Helper methods
     private JTextField createInputField(String placeholder) {
         JTextField field = new JTextField(20);
         field.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -137,10 +176,14 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
+        CreateEventState currentState = createEventViewModel.getState();
+        createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), currentState.getCapacity(),
+                currentState.getLatitude(), currentState.getLongitude(), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
         // Handle button click event
         if (e.getSource() == createEventButton) {
             System.out.println("Event created!");
         }
+        // TODO: firebase stuff
     }
 
     /**
@@ -151,7 +194,19 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final CreateEventState state = (CreateEventState) evt.getNewValue();
+        CreateEventState state = (CreateEventState) evt.getNewValue();
         //TODO: Add the potential errors
+    }
+
+    public String getViewName() {
+        return VIEW_NAME;
+    }
+
+    public void setParentPanel(JPanel parentPanel) {
+        this.parentPanel = parentPanel;
+    }
+
+    public void setCreateEventController(CreateEventController controller) {
+        this.createEventController = controller;
     }
 }

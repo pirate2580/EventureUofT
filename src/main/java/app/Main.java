@@ -1,25 +1,25 @@
 package app;
 
-import app.view.LoginView;
-import app.view.RegisterView;
+import app.view.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.swing.JFrame;
 
 /**
- * The Main class of our application
+ * The Main class of our application.
  */
-// TODO: Fix label for sign-up and log-in buttons so its on the left
 @SpringBootApplication(scanBasePackages = {"app", "app.config"})
 public class Main {
+
     /**
-     * Builds and runs CA architecture of application
+     * Builds and runs CA architecture of the application.
+     *
      * @param args unused argument
      */
     public static void main(String[] args) {
 
-        // Check if running in headless mode
+        // check if running in headless mode
         if (java.awt.GraphicsEnvironment.isHeadless()) {
             System.out.println("Headless environment detected. GUI will not be initialized.");
             return;
@@ -28,22 +28,27 @@ public class Main {
         // start the Spring Boot application context
         var context = SpringApplication.run(Main.class, args);
 
-        // get the AppBuilder bean from the Spring context
+        // get AppBuilder bean from the Spring context
         AppBuilder appBuilder = context.getBean(AppBuilder.class);
 
-        // create the RegisterView and LoginView
-        RegisterView registerView = appBuilder.addRegisterView(); // Add the RegisterView to the app
-        appBuilder.addRegisterUseCase(); // Add the use case logic for RegisterView
-        LoginView loginView = appBuilder.addLoginView(); // Add the LoginView to the app
+        // add views to the application
+        RegisterView registerView = appBuilder.addRegisterView();
+        appBuilder.addRegisterUseCase();
+        LoginView loginView = appBuilder.addLoginView();
+        HomeView homeView = appBuilder.addMainView();
+        CreateEventView createEventView = appBuilder.addCreateEventView();
 
-        // set parent panels for navigation
+        // set parent panels for navigation purposes
         registerView.setParentPanel(appBuilder.getCardPanel());
         loginView.setParentPanel(appBuilder.getCardPanel());
+        homeView.setParentPanel(appBuilder.getCardPanel());
+        createEventView.setParentPanel(appBuilder.getCardPanel());
 
-        // build the application
+
+        // build the application and display it
         final JFrame application = appBuilder.build();
 
-        // set up the application window
+        // account for headless error
         if (application != null) {
             application.pack();
             application.setVisible(true);
@@ -51,6 +56,6 @@ public class Main {
             System.out.println("Application is running in headless mode. No GUI will be displayed.");
         }
 
-        System.out.println("1. Running Main!"); // testing
+        System.out.println("Application started successfully!");
     }
 }

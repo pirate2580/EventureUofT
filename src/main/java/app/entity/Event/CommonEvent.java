@@ -11,11 +11,12 @@ import java.util.List;
 public class CommonEvent implements Event {
     private String eventId, organizer, title, description, dateTime;
     private List<app.entity.User.User> attendeesIdList;
-    private int capacity, latitude, longitude;
+    private int capacity;
+    private float latitude, longitude;
     private List<String> tags;
 
     public CommonEvent(String eventId, String organizer, String title, String description, String dateTime,
-                       int capacity, int latitude, int longitude, List<String> tags) {
+                       int capacity, float latitude, float longitude, List<String> tags) {
         this.eventId = eventId;
         this.organizer = organizer;
         this.title = title;
@@ -96,7 +97,7 @@ public class CommonEvent implements Event {
      * @return the latitude
      */
     @Override
-    public int getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
@@ -105,7 +106,7 @@ public class CommonEvent implements Event {
      * @return the longitude
      */
     @Override
-    public int getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
@@ -135,11 +136,11 @@ public class CommonEvent implements Event {
         this.capacity = capacity;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
