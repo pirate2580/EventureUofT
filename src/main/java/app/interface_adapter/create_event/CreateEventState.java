@@ -3,9 +3,10 @@ package app.interface_adapter.create_event;
 import java.util.List;
 
 public class CreateEventState {
-    private String title, description, dateTime, eventId, organizer;
+    private String title, description, eventId, organizer;
     private String dateTimeError, capacityError, latitudeError, longitudeError;
-    private int capacity, latitude, longitude;
+    private float longitude, latitude;
+    private int dateTime, capacity;
     private List<String> tags;
 
     public String getTitle() { return title; }
@@ -14,8 +15,8 @@ public class CreateEventState {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getDateTime() { return dateTime; }
-    public void setDateTime(String dateTime) { this.dateTime = dateTime; }
+    public int getDateTime() { return dateTime; }
+    public void setDateTime(int dateTime) { this.dateTime = dateTime; }
 
     public String getDateTimeError() { return dateTimeError; }
     public void setDateTimeError(String dateTimeError) { this.dateTimeError = dateTimeError; }
@@ -32,14 +33,14 @@ public class CreateEventState {
     public String getCapacityError() { return capacityError; }
     public void setCapacityError(String capacityError) { this.capacityError = capacityError; }
 
-    public int getLongitude() { return longitude; }
-    public void setLongitude(int longitude) { this.longitude = longitude; }
+    public float getLongitude() { return longitude; }
+    public void setLongitude(float longitude) { this.longitude = longitude; }
 
     public String getLongitudeError() { return longitudeError; }
     public void setLongitudeError(String longitudeError) { this.longitudeError = longitudeError; }
 
-    public int getLatitude() { return latitude; }
-    public void setLatitude(int latitude) { this.latitude = latitude; }
+    public float getLatitude() { return latitude; }
+    public void setLatitude(float latitude) { this.latitude = latitude; }
 
     public String getLatitudeError() { return latitudeError; }
     public void setLatitudeError(String latitudeError) { this.latitudeError = latitudeError; }

@@ -9,8 +9,8 @@ public class ModifyEventInputData {
     private final String updatedDescription;
     private final String updatedDateTime;
     private final int updatedCapacity;
-    private final int updatedLatitude;
-    private final int updatedLongitude;
+    private final float updatedLatitude;
+    private final float updatedLongitude;
 
     /**
      * Constructor for ModifyEventInputData.
@@ -24,7 +24,7 @@ public class ModifyEventInputData {
      */
 
     public ModifyEventInputData(String eventId, String updatedTitle, String updatedDescription, String updatedDateTime,
-                                int updatedCapacity, int updatedLatitude, int updatedLongitude) {
+                                int updatedCapacity, float updatedLatitude, float updatedLongitude) {
         this.eventId = eventId;
         this.updatedTitle = updatedTitle;
         this.updatedDescription = updatedDescription;
@@ -54,11 +54,11 @@ public class ModifyEventInputData {
         return updatedCapacity;
     }
 
-    public int getUpdatedLatitude() {
+    public float getUpdatedLatitude() {
         return updatedLatitude;
     }
 
-    public int getUpdatedLongitude() {
+    public float getUpdatedLongitude() {
         return updatedLongitude;
     }
 }

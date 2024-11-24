@@ -1,8 +1,11 @@
 package app.use_case.create_event;
 
 
+import app.entity.Event.CommonEventFactory;
 import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
+
+import javax.swing.*;
 
 /**
  * The Event Interactor
@@ -31,19 +34,17 @@ public class EventInteractor implements EventInputBoundary {
 
     @Override
     public void execute(EventInputData eventInputData) {
-        if (eventDataAccessObject.valid_coordinates(eventInputData.getLatitude(), eventInputData.getLongitude())) {
-            eventPresenter.prepareFailView("Invalid coordinates");
-        } else if (eventDataAccessObject.valid_capacity(eventInputData.getCapacity())) {
-            eventPresenter.prepareFailView("Invalid capacity");
-        } else{
-            final Event event = eventFactory.create(eventInputData.getEventId(), eventInputData.getOrganizer(),
+        final Event event = eventFactory.create(eventInputData.getEventId(), eventInputData.getOrganizer(),
                     eventInputData.getTitle(), eventInputData.getDescription(), eventInputData.getDateTime(),
                     eventInputData.getCapacity(), eventInputData.getLatitude(), eventInputData.getLongitude(),
                     eventInputData.getTags());
-            eventDataAccessObject.save(event);
-
-            final EventOutputData eventOutputData = new EventOutputData(event.getTitle(), false);
-            eventPresenter.prepareSuccessView(eventOutputData);
+        // debugging statement
+        if (event == null) {
+            throw new IllegalStateException("EventFactory returned null check your input or factory implementation.");
         }
+        eventDataAccessObject.saveEvent(event);
+        final EventOutputData eventOutputData = new EventOutputData(event.getTitle(), false);
+        eventPresenter.prepareSuccessView(eventOutputData);
+
     }
-}
+    }

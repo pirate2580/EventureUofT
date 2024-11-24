@@ -13,22 +13,6 @@ public interface EventUserDataAccessInterface {
      * Saves the event to the database
      * @param event to save onto the database
      */
-    void save(Event event);
-
-    /**
-     * Checks if the coordinates are valid, True if it is
-     * @param latitude the latitude coordinate
-     * @param longitude the longitude coordinate
-     * @return True if the coordinates are valid
-     */
-    boolean valid_coordinates(int latitude, int longitude);
-
-
-    /**
-     * Checks if the capacity is valid, True if it is
-     * @param capacity the latitude coordinate
-     * @return True if the coordinates are valid
-     */
-    boolean valid_capacity(int capacity);
+    void saveEvent(Event event);
 
 }

@@ -22,5 +22,5 @@ public interface EventFactory {
      *
      */
     Event create(String eventId, String organizer, String title, String description, String dateTime,
-                 int capacity, int latitude, int longitude, List<String> tags);
+                 int capacity, float latitude, float longitude, List<String> tags);
 }
