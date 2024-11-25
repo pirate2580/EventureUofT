@@ -1,15 +1,14 @@
 package app;
 
 import java.awt.*;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import app.data_access.FirebaseDAO;
+import app.data_access.UserDAO;
+import app.data_access.EventDAO;
 import app.entity.Event.CommonEventFactory;
-import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
@@ -23,7 +22,6 @@ import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
 import app.use_case.create_event.EventInputBoundary;
 import app.use_case.create_event.EventInteractor;
-import app.use_case.create_event.EventUserDataAccessInterface;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
@@ -50,7 +48,8 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     @Autowired
-    private FirebaseDAO firebaseDAO;
+    private UserDAO userDAO;
+    private EventDAO eventDAO;
 
     // initialize views and their models
     private RegisterView registerView;
@@ -87,7 +86,7 @@ public class AppBuilder {
         CreateEventPresenter eventPresenter = new CreateEventPresenter(null, createEventViewModel);
         EventFactory eventFactory = new CommonEventFactory();
         EventInputBoundary createEventInputBoundary = new EventInteractor(
-                firebaseDAO,
+                eventDAO,
                 eventPresenter,
                 eventFactory
         );
@@ -127,7 +126,7 @@ public class AppBuilder {
         final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel,
                 createEventViewModel, registerViewModel);
         final RegisterInputBoundary userRegisterInteractor = new RegisterInteractor(
-                firebaseDAO, registerOutputBoundary, userFactory);
+                userDAO, registerOutputBoundary, userFactory);
         // create controller
         final RegisterController controller = new RegisterController(userRegisterInteractor);
 
