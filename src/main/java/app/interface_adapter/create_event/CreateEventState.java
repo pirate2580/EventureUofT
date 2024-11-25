@@ -53,6 +53,7 @@ public class CreateEventState {
         for (int i = 0; i<tags.length(); i++){
             if (tags.charAt(i) == ',') {
                 tagger.add(ret.toString());
+                ret = new StringBuilder();
             } else {
                 ret.append(tags.charAt(i));
             }

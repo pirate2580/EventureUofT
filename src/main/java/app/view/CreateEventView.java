@@ -23,7 +23,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     private final JTextField orgInputField, titleInputField, descriptionInputField, timeInputField,
             capacityInputField, tagsInputField, latitudeInputField, longitudeInputField;
     private final JButton createEventButton;
-
+    private final JButton homeButton;
     private CreateEventController createEventController;
     private JPanel parentPanel;
 
@@ -59,7 +59,8 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         tagsInputField = createInputField("Enter event tags (comma-separated)...");
         // Create an event button
         createEventButton = createEventButton();
-
+        // Create a home button
+        homeButton = createHomeButton();
         // Add document listeners for input validation
         addDocumentListener(titleInputField, () -> updateState("Title"));
         addDocumentListener(descriptionInputField, () -> updateState("Description"));
@@ -70,6 +71,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         addDocumentListener(latitudeInputField, () -> updateState("Latitude"));
         addDocumentListener(longitudeInputField, () -> updateState("Longitude"));
         createEventButton.addActionListener(this::actionPerformed);
+        homeButton.addActionListener(this::actionPerformed);
 
         // Add labels and fields to the panel, starting with the Title
         gbc.gridx = 0; gbc.gridy = 0;
@@ -123,6 +125,11 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         gbc.gridx = 0; gbc.gridy = 8; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         formPanel.add(createEventButton, gbc);
+
+        // Add the home button
+        gbc.gridx = 0; gbc.gridy = 9; gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        formPanel.add(homeButton, gbc);
 
         // Add formPanel to the main panel
         this.add(formPanel, BorderLayout.CENTER);
@@ -198,14 +205,16 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        CreateEventState currentState = createEventViewModel.getState();
-        createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), currentState.getCapacity(),
-                currentState.getLatitude(), currentState.getLongitude(), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
-        // Handle button click event
         if (e.getSource() == createEventButton) {
+            CreateEventState currentState = createEventViewModel.getState();
+            createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), currentState.getCapacity(),
+                    currentState.getLatitude(), currentState.getLongitude(), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
+            // Handle button click event
             System.out.println("Event created!");
+        } else if (e.getSource() == homeButton) {
+            navigateTo("Home");
+            System.out.println("Went home!");
         }
-        // TODO: firebase stuff
     }
 
     /**
@@ -217,7 +226,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         CreateEventState state = (CreateEventState) evt.getNewValue();
-        //TODO: Add the potential errors
     }
 
     public String getViewName() {
@@ -230,5 +238,38 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
     public void setCreateEventController(CreateEventController controller) {
         this.createEventController = controller;
+    }
+
+    /**
+     * Function to navigate from this screen to a different screen
+     * using the name of the new screen.
+     * @param viewName the name of the view you want to navigate to
+     * */
+    public void navigateTo(String viewName) {
+        // Check if the parentPanel is valid for debugging purposes
+        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
+            // Debug statement in console:
+            System.out.println("Navigating to: " + viewName);
+
+            CardLayout layout = (CardLayout) parentPanel.getLayout();
+            layout.show(parentPanel, viewName);
+
+            // Revalidate and redraw the parent panel after you navigate to it
+            parentPanel.revalidate();
+            parentPanel.repaint();
+        } else {
+            // Console error statement if the navigation doesn't work
+            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
+        }
+    }
+    private JButton createHomeButton() {
+        JButton button = new JButton("Home");
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBackground(new Color(0, 180, 0));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 }
