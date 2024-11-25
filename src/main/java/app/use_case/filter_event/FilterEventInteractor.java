@@ -7,25 +7,33 @@ import java.util.List;
 // retrieve relevant events and sends the results through the presenter.
 
 public class FilterEventInteractor implements FilterEventInputBoundary {
-    private final FilterEventUserDataAccessInterface eventDataAccessObject;
+
+    private final FilterEventUserDataAccessInterface filterEventDataAccessObject;
     private final FilterEventOutputBoundary filterEventPresenter;
 
     public FilterEventInteractor(FilterEventUserDataAccessInterface eventDataAccessObject,
                                  FilterEventOutputBoundary filterEventPresenter) {
-        this.eventDataAccessObject = eventDataAccessObject;
+        this.filterEventDataAccessObject = eventDataAccessObject;
         this.filterEventPresenter = filterEventPresenter;
     }
 
     @Override
     public void execute(FilterEventInputData filterEventInputData) {
         // Retrieve events based on the provided criteria.
-        List<Event> filteredEvents = eventDataAccessObject.findEvents(filterEventInputData);
+        System.out.println(filterEventDataAccessObject);
+        List<Event> filteredEvents = filterEventDataAccessObject.findEvents(filterEventInputData.getTags());
 
-        if (filteredEvents.isEmpty()) {
-            filterEventPresenter.prepareFailView("No events found matching the criteria.");
-        } else {
-            FilterEventOutputData outputData = new FilterEventOutputData(filteredEvents);
-            filterEventPresenter.prepareSuccessView(outputData);
+        for (Event event: filteredEvents){
+                System.out.println(event.getTitle());
+                System.out.println("diddy");
         }
+
+
+//        if (filteredEvents.isEmpty()) {
+//            filterEventPresenter.prepareFailView("No events found matching the criteria.");
+//        } else {
+//            FilterEventOutputData outputData = new FilterEventOutputData(filteredEvents);
+//            filterEventPresenter.prepareSuccessView(outputData);
+//        }
     }
 }
