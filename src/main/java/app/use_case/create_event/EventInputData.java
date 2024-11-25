@@ -33,8 +33,8 @@ public class EventInputData {
      * @param eventId
      * @param organizer
      */
-    public EventInputData(String title, String description, String dateTime, int capacity, float latitude,
-                          float longitude, List<String> tags, String eventId, String organizer) {
+    public EventInputData(String eventId, String organizer, String title, String description, String dateTime, int capacity, float latitude,
+                          float longitude, List<String> tags) {
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;

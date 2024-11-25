@@ -70,6 +70,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.parentPanel = parentPanel;
     }
 
+    // TODO: Move this function to an outer layer like a controller
     public void navigateTo(String viewName) {
         if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
             // debugging:
@@ -227,7 +228,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
     // go to the home screen once logged in
     private void handleLoginAction() {
-        // TODO: implement login logic
         System.out.println("make sure to validate login information using DB");
         navigateTo("Home");
     }
