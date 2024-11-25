@@ -34,6 +34,11 @@ public class Main {
         // add views to the application
         RegisterView registerView = appBuilder.addRegisterView();
         appBuilder.addRegisterUseCase();
+
+        FilterEventView filterEventView = appBuilder.addFilterEventView();
+        appBuilder.addFilterEventUseCase();
+
+
         LoginView loginView = appBuilder.addLoginView();
         HomeView homeView = appBuilder.addMainView();
         CreateEventView createEventView = appBuilder.addCreateEventView();

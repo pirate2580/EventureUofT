@@ -15,6 +15,9 @@ import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.create_event.CreateEventController;
 import app.interface_adapter.create_event.CreateEventPresenter;
+import app.interface_adapter.filter_event.FilterEventController;
+import app.interface_adapter.filter_event.FilterEventPresenter;
+import app.interface_adapter.filter_event.FilterEventViewModel;
 import app.interface_adapter.login.LoginViewModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.interface_adapter.register.RegisterController;
@@ -22,6 +25,9 @@ import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
 import app.use_case.create_event.EventInputBoundary;
 import app.use_case.create_event.EventInteractor;
+import app.use_case.filter_event.FilterEventInputBoundary;
+import app.use_case.filter_event.FilterEventInteractor;
+import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
@@ -49,6 +55,7 @@ public class AppBuilder {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
     private EventDAO eventDAO;
 
     // initialize views and their models
@@ -60,6 +67,9 @@ public class AppBuilder {
     private CreateEventViewModel createEventViewModel;
     private LoginViewModel loginViewModel;
     private CreateEventController createEventController;
+    private FilterEventViewModel filterEventViewModel;
+    private FilterEventView filterEventView;
+
 
     // ensure that you are using card layout
     public AppBuilder() {
@@ -116,6 +126,33 @@ public class AppBuilder {
         return loginView;
     }
 
+    public FilterEventView addFilterEventView() {
+        this.filterEventViewModel = new FilterEventViewModel();
+        this.filterEventView = new FilterEventView(filterEventViewModel);
+
+        filterEventView.setParentPanel(cardPanel);
+
+        cardPanel.add(filterEventView, filterEventView.getViewName());
+        return this.filterEventView;
+    }
+
+    public AppBuilder addFilterEventUseCase() {
+        if (filterEventView == null || filterEventView == null) {
+            throw new IllegalStateException("RegisterView or RegisterViewModel is not initialized.");
+        }
+        final FilterEventOutputBoundary filterEventOutputBoundary = new FilterEventPresenter(viewManagerModel,
+                filterEventViewModel);
+
+        final FilterEventInputBoundary userFilterEventInteractor = new FilterEventInteractor(
+                eventDAO, filterEventOutputBoundary);
+
+        final FilterEventController controller = new FilterEventController(userFilterEventInteractor);
+
+        filterEventView.setFilterEventsController(controller);
+
+        return this;
+    }
+
 
     public AppBuilder addRegisterUseCase() {
         // make sure RegisterView and RegisterViewModel are initialized (debugging)
@@ -140,8 +177,9 @@ public class AppBuilder {
     public JFrame build() {
         // debugging
         System.out.println("Setting initial view to: " + registerView.getViewName());
-        cardLayout.show(cardPanel, registerView.getViewName());
+//        cardLayout.show(cardPanel, registerView.getViewName());
 //        cardLayout.show(cardPanel, createEventView.getViewName());
+        cardLayout.show(cardPanel, filterEventView.getViewName());
 
         // headless case
         if (GraphicsEnvironment.isHeadless()) {
