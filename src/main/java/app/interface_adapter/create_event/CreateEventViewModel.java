@@ -17,7 +17,7 @@ public class CreateEventViewModel extends ViewModel<CreateEventState> {
     // public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
     public CreateEventViewModel() {
-        super("Create Event");
+        super("createEvent");
         setState(new CreateEventState());
     }
 

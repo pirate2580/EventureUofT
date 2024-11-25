@@ -1,6 +1,5 @@
 package app.data_access;
 
-import app.entity.Event.CommonEvent;
 import app.entity.User.CommonUserFactory;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
@@ -14,7 +13,6 @@ import com.google.cloud.firestore.WriteResult;
 import app.entity.User.User;
 import app.entity.User.UserFactory;
 import app.entity.Event.Event;
-import app.entity.User.CommonUserFactory;
 import app.use_case.modify_user.ModifyUserDataAccessInterface;
 import app.use_case.register.RegisterUserDataAccessInterface;
 import app.use_case.create_event.EventUserDataAccessInterface;
@@ -22,6 +20,7 @@ import app.use_case.login.LoginUserDataAccessInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,19 +31,17 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDataAccessInterface, LoginUserDataAccessInterface, ModifyUserDataAccessInterface{
+public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAccessInterface, ModifyUserDataAccessInterface{
 
     private final Firestore db;
     private final CollectionReference usersCollection;
-    private final CollectionReference eventCollection;
     private final CommonUserFactory userFactory;
 
     // Inject Firestore via constructor injection
     @Autowired
-    public FirebaseDAO(Firestore db, CommonUserFactory userFactory) {
+    public UserDAO(Firestore db, CommonUserFactory userFactory) {
         this.db = db;
         this.usersCollection = db.collection("Users");
-        this.eventCollection = db.collection("Events");
         this.userFactory = userFactory;
     }
 
@@ -84,30 +81,6 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error retrieving users from Firestore: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Function to save an event to the Firebase Database.
-     * @param event, the event we want to save.
-     * */
-    public void saveEvent(Event event) {
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("organizer", event.getOrganizer());
-        eventData.put("title", event.getTitle());
-        eventData.put("description", event.getDescription());
-        eventData.put("time", event.getDateTime());
-        eventData.put("capacity", event.getCapacity());
-        eventData.put("latitude", event.getLatitude());
-        eventData.put("longitude", event.getLongitude());
-        eventData.put("tags", event.getTags());
-
-        try {
-            DocumentReference docRef = eventCollection.document(event.getTitle());
-            WriteResult result = docRef.set(eventData).get();
-            System.out.println("Event saved at: " + result.getUpdateTime());
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error saving event to Firestore: " + e.getMessage());
         }
     }
 
