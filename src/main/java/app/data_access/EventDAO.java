@@ -3,6 +3,7 @@ package app.data_access;
 import app.entity.Event.CommonEvent;
 import app.entity.User.CommonUserFactory;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
+import app.use_case.display_event.DisplayEventDataAccessInterface;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -33,7 +34,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, FilterEventUserDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -72,32 +73,35 @@ public class EventDAO implements EventUserDataAccessInterface, FilterEventUserDa
 
     /**
      * Function to retrieve all the events
-     */
-    public List<Event> getEvents() {
+     * */
+    @Override
+    public ArrayList<CommonEvent> loadEvents() {
         try {
-            // Asynchronously retrieve the documents, using the reference to the users collection
+            // Asynchronously retrieve the documents
             ApiFuture<QuerySnapshot> future = eventCollection.get();
 
             // Block on response to get the document snapshot
             QuerySnapshot document = future.get();
 
             // Prepare a list to hold the events
-            List<Event> events = new ArrayList<>();
+            ArrayList<CommonEvent> events = new ArrayList<>();
 
             // Iterate over the events in the collection
             for (QueryDocumentSnapshot doc : document.getDocuments()) {
-                // Convert event into an Event object
-                Event event = doc.toObject(Event.class);
-                events.add(event);
+                // Convert Firestore document into a CommonEvent object
+                CommonEvent event = doc.toObject(CommonEvent.class);
+                events.add(event); // Add it to the list
             }
+
             // Return the list of events
             return events;
 
         } catch (InterruptedException | ExecutionException e) {
-            System.err.println("No events in Firestore: " + e.getMessage());
-            return null;
+            System.err.println("Error loading events from Firestore: " + e.getMessage());
+            return new ArrayList<>(); // Return an empty list in case of error
         }
     }
+
 
     @Override
     public List<Event> findEvents(List<String> tags) {
