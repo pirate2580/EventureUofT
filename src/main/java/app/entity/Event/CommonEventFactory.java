@@ -14,17 +14,6 @@ public class CommonEventFactory implements EventFactory {
 //        System.out.printf("Capacity: %d, Latitude: %d, Longitude: %d, Tags: %s%n",
 //                capacity, latitude, longitude, tags);
 
-        System.out.println(eventId);
-        System.out.println(organizer);
-        System.out.println(title);
-        System.out.println(description);
-        System.out.println(dateTime);
-        System.out.println(capacity);
-        System.out.println(latitude);
-        System.out.println(longitude);
-        System.out.println(tags);
-
-
         // Validate inputs
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty.");
@@ -37,6 +26,12 @@ public class CommonEventFactory implements EventFactory {
         }
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity must be greater than zero.");
+        }
+        if (longitude < -80 || longitude >- 79){
+            throw new IllegalArgumentException("Latitude must be between 79 and 80 (inclusive");
+        }
+        if (latitude < 43 || latitude > 44){
+            throw new IllegalArgumentException("Longitude must be between 43 and 44 (inclusive");
         }
         if (tags == null) {
             tags = List.of(); // Default to empty list if null

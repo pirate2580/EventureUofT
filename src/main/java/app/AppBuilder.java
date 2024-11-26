@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.*;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,12 +10,16 @@ import javax.swing.WindowConstants;
 import app.data_access.UserDAO;
 import app.data_access.EventDAO;
 import app.entity.Event.CommonEventFactory;
+import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
 import app.entity.User.CommonUserFactory;
 import app.entity.User.UserFactory;
 import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.create_event.CreateEventController;
 import app.interface_adapter.create_event.CreateEventPresenter;
+import app.interface_adapter.display_event.DisplayEventController;
+import app.interface_adapter.display_event.DisplayEventPresenter;
+import app.interface_adapter.display_event.DisplayEventViewModel;
 import app.interface_adapter.filter_event.FilterEventController;
 import app.interface_adapter.filter_event.FilterEventPresenter;
 import app.interface_adapter.filter_event.FilterEventViewModel;
@@ -28,6 +33,7 @@ import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
 import app.use_case.create_event.EventInputBoundary;
 import app.use_case.create_event.EventInteractor;
+import app.use_case.display_event.DisplayEventInteractor;
 import app.use_case.filter_event.FilterEventInputBoundary;
 import app.use_case.filter_event.FilterEventInteractor;
 import app.use_case.filter_event.FilterEventOutputBoundary;
@@ -83,7 +89,7 @@ public class AppBuilder {
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
-
+    EventFactory eventFactory = new CommonEventFactory();
     // function to create and add the register view to the card layout
     public RegisterView addRegisterView() {
         // create new RegisterViewModel to manage state of the register view
@@ -97,12 +103,9 @@ public class AppBuilder {
         return this.registerView;
     }
 
-
-
     public CreateEventView addCreateEventView() {
         this.createEventViewModel = new CreateEventViewModel();
         CreateEventPresenter eventPresenter = new CreateEventPresenter(null, createEventViewModel);
-        EventFactory eventFactory = new CommonEventFactory();
         EventInputBoundary createEventInputBoundary = new EventInteractor(
                 eventDAO,
                 eventPresenter,
@@ -133,7 +136,13 @@ public class AppBuilder {
 
     public HomeView addMainView() {
         HomeViewModel homeViewModel = new HomeViewModel();
-        HomeView homeView = new HomeView(homeViewModel);
+        DisplayEventView displayEventView = new DisplayEventView();
+        DisplayEventViewModel displayEventViewModel = new DisplayEventViewModel();
+        DisplayEventPresenter DisplayEventPresenter = new DisplayEventPresenter(displayEventView, displayEventViewModel);
+
+        DisplayEventInteractor displayEventInteractor = new DisplayEventInteractor(eventDAO, DisplayEventPresenter, eventFactory);
+        DisplayEventController displayEventController = new DisplayEventController(displayEventInteractor);
+        HomeView homeView = new HomeView(homeViewModel, displayEventController);
         homeView.setParentPanel(cardPanel);
         cardPanel.add(homeView, homeView.getViewName());
         return homeView;
@@ -205,6 +214,7 @@ public class AppBuilder {
 //        cardLayout.show(cardPanel, createEventView.getViewName());
 //        cardLayout.show(cardPanel, filterEventView.getViewName());
 //        cardLayout.show(cardPanel, modifyEventView.getViewName());
+
         // headless case
         if (GraphicsEnvironment.isHeadless()) {
             System.out.println("Headless environment detected, skipping GUI initialization");
@@ -212,7 +222,7 @@ public class AppBuilder {
         }
 
         // create main application window
-        final JFrame application = new JFrame("EventureUofT");
+        final JFrame application = new JFrame("EventHiveUofT");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // set the window to be maximized when the application starts
