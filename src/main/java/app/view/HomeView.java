@@ -147,6 +147,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             // Replace `latitude` and `longitude` with the appropriate accessors from your Event class
             double latitude = event.getLatitude();
             double longitude = event.getLongitude();
+            System.out.println(latitude);
+            System.out.println(longitude);
 
             // Create a waypoint for this event
             waypoints.add(new DefaultWaypoint(new GeoPosition(latitude, longitude)));
