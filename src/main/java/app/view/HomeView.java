@@ -7,11 +7,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
+import app.entity.Event.CommonEvent;
 // Import applications specific classes for map functionality and JXMapViewer
+import app.interface_adapter.display_event.DisplayEventController;
 import app.interface_adapter.home.HomeViewModel;
+import app.use_case.display_event.DisplayEventInteractor;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.*;
 
@@ -21,7 +24,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     // View model required for managing logic for view
     private final HomeViewModel homeViewModel;
+    private final DisplayEventController displayEventController;
+
     private JPanel parentPanel;
+
+    // list of events
+    private ArrayList<CommonEvent> events;
 
     // Buttons for zooming in, out, logging out, and creating an event
     private final JButton zoomInButton;
@@ -40,8 +48,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * swing components, and map components.
      * @param homeViewModel .
      * */
-    public HomeView(HomeViewModel homeViewModel) {
+    public HomeView(HomeViewModel homeViewModel, DisplayEventController displayEventController) {
         this.homeViewModel = homeViewModel;
+        this.displayEventController = displayEventController;
+        this.events = displayEventController.execute();
         // Add view as listener
         this.homeViewModel.addPropertyChangeListener(this);
 
@@ -125,20 +135,36 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         // Get campus coordinates for UofT and store it as a GeoPosition
         GeoPosition uoftCampus = new GeoPosition(43.6629, -79.3957);
 
-        // Set the map's default zoom in level
+        // Set the map's default zoom level
         mapViewer.setZoom(1);
 
         // Set the map's default location to be the UofT campus
         mapViewer.setAddressLocation(uoftCampus);
 
-        // Add a marker right on top of the UofT campus to test markers
-        addMarkerToMap(mapViewer, uoftCampus);
+        // Add markers to the map
+        Set<DefaultWaypoint> waypoints = new HashSet<>();
+        for (CommonEvent event : events) {
+            // Replace `latitude` and `longitude` with the appropriate accessors from your Event class
+            double latitude = event.getLatitude();
+            double longitude = event.getLongitude();
+
+            // Create a waypoint for this event
+            waypoints.add(new DefaultWaypoint(new GeoPosition(latitude, longitude)));
+        }
+
+        // Create a WaypointPainter for rendering the markers
+        WaypointPainter<DefaultWaypoint> waypointPainter = new WaypointPainter<>();
+        waypointPainter.setWaypoints(waypoints);
+
+        // Add the painter to the map
+        mapViewer.setOverlayPainter(waypointPainter);
 
         // Enable dragging functionality for the map
         setupDragFunctionality(mapViewer);
 
         return mapViewer;
     }
+
 
     /**
      * Add a marker to the map at a specific location

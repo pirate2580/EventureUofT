@@ -27,6 +27,12 @@ public class CommonEventFactory implements EventFactory {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity must be greater than zero.");
         }
+        if (latitude < -80 || latitude > -79){
+            throw new IllegalArgumentException("Latitude must be between -79 and -80 (inclusive");
+        }
+        if (longitude < 43 || longitude > 44){
+            throw new IllegalArgumentException("Longitude must be between 43 and 44 (inclusive");
+        }
         if (tags == null) {
             tags = List.of(); // Default to empty list if null
         }

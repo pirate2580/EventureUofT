@@ -9,12 +9,32 @@ import java.util.List;
  * Implementation of the Event interface
  */
 public class CommonEvent implements Event {
-    private String eventId, organizer, title, description, dateTime;
-    private List<app.entity.User.User> attendeesIdList;
+    private String eventId;
+    private String organizer;
+    private String title;
+    private String description;
+    private String dateTime;
+    private List<User> attendeesIdList;
     private int capacity;
-    private float latitude, longitude;
+    private float latitude;
+    private float longitude;
     private List<String> tags;
 
+    // No-argument constructor (required by Firestore)
+    public CommonEvent() {
+        this.eventId = "";
+        this.organizer = "";
+        this.title = "";
+        this.description = "";
+        this.dateTime = "";
+        this.capacity = 0;
+        this.latitude = 0.0f;
+        this.longitude = 0.0f;
+        this.tags = new ArrayList<>();
+        this.attendeesIdList = new ArrayList<>();
+    }
+
+    // All-argument constructor
     public CommonEvent(String eventId, String organizer, String title, String description, String dateTime,
                        int capacity, float latitude, float longitude, List<String> tags) {
         this.eventId = eventId;
@@ -29,121 +49,83 @@ public class CommonEvent implements Event {
         this.attendeesIdList = new ArrayList<>();
     }
 
-    /**
-     * Returns the eventId
-     * @return the eventId
-     */
     @Override
     public String getEventId() {
         return eventId;
     }
 
-    /**
-     * Returns the event organizer
-     * @return event organizer
-     */
     @Override
     public String getOrganizer() {
         return organizer;
     }
 
-    /**
-     * Returns the title of the event
-     * @return the title
-     */
     @Override
     public String getTitle() {
         return title;
     }
 
-    /**
-     * Returns the description of the event
-     * @return the description
-     */
     @Override
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Returns the date and time of the event
-     * @return the data and time as a string
-     */
     @Override
     public String getDateTime() {
         return dateTime;
     }
 
-    /**
-     * Return the list of attendees in the list
-     * @return the id of the attendees
-     */
     @Override
     public List<User> getAttendeesIdList() {
         return attendeesIdList;
     }
 
-    /**
-     * Return the capacity of the event
-     * @return the capacity
-     */
     @Override
     public int getCapacity() {
         return capacity;
     }
 
-    /**
-     * Return the latitude of the event
-     * @return the latitude
-     */
     @Override
     public float getLatitude() {
         return latitude;
     }
 
-    /**
-     * Return the longitude of the event
-     * @return the longitude
-     */
     @Override
     public float getLongitude() {
         return longitude;
     }
 
-    /**
-     * Return the list of strings associated with the event
-     * @return the list of tags
-     */
     @Override
     public List<String> getTags() {
         return tags;
     }
 
-
+    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 
+    @Override
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    @Override
     public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
+    @Override
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
-
-
-
 }
