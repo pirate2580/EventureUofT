@@ -25,7 +25,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     private final JButton createEventButton;
     private final JButton homeButton;
     private CreateEventController createEventController;
-    private JPanel parentPanel;
 
     public CreateEventView(CreateEventViewModel createEventViewModel, CreateEventController controller) {
         this.createEventViewModel = createEventViewModel;

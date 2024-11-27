@@ -23,7 +23,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
     private final JPasswordField passwordInputField;
     private final JButton signupButton;
     private final JButton loginButton;
-    private JPanel parentPanel;
     private RegisterController registerController;
 
     public RegisterView(RegisterViewModel registerViewModel) {

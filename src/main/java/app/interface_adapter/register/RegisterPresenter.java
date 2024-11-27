@@ -6,11 +6,6 @@ import app.use_case.register.RegisterOutputBoundary;
 import app.interface_adapter.ViewManagerModel;
 
 import app.use_case.register.RegisterOutputData;
-import app.interface_adapter.create_event.CreateEventViewModel;
-
-
-// import main.java.java.interface_adapter.login.LoginState;
-// import main.java.java.interface_adapter.login.LoginViewModel
 
 /**
  * The Presenter for the register Use Case

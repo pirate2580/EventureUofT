@@ -29,9 +29,10 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 
 //    private final JTextField locationTextField;
     private final JButton submitFilterButton;
+    private final JPanel eventsPanel; // Panel to hold events dynamically
 
-    private final JList<String> filteredEventsInfo;
-    private final JScrollPane filteredEventsScrollPane;
+//    private final JList<String> filteredEventsInfo;
+//    private final JScrollPane filteredEventsScrollPane;
 
     private FilterEventController filterEventController;
 
@@ -72,12 +73,18 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         add(checkboxPanel, BorderLayout.WEST);
 
         // Create a list for filtered events
-        filteredEventsInfo = new JList<>(new DefaultListModel<>());
-        filteredEventsScrollPane = new JScrollPane(filteredEventsInfo);
-        filteredEventsScrollPane.setBorder(new LineBorder(Color.GRAY, 1, true));
-
-        // Add the scroll pane containing the list to the CENTER
-        add(filteredEventsScrollPane, BorderLayout.CENTER);
+//        filteredEventsInfo = new JList<>(new DefaultListModel<>());
+//        filteredEventsScrollPane = new JScrollPane(filteredEventsInfo);
+//        filteredEventsScrollPane.setBorder(new LineBorder(Color.GRAY, 1, true));
+//
+//        // Add the scroll pane containing the list to the CENTER
+//        add(filteredEventsScrollPane, BorderLayout.CENTER);
+        // Create a scrollable panel for events
+        eventsPanel = new JPanel();
+        eventsPanel.setLayout(new BoxLayout(eventsPanel, BoxLayout.Y_AXIS));
+        JScrollPane eventsScrollPane = new JScrollPane(eventsPanel);
+        eventsScrollPane.setBorder(new LineBorder(Color.GRAY, 1, true));
+        add(eventsScrollPane, BorderLayout.CENTER);
 
         // Create a submit button
         submitFilterButton = new JButton("Filter Events");
@@ -108,23 +115,68 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         }
     }
 
+//    @Override
+//    public void propertyChange(PropertyChangeEvent evt) {
+//        FilterEventState state = (FilterEventState) evt.getNewValue();
+//        List<Event> events = state.getFilteredEvents();
+//
+//        DefaultListModel<String> listModel = new DefaultListModel<>();
+//        for (Event event : events) {
+//            listModel.addElement("Title: " + event.getTitle());
+//            listModel.addElement("Organizer: " + event.getOrganizer());
+//            listModel.addElement("Description: " + event.getDescription());
+//            listModel.addElement("Date & Time: " + event.getDateTime());
+//            listModel.addElement("Capacity: " + event.getCapacity());
+//            listModel.addElement("Tags: " + String.join(", ", event.getTags()));
+//            listModel.addElement("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"); // Separator line
+//        }
+//
+//        filteredEventsInfo.setModel(listModel);
+//    }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         FilterEventState state = (FilterEventState) evt.getNewValue();
         List<Event> events = state.getFilteredEvents();
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+        // Clear the events panel
+        eventsPanel.removeAll();
+
+        // Add each event to the panel
         for (Event event : events) {
-            listModel.addElement("Title: " + event.getTitle());
-            listModel.addElement("Organizer: " + event.getOrganizer());
-            listModel.addElement("Description: " + event.getDescription());
-            listModel.addElement("Date & Time: " + event.getDateTime());
-            listModel.addElement("Capacity: " + event.getCapacity());
-            listModel.addElement("Tags: " + String.join(", ", event.getTags()));
-            listModel.addElement("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"); // Separator line
+            JPanel eventPanel = new JPanel();
+            eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
+            eventPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+            JLabel titleLabel = new JLabel("Title: " + event.getTitle());
+            JLabel organizerLabel = new JLabel("Organizer: " + event.getOrganizer());
+            JLabel descriptionLabel = new JLabel("Description: " + event.getDescription());
+            JLabel dateTimeLabel = new JLabel("Date & Time: " + event.getDateTime());
+            JLabel capacityLabel = new JLabel("Capacity: " + event.getCapacity());
+            JLabel tagsLabel = new JLabel("Tags: " + String.join(", ", event.getTags()));
+
+            JButton viewEventButton = new JButton("View Event");
+            viewEventButton.addActionListener(e -> viewEvent(event));
+
+            eventPanel.add(titleLabel);
+            eventPanel.add(organizerLabel);
+            eventPanel.add(descriptionLabel);
+            eventPanel.add(dateTimeLabel);
+            eventPanel.add(capacityLabel);
+            eventPanel.add(tagsLabel);
+            eventPanel.add(viewEventButton);
+            eventPanel.setBorder(new LineBorder(Color.GRAY));
+
+            eventsPanel.add(eventPanel);
         }
 
-        filteredEventsInfo.setModel(listModel);
+        // Refresh the events panel
+        eventsPanel.revalidate();
+        eventsPanel.repaint();
+    }
+
+    private void viewEvent(Event event) {
+        // TODO: Handle logic to display event details (navigate to ViewEventView or show in a dialog)
+        System.out.println("Viewing event: " + event.getTitle());
     }
 
 
