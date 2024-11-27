@@ -326,7 +326,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         homeController.switchToLoginView();
     }
 
-    private void handleFilterAction() {homeController.switchToFilterEventView(); }
+    private void handleFilterAction() {
+//        System.out.println("filter button test");
+        homeController.switchToFilterEventView();
+    }
 
     /**
      * Function to navigate from this screen to a different screen

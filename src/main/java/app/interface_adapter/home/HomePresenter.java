@@ -46,6 +46,7 @@ public class HomePresenter implements HomeOutputBoundary {
     @Override
     public void switchToFilterEventView() {
         viewManagerModel.setState(filterEventViewModel.getViewName());
+        System.out.println(filterEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 

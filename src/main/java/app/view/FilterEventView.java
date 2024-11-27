@@ -15,7 +15,7 @@ import app.interface_adapter.filter_event.FilterEventState;
 import app.interface_adapter.filter_event.FilterEventViewModel;
 
 public class FilterEventView extends JPanel implements PropertyChangeListener {
-    private static final String VIEW_NAME = "filterEvents";
+    private static final String VIEW_NAME = "filterEvent";
 
     private final FilterEventViewModel filterEventViewModel;
     private final JCheckBox musicCheckbox;

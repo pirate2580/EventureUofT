@@ -119,9 +119,6 @@ public class AppBuilder {
         this.registerViewModel = new RegisterViewModel();
         this.registerView = new RegisterView(registerViewModel);
 
-//         set the parent panel for navigation purposes (cardPanel contains all views in the card layout)
-//        registerView.setParentPanel(cardPanel);
-
         cardPanel.add(registerView, registerView.getViewName());
         return this;
     }
