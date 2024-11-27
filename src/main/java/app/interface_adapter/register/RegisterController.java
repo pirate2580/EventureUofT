@@ -35,10 +35,10 @@ public class RegisterController {
         this.userRegisterUseCaseInteractor.execute(registerInputData);
     }
 
-//    /**
-//     * Execute the switch to LoginView Use case
-//     */
-//    public void switchToLoginView(){
-//        this.userRegisterUseCaseInteractor.switchToLoginView();
-//    }
+    /**
+     * Execute the switch to LoginView Use case
+     */
+    public void switchToLoginView(){
+        this.userRegisterUseCaseInteractor.switchToLoginView();
+    }
 }
