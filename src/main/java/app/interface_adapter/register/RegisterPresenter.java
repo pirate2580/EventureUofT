@@ -46,7 +46,9 @@ public class RegisterPresenter implements RegisterOutputBoundary {
 
     @Override
     public void switchToLoginView() {
+//        System.out.println(loginViewModel.getViewName());
         viewManagerModel.setState(loginViewModel.getViewName());
+
         viewManagerModel.firePropertyChanged();
     }
 }

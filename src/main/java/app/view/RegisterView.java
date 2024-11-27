@@ -198,6 +198,7 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
     private void handleLoginAction() {
 //        navigateTo("login");
+        System.out.println("navigating to login");
         registerController.switchToLoginView();
     }
 

@@ -21,8 +21,14 @@ public class ViewEventPresenter implements ViewEventOutputBoundary {
     @Override
     public void prepareSuccessView(ViewEventOutputData outputData) {
         final ViewEventState viewEventState = viewEventViewModel.getState();
+//        System.out.println("I'm Mr. Krabs, I like money");
+        viewManagerModel.setState(viewEventViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+
         viewEventState.setViewEvent(outputData.getEvent());
         this.viewEventViewModel.setState(viewEventState);
+
+        System.out.println("Current state in ViewManagerModel: " + viewManagerModel.getState());
         viewEventViewModel.firePropertyChanged();
     }
 

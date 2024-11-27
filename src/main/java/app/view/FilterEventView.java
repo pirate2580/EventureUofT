@@ -13,6 +13,7 @@ import app.entity.Event.Event;
 import app.interface_adapter.filter_event.FilterEventController;
 import app.interface_adapter.filter_event.FilterEventState;
 import app.interface_adapter.filter_event.FilterEventViewModel;
+import app.interface_adapter.view_event.ViewEventController;
 
 public class FilterEventView extends JPanel implements PropertyChangeListener {
     private static final String VIEW_NAME = "filterEvent";
@@ -35,6 +36,7 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 //    private final JScrollPane filteredEventsScrollPane;
 
     private FilterEventController filterEventController;
+    private ViewEventController viewEventController;
 
     public FilterEventView(FilterEventViewModel filterEventViewModel) {
         this.filterEventViewModel = filterEventViewModel;
@@ -115,24 +117,6 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         }
     }
 
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//        FilterEventState state = (FilterEventState) evt.getNewValue();
-//        List<Event> events = state.getFilteredEvents();
-//
-//        DefaultListModel<String> listModel = new DefaultListModel<>();
-//        for (Event event : events) {
-//            listModel.addElement("Title: " + event.getTitle());
-//            listModel.addElement("Organizer: " + event.getOrganizer());
-//            listModel.addElement("Description: " + event.getDescription());
-//            listModel.addElement("Date & Time: " + event.getDateTime());
-//            listModel.addElement("Capacity: " + event.getCapacity());
-//            listModel.addElement("Tags: " + String.join(", ", event.getTags()));
-//            listModel.addElement("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"); // Separator line
-//        }
-//
-//        filteredEventsInfo.setModel(listModel);
-//    }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         FilterEventState state = (FilterEventState) evt.getNewValue();
@@ -175,11 +159,9 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
     }
 
     private void viewEvent(Event event) {
-        // TODO: Handle logic to display event details (navigate to ViewEventView or show in a dialog)
-        System.out.println("Viewing event: " + event.getTitle());
+//        System.out.println(event.getTitle());
+        viewEventController.execute(event.getTitle());
     }
-
-
 
     public String getViewName() {
         return VIEW_NAME;
@@ -187,5 +169,9 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 
     public void setFilterEventsController(FilterEventController controller) {
         this.filterEventController = controller;
+    }
+
+    public void setViewEventController(ViewEventController controller) {
+        this.viewEventController = controller;
     }
 }

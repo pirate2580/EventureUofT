@@ -108,7 +108,7 @@ public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAc
                 // Create and return a User object
                 UserFactory userFactory = new CommonUserFactory();
                 User user = userFactory.create(username, email, password);
-                System.out.println("Hello this is Naoroj yo, I'm skyler white yo");
+//                System.out.println("Hello this is Naoroj yo, I'm skyler white yo");
                 return user;
             } else {
                 return null;
