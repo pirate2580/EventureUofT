@@ -124,38 +124,40 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 
         // Clear the events panel
         eventsPanel.removeAll();
+        if (events != null){
+            // Add each event to the panel
+            for (Event event : events) {
+                JPanel eventPanel = new JPanel();
+                eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
+                eventPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Add each event to the panel
-        for (Event event : events) {
-            JPanel eventPanel = new JPanel();
-            eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
-            eventPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                JLabel titleLabel = new JLabel("Title: " + event.getTitle());
+                JLabel organizerLabel = new JLabel("Organizer: " + event.getOrganizer());
+                JLabel descriptionLabel = new JLabel("Description: " + event.getDescription());
+                JLabel dateTimeLabel = new JLabel("Date & Time: " + event.getDateTime());
+                JLabel capacityLabel = new JLabel("Capacity: " + event.getCapacity());
+                JLabel tagsLabel = new JLabel("Tags: " + String.join(", ", event.getTags()));
 
-            JLabel titleLabel = new JLabel("Title: " + event.getTitle());
-            JLabel organizerLabel = new JLabel("Organizer: " + event.getOrganizer());
-            JLabel descriptionLabel = new JLabel("Description: " + event.getDescription());
-            JLabel dateTimeLabel = new JLabel("Date & Time: " + event.getDateTime());
-            JLabel capacityLabel = new JLabel("Capacity: " + event.getCapacity());
-            JLabel tagsLabel = new JLabel("Tags: " + String.join(", ", event.getTags()));
+                JButton viewEventButton = new JButton("View Event");
+                viewEventButton.addActionListener(e -> viewEvent(event));
 
-            JButton viewEventButton = new JButton("View Event");
-            viewEventButton.addActionListener(e -> viewEvent(event));
+                eventPanel.add(titleLabel);
+                eventPanel.add(organizerLabel);
+                eventPanel.add(descriptionLabel);
+                eventPanel.add(dateTimeLabel);
+                eventPanel.add(capacityLabel);
+                eventPanel.add(tagsLabel);
+                eventPanel.add(viewEventButton);
+                eventPanel.setBorder(new LineBorder(Color.GRAY));
 
-            eventPanel.add(titleLabel);
-            eventPanel.add(organizerLabel);
-            eventPanel.add(descriptionLabel);
-            eventPanel.add(dateTimeLabel);
-            eventPanel.add(capacityLabel);
-            eventPanel.add(tagsLabel);
-            eventPanel.add(viewEventButton);
-            eventPanel.setBorder(new LineBorder(Color.GRAY));
-
-            eventsPanel.add(eventPanel);
+                eventsPanel.add(eventPanel);
+                // Refresh the events panel
+                eventsPanel.revalidate();
+                eventsPanel.repaint();
+            }
         }
 
-        // Refresh the events panel
-        eventsPanel.revalidate();
-        eventsPanel.repaint();
+
     }
 
     private void viewEvent(Event event) {

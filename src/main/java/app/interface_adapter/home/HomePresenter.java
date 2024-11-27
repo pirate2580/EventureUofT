@@ -1,8 +1,11 @@
 package app.interface_adapter.home;
 
 import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.create_event.CreateEventState;
 import app.interface_adapter.create_event.CreateEventViewModel;
+import app.interface_adapter.filter_event.FilterEventState;
 import app.interface_adapter.filter_event.FilterEventViewModel;
+import app.interface_adapter.login.LoginState;
 import app.interface_adapter.login.LoginViewModel;
 import app.use_case.home.HomeOutputBoundary;
 
@@ -33,6 +36,10 @@ public class HomePresenter implements HomeOutputBoundary {
 
     @Override
     public void switchToCreateEventView() {
+        final CreateEventState createEventState = createEventViewModel.getState();
+        final LoginState loginState = loginViewModel.getState();
+        createEventState.setUsernameState(loginState.getUsername());
+        this.createEventViewModel.firePropertyChanged();
         viewManagerModel.setState(createEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
@@ -45,6 +52,10 @@ public class HomePresenter implements HomeOutputBoundary {
 
     @Override
     public void switchToFilterEventView() {
+        final FilterEventState filterEventState = filterEventViewModel.getState();
+        final LoginState loginState = loginViewModel.getState();
+        filterEventState.setUsernameState(loginState.getUsername());
+        this.filterEventViewModel.firePropertyChanged();
         viewManagerModel.setState(filterEventViewModel.getViewName());
         System.out.println(filterEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();

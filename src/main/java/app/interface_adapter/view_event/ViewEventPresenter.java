@@ -1,6 +1,7 @@
 package app.interface_adapter.view_event;
 
 import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.home.HomeState;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.view_event.ViewEventOutputBoundary;
 import app.use_case.view_event.ViewEventOutputData;
@@ -21,14 +22,18 @@ public class ViewEventPresenter implements ViewEventOutputBoundary {
     @Override
     public void prepareSuccessView(ViewEventOutputData outputData) {
         final ViewEventState viewEventState = viewEventViewModel.getState();
-//        System.out.println("I'm Mr. Krabs, I like money");
+        final HomeState homeState = homeViewModel.getState();
+        viewEventState.setUsernameState(homeState.getUsernameState());
+        this.viewEventViewModel.firePropertyChanged();;
+
         viewManagerModel.setState(viewEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
 
+//        System.out.println("sigma patrick bateman clown");
+//        System.out.println(viewEventState.getUsernameState());
+
         viewEventState.setViewEvent(outputData.getEvent());
         this.viewEventViewModel.setState(viewEventState);
-
-        System.out.println("Current state in ViewManagerModel: " + viewManagerModel.getState());
         viewEventViewModel.firePropertyChanged();
     }
 
@@ -39,6 +44,7 @@ public class ViewEventPresenter implements ViewEventOutputBoundary {
 
     @Override
     public void switchToHomeView(){
+
         viewManagerModel.setState(homeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

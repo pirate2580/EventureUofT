@@ -66,35 +66,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         return VIEW_NAME; // return string instead of object
     }
 
-    public void setParentPanel(JPanel parentPanel) {
-        this.parentPanel = parentPanel;
-    }
-
-    // TODO: Move this function to an outer layer like a controller
-    public void navigateTo(String viewName) {
-        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
-            // debugging:
-            System.out.println("Navigating to: " + viewName);
-
-            // debugging:
-            Component[] components = parentPanel.getComponents();
-            System.out.println("Components in cardPanel:");
-            for (Component component : components) {
-                System.out.println("Component: " + component.getClass().getName());
-                System.out.println("Component name: " + component.getName());
-            }
-            // update screen
-            CardLayout layout = (CardLayout) parentPanel.getLayout();
-            layout.show(parentPanel, viewName);
-
-            // force updates
-            parentPanel.revalidate();
-            parentPanel.repaint();
-        } else {
-            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
-        }
-    }
-
 
 
 
@@ -216,15 +187,16 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         if ("username".equals(fieldType)) {
             currentState.setUsername(usernameInputField.getText());
         } else if ("password".equals(fieldType)) {
-            currentState.setPassword(new String(passwordInputField.getPassword()));
+            currentState.setPassword(new String(passwordInputField.getPassword())); // change here is needed to fix bug where it won't log in properly ifwrong first time
         }
         loginViewModel.setState(currentState);
+        System.out.println(loginViewModel.getState().getUsername());
+        System.out.println(loginViewModel.getState().getPassword());
     }
 
     // go to signup screen if user wants to register instead
     private void handleSignupAction() {
-//        navigateTo("register");
-
+//        loginController.
     }
 
     // go to the home screen once logged in
@@ -233,7 +205,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 //        navigateTo("Home");
         LoginState currentState = loginViewModel.getState();
         loginController.execute(currentState.getUsername(), currentState.getPassword());
-
     }
 
     @Override
@@ -244,7 +215,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    // TODO: Find way to use this? idk
     public void setLoginController(LoginController loginController){
         this.loginController = loginController;
     }

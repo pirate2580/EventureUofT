@@ -10,8 +10,6 @@ public class HomeInteractor implements HomeInputBoundary{
 
     @Override
     public void execute() {
-//        homePresenter.presentSuccessView();
-//        home
     }
 
     @Override

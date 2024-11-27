@@ -24,17 +24,11 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareSuccessView(LoginOutputData response, String s) {
-        // TODO: implement switch to another view
-//        final LoggedInState loggedInState = loggedInViewModel.getState();
-//        loggedInState.setUsername(response.getUsername());
-//        this.loggedInViewModel.setState(loggedInState);
-//        this.loggedInViewModel.firePropertyChanged();
-//
-//        this.viewManagerModel.setState(loggedInViewModel.getViewName());
-//        this.viewManagerModel.firePropertyChanged();
-//        final HomeState homeState
+
+        final HomeState homeState = homeViewModel.getState();
+        final LoginState loginState = loginViewModel.getState();
+        homeState.setUsernameState(loginState.getUsername());
         this.homeViewModel.firePropertyChanged();
-//        System.out.println("I love watching videos of fortnite");
         this.viewManagerModel.setState(homeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
@@ -42,8 +36,9 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareFailView(String errorMessage) {
+//        System.out.println("login error, not skibidi");
         final LoginState loginState = loginViewModel.getState();
-        loginState.setUsername(errorMessage);                      // error occurs when username or password wrong
+        loginState.setUsernameError(errorMessage);
         loginViewModel.firePropertyChanged();
     }
 }
