@@ -2,6 +2,7 @@ package app.interface_adapter.login;
 
 import app.interface_adapter.home.HomeState;
 import app.interface_adapter.home.HomeViewModel;
+import app.interface_adapter.register.RegisterViewModel;
 import app.use_case.login.LoginInputBoundary;
 import app.interface_adapter.ViewManagerModel;
 
@@ -10,15 +11,18 @@ import app.use_case.login.LoginOutputData;
 
 
 public class LoginPresenter implements LoginOutputBoundary {
-    private final LoginViewModel loginViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final LoginViewModel loginViewModel;
     private final HomeViewModel homeViewModel;
+    private final RegisterViewModel registerViewModel;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
                           LoginViewModel loginViewModel,
+                            RegisterViewModel registerViewModel,
                           HomeViewModel homeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loginViewModel = loginViewModel;
+        this.registerViewModel = registerViewModel;
         this.homeViewModel = homeViewModel;
     }
 
@@ -40,5 +44,11 @@ public class LoginPresenter implements LoginOutputBoundary {
         final LoginState loginState = loginViewModel.getState();
         loginState.setUsernameError(errorMessage);
         loginViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToRegisterView() {
+        viewManagerModel.setState(registerViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }
