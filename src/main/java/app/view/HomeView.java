@@ -9,7 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-import app.entity.Event.CommonEvent;
+//import app.entity.Event.CommonEvent;
 
 // Import applications specific classes for map functionality and JXMapViewer
 import app.interface_adapter.display_event.DisplayEventController;
@@ -34,7 +34,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     private HomeController homeController;
     // list of events
-    private ArrayList<CommonEvent> events;
+    private ArrayList<ArrayList<Object>> events;
 
     // Buttons for zooming in, out, logging out, and creating an event
     private final JButton zoomInButton;
@@ -155,13 +155,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         Set<DefaultWaypoint> waypoints = new HashSet<>();
         Map<DefaultWaypoint, Color> waypointColors = new HashMap<>();
         Map<DefaultWaypoint, String> waypointTitles = new HashMap<>();
-        for (CommonEvent event : events) {
+
+        for (ArrayList<Object> event : events) {
             Color colour = Color.CYAN;
-            double latitude = event.getLatitude();
-            double longitude = event.getLongitude();
-            String title = event.getTitle();
+            float latitude = (float) event.get(2);
+            float longitude = (float) event.get(3);
+            String title = (String) event.get(1);
             // Had to cast to arraylist bc for some reason list<string> doesn't work
-            ArrayList<String> tags = (ArrayList<String>) event.getTags();
+            ArrayList<String> tags = (ArrayList<String>) event.get(4);
             // Colour code events based off of tags
             for (String tag : tags) {
                 switch (tag) {
