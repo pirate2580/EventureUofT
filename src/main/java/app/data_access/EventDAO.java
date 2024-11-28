@@ -266,17 +266,26 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
     public void addUserToRSVPList(String username, String eventId) {
         try {
             // Reference to the event document
-            DocumentReference docRef = eventCollection.document(eventId);
+            DocumentReference eventDocRef = eventCollection.document(eventId);
 
-            // Use arrayUnion to add the username to the rsvpList array
-            ApiFuture<WriteResult> writeResult = docRef.update("rsvpList", com.google.cloud.firestore.FieldValue.arrayUnion(username));
+            // Add the username to the RSVP list in the event document
+            ApiFuture<WriteResult> eventWriteResult = eventDocRef.update("rsvpList", com.google.cloud.firestore.FieldValue.arrayUnion(username));
+            eventWriteResult.get(); // Wait for operation to complete
 
-            // Wait for the operation to complete
-            WriteResult result = writeResult.get();
+            System.out.println("User " + username + " added to RSVP list for event: " + eventId);
 
-            System.out.println("User " + username + " added to RSVP list for event: " + eventId + " at " + result.getUpdateTime());
+            // Reference to the user document in the "Users" collection
+            CollectionReference userCollection = db.collection("Users");
+            DocumentReference userDocRef = userCollection.document(username);
+
+            // Add the event ID to the RSVPEvents array in the user document
+            ApiFuture<WriteResult> userWriteResult = userDocRef.update("RSVPEvents", com.google.cloud.firestore.FieldValue.arrayUnion(eventId));
+            userWriteResult.get(); // Wait for operation to complete
+
+            System.out.println("Event " + eventId + " added to RSVPEvents list for user: " + username);
+
         } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error adding user to RSVP list: " + e.getMessage());
+            System.err.println("Error adding user to RSVP list and updating RSVPEvents: " + e.getMessage());
         }
     }
 }
