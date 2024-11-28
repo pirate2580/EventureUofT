@@ -78,7 +78,6 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
     /**
      * Function to retrieve all the events
      * */
-    @Override
     public ArrayList<CommonEvent> loadEvents() {
         try {
             // Asynchronously retrieve the documents
@@ -106,6 +105,37 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
+    public ArrayList<ArrayList<Object>> eventDetails() {
+        try {
+            // Asynchronously retrieve the documents
+            ApiFuture<QuerySnapshot> future = eventCollection.get();
+
+            // Block on response to get the document snapshot
+            QuerySnapshot document = future.get();
+
+            // Prepare a list to hold the events
+            ArrayList<ArrayList<Object>> events = new ArrayList<>();
+
+            // Iterate over the events in the collection
+            for (QueryDocumentSnapshot doc : document.getDocuments()) {
+                ArrayList<Object> details = new ArrayList<>();
+                // Convert Firestore document into a CommonEvent object
+                CommonEvent event = doc.toObject(CommonEvent.class);
+                details.add(event.getEventId()); // Add it to the list
+                details.add(event.getTitle());
+                details.add(event.getLatitude());
+                details.add(event.getLongitude());
+                details.add(event.getTags());
+                events.add(details);
+
+            }
+            return events;
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error loading events from Firestore: " + e.getMessage());
+            return new ArrayList<>(); // Return an empty list in case of error
+        }
+    }
 
     @Override
     public List<Event> findEvents(List<String> tags) {

@@ -9,14 +9,14 @@ import app.entity.Event.Event;
 
 public class DisplayEventState {
 
-    private ArrayList<CommonEvent> events;
+    private ArrayList<ArrayList<Object>> events;
     private String usernameState;
 
     private String getUsernameState() {return usernameState;}
 
     private void setUsernameState(String usernameState) { this.usernameState = usernameState;}
 
-    public void setEvents(ArrayList<CommonEvent> events) {
+    public void setEvents(ArrayList<ArrayList<Object>> events) {
         this.events = events;
     }
 
@@ -24,7 +24,7 @@ public class DisplayEventState {
      * Retrieves all events.
      * @return List of events.
      */
-    public ArrayList<CommonEvent> getEvents() {
+    public ArrayList<ArrayList<Object>> getEvents() {
         return this.events;
     }
 

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayEventOutputData {
-    private final ArrayList<CommonEvent> events;
+    private final ArrayList<ArrayList<Object>> events;
 
-    public DisplayEventOutputData(ArrayList<CommonEvent> events) {
+    public DisplayEventOutputData(ArrayList<ArrayList<Object>> events) {
         this.events = events;
     }
 
-    public ArrayList<CommonEvent> getEvents() {return events;}
+    public ArrayList<ArrayList<Object>> getEvents() {return events;}
 }
