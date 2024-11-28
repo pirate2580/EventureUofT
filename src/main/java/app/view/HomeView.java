@@ -9,31 +9,31 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-//import app.entity.Event.CommonEvent;
-
 // Import applications specific classes for map functionality and JXMapViewer
+
 import app.interface_adapter.display_event.DisplayEventController;
 import app.interface_adapter.home.HomeController;
 import app.interface_adapter.home.HomeViewModel;
-import app.use_case.display_event.DisplayEventInteractor;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.*;
 import java.awt.geom.Point2D;
-
-import static java.lang.Math.pow;
+import app.interface_adapter.view_event.ViewEventController;
 
 public class HomeView extends JPanel implements PropertyChangeListener {
+
     // Constant for the view name for navigation purposes
     private static final String VIEW_NAME = "Home";
 
     // View model required for managing logic for view
     private final HomeViewModel homeViewModel;
     private final DisplayEventController displayEventController;
+    private ViewEventController viewEventController;
 
     private JPanel parentPanel;
 
     private HomeController homeController;
-    // list of events
+
+    // List of events
     private ArrayList<ArrayList<Object>> events;
 
     // Buttons for zooming in, out, logging out, and creating an event
@@ -103,7 +103,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         sidebar.add(createEventButton);
         sidebar.add(filterButton);
 
-        // set the sidebar to be at the screen's left
+        // Set the sidebar to be at the screen's left
         add(sidebar, BorderLayout.WEST);
 
         // Create zoom panel using the same logic as above
@@ -120,15 +120,49 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     }
 
     /**
+     * Because there are no features for clicking waypoints, this function
+     * is intended to take the distance between two geopositions on our map, using the
+     * Haversine formula, which is a formula commonly used for finding the distance between
+     * two points on a sphere (cool new knowledge gained!)
+     * @param pos1, the first location on the map
+     * @param pos2, the second location on the map.
+     * */
+    private double calculateDistance(GeoPosition pos1, GeoPosition pos2) {
+        // Use earth's radius in meters as a base
+        // TODO: Put this function in the controller or something? Not sure bc of GeoPosition
+        final double EARTH_RADIUS = 6371000;
+
+        // Do some math and convert the latitude and longitude from degrees to radians using built-in function
+        double lat1 = Math.toRadians(pos1.getLatitude());
+        double lon1 = Math.toRadians(pos1.getLongitude());
+        double lat2 = Math.toRadians(pos2.getLatitude());
+        double lon2 = Math.toRadians(pos2.getLongitude());
+
+        // Calculate distance between points
+        double deltaLat = lat2 - lat1;
+        double deltaLon = lon2 - lon1;
+
+        // Use super secret and special Haversine formula (too long to type out)
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        // Central angle calculation for Haversine's formula
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Return the distance between the points in meters
+        return EARTH_RADIUS * c;
+    }
+
+
+    /**
      * Create and set up the JXMapViewer and its
      * initial properties. Includes drawing all the waypoints
      * to the map.
      * */
     private JXMapViewer setupMapViewer() {
-        // Instantiate JXMapViewer
         JXMapViewer mapViewer = new JXMapViewer();
 
-        // Map information using tile factory to use OpenStreetMap's built-in tiles
         TileFactoryInfo info = new TileFactoryInfo(
                 1, 17, 17, 256, true, true,
                 "https://tile.openstreetmap.org/", "x", "y", "z") {
@@ -138,20 +172,13 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
         };
 
-        // Make a tile factory for the map viewer to use
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
 
-        // Get campus coordinates for UofT and store it as a GeoPosition
         GeoPosition uoftCampus = new GeoPosition(43.6629, -79.3957);
-
-        // Set the map's default zoom level
         mapViewer.setZoom(1);
-
-        // Set the map's default location to be the UofT campus
         mapViewer.setAddressLocation(uoftCampus);
 
-        // Add markers to the map
         Set<DefaultWaypoint> waypoints = new HashSet<>();
         Map<DefaultWaypoint, Color> waypointColors = new HashMap<>();
         Map<DefaultWaypoint, String> waypointTitles = new HashMap<>();
@@ -161,74 +188,79 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             float latitude = (float) event.get(2);
             float longitude = (float) event.get(3);
             String title = (String) event.get(1);
-            // Had to cast to arraylist bc for some reason list<string> doesn't work
             ArrayList<String> tags = (ArrayList<String>) event.get(4);
-            // Colour code events based off of tags
+
             for (String tag : tags) {
                 switch (tag) {
-                    case "Gaming":
-                        colour = Color.GREEN;
-                        break;
-                    case "Music":
-                        colour = Color.BLACK;
-                        break;
-                    case "Sports":
-                        colour = Color.CYAN;
-                        break;
-                    case "Art and Culture":
-                        colour = Color.ORANGE;
-                        break;
-                    case "Education":
-                        colour = Color.PINK;
-                        break;
-                    case "Travel":
-                        colour = Color.GRAY;
-                        break;
-                    case "Festival":
-                        colour = Color.YELLOW;
-                        break;
+                    case "Gaming": colour = Color.GREEN; break;
+                    case "Music": colour = Color.BLACK; break;
+                    case "Sports": colour = Color.CYAN; break;
+                    case "Art and Culture": colour = Color.ORANGE; break;
+                    case "Education": colour = Color.PINK; break;
+                    case "Travel": colour = Color.GRAY; break;
+                    case "Festival": colour = Color.YELLOW; break;
                 }
             }
-            // Create the new waypoint
             DefaultWaypoint waypoint = new DefaultWaypoint(new GeoPosition(latitude, longitude));
             waypoints.add(waypoint);
             waypointColors.put(waypoint, colour);
             waypointTitles.put(waypoint, title);
-
-            // Debugging Statements
-            System.out.println(latitude);
-            System.out.println(longitude);
         }
-        WaypointPainter<DefaultWaypoint> waypointPainter = new WaypointPainter<>();
 
-        // Create waypoint renderer
+        WaypointPainter<DefaultWaypoint> waypointPainter = new WaypointPainter<>();
         waypointPainter.setRenderer((g, map, waypoint) -> {
             Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-
-            // Get the color and title
             Color color = waypointColors.getOrDefault(waypoint, Color.BLACK);
             String title = waypointTitles.getOrDefault(waypoint, "");
 
-            // Draw a marker (circle)
             int radius = 6;
             g.setColor(color);
             g.fillOval((int) point.getX() - radius, (int) point.getY() - radius, 2 * radius, 2 * radius);
 
-            // Draw the title
             g.setColor(Color.BLACK);
             g.drawString(title, (int) point.getX() + radius + 2, (int) point.getY());
         });
 
-        // Set the waypoints and add the painter to the map
         waypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(waypointPainter);
 
-        // Enable dragging functionality for the map
+        mapViewer.addMouseListener(new MouseAdapter() {
+            /**
+             * Mouse listener to get extract geoposition, which is then compared against
+             * all events and the first geoposition within 15 meters of the user's mouse
+             * click will pop up.
+             * */
+            public void mouseClicked(MouseEvent e) {
+                GeoPosition clickedGeoPosition = mapViewer.convertPointToGeoPosition(e.getPoint());
+
+                // Check if the click is near a waypoint by looping through all waypoints...
+                // TODO: Check for a more efficient way??
+                for (DefaultWaypoint waypoint : waypoints) {
+                    GeoPosition wpPosition = waypoint.getPosition();
+                    double distance = calculateDistance(clickedGeoPosition, wpPosition);
+
+                    if (distance < (20 * mapViewer.getZoom())) { // Distance threshold in meters, adjusted by zoom level
+                        // Debbugging statement
+                        System.out.println(mapViewer.getZoom());
+                        String title = waypointTitles.get(waypoint);
+                        viewEvent(title);
+                    }
+                }
+            }
+        });
+
         setupDragFunctionality(mapViewer);
 
         return mapViewer;
     }
 
+    /**
+     * Open the event's info page after clicking on it
+     * @param title, the title of the event
+     * */
+    private void viewEvent(String title) {
+        viewEventController.execute(title);
+    }
     /**
      * Add dragging functionality to the map, so that when a user
      * drags the map the screen follows the cursor and centralizes
@@ -259,7 +291,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 } else if (mapViewer.getZoom() <= 9){
                     ZOOM_LEVEL = 0.001;
                 } else {
-                    ZOOM_LEVEL = 0.001 * mapViewer.getZoom();
+                    ZOOM_LEVEL = 0.005 * mapViewer.getZoom();
                 }
                 // If the user moved their mouse, track the distance
                 if (lastMousePosition[0] != null) {
@@ -288,6 +320,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             }
         });
     }
+
     /**
      * Function to zoom in on the map by
      * decreasing mapViewer's zoom level
@@ -386,6 +419,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     public void setHomeController(HomeController controller) {
         this.homeController = controller;
+    }
+
+    // TODO: Debug
+    public void setViewEventController(ViewEventController controller) {
+        this.viewEventController = controller;
     }
 
 }

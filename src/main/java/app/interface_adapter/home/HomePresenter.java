@@ -61,6 +61,4 @@ public class HomePresenter implements HomeOutputBoundary {
         viewManagerModel.firePropertyChanged();
     }
 
-
-
 }
