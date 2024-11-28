@@ -14,4 +14,8 @@ public class LoginController {
         final LoginInputData loginInputData = new LoginInputData(username, password);
         this.userLoginUseCaseInteractor.execute(loginInputData);
     }
+
+    public void switchToRegisterView() {
+        this.userLoginUseCaseInteractor.switchToRegisterView();
+    }
 }

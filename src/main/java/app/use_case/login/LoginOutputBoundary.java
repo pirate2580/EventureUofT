@@ -12,4 +12,6 @@ public interface LoginOutputBoundary {
      * @param errorMessage The explanation of the failure.
      */
     void prepareFailView(String errorMessage);
+
+    void switchToRegisterView();
 }

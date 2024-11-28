@@ -265,7 +265,7 @@ public class AppBuilder {
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new
                 LoginPresenter(viewManagerModel,
-                loginViewModel, homeViewModel);
+                loginViewModel, registerViewModel, homeViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDAO, loginOutputBoundary);
 
