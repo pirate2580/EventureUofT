@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface DisplayEventDataAccessInterface {
-    ArrayList<CommonEvent> loadEvents();
+    ArrayList<ArrayList<Object>> eventDetails();
     //extract database details
     // need to call event DAO
     // then pass it to the output boundary

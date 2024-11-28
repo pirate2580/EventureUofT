@@ -35,8 +35,8 @@ public class DisplayEventInteractor implements DisplayEventInputBoundary {
     }
 
     @Override
-    public ArrayList<CommonEvent> execute() {
-        ArrayList<CommonEvent> events = displayEventDataAccessObject.loadEvents();
+    public ArrayList<ArrayList<Object>> execute() {
+        ArrayList<ArrayList<Object>> events = displayEventDataAccessObject.eventDetails();
         DisplayEventOutputData outputData = new DisplayEventOutputData(events);
         displayEventPresenter.prepareSuccessView(outputData);
         return events;

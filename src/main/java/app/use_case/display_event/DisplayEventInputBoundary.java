@@ -13,7 +13,7 @@ public interface DisplayEventInputBoundary {
     /**
      * Execute the event creation use case.
      */
-    ArrayList<CommonEvent> execute();
+    ArrayList<ArrayList<Object>> execute();
 
     /**
      * Executes the switch to the login view use case once

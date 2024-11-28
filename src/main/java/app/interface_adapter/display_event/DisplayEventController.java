@@ -23,7 +23,7 @@ public class DisplayEventController {
     /**
      * Execute the create Event use Case
      */
-    public ArrayList<CommonEvent> execute() {
+    public ArrayList<ArrayList<Object>> execute() {
         return this.displayEventInteractor.execute();
     }
 
