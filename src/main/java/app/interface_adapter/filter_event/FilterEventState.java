@@ -11,6 +11,12 @@ import app.entity.Event.Event;  // TODO: i dont recall, does this break CA?
 public class FilterEventState {
     private List<Event> filteredEvents;
 
+    private String usernameState;
+
+    public String getUsernameState() {return usernameState;}
+
+    public void setUsernameState(String usernameState) { this.usernameState = usernameState;}
+
     public List<Event> getFilteredEvents() {
         return this.filteredEvents;
     }

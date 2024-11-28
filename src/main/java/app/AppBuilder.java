@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.text.View;
 
 import app.data_access.UserDAO;
 import app.data_access.EventDAO;
@@ -23,6 +24,10 @@ import app.interface_adapter.display_event.DisplayEventViewModel;
 import app.interface_adapter.filter_event.FilterEventController;
 import app.interface_adapter.filter_event.FilterEventPresenter;
 import app.interface_adapter.filter_event.FilterEventViewModel;
+import app.interface_adapter.home.HomeController;
+import app.interface_adapter.home.HomePresenter;
+import app.interface_adapter.login.LoginController;
+import app.interface_adapter.login.LoginPresenter;
 import app.interface_adapter.login.LoginViewModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.interface_adapter.modify_event.ModifyEventController;
@@ -31,19 +36,35 @@ import app.interface_adapter.modify_event.ModifyEventViewModel;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
+import app.interface_adapter.view_event.ViewEventController;
+import app.interface_adapter.view_event.ViewEventPresenter;
+import app.interface_adapter.view_event.ViewEventViewModel;
 import app.use_case.create_event.EventInputBoundary;
 import app.use_case.create_event.EventInteractor;
+import app.use_case.display_event.DisplayEventInputBoundary;
 import app.use_case.display_event.DisplayEventInteractor;
+import app.use_case.create_event.EventOutputBoundary;
+import app.use_case.display_event.DisplayEventOutputBoundary;
+import app.use_case.display_event.DisplayEventOutputData;
 import app.use_case.filter_event.FilterEventInputBoundary;
 import app.use_case.filter_event.FilterEventInteractor;
 import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.modify_event.ModifyEventInputBoundary;
 import app.use_case.modify_event.ModifyEventInteractor;
+import app.use_case.home.HomeInputBoundary;
+import app.use_case.home.HomeInteractor;
+import app.use_case.home.HomeOutputBoundary;
+import app.use_case.login.LoginInputBoundary;
+import app.use_case.login.LoginInteractor;
+import app.use_case.login.LoginOutputBoundary;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
 import app.interface_adapter.create_event.CreateEventViewModel;
 
+import app.use_case.view_event.ViewEventInputBoundary;
+import app.use_case.view_event.ViewEventInteractor;
+import app.use_case.view_event.ViewEventOutputBoundary;
 import app.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,7 +77,7 @@ import org.springframework.stereotype.Component;
  *  * This is done by adding each View and then adding related Use Cases.
  */@Component
 public class AppBuilder {
-     // initialize layouts
+    // initialize layouts
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
 
@@ -71,51 +92,67 @@ public class AppBuilder {
 
     // initialize views and their models
     private RegisterView registerView;
-    private RegisterViewModel registerViewModel;
-
     private CreateEventView createEventView;
-
-    private CreateEventViewModel createEventViewModel;
-    private LoginViewModel loginViewModel;
-    private CreateEventController createEventController;
-    private FilterEventViewModel filterEventViewModel;
+    private LoginView loginView;
+    private HomeView homeView;
     private FilterEventView filterEventView;
-
+    private ViewEventView viewEventView;
     private ModifyEventView modifyEventView;
+
+
+    private RegisterViewModel registerViewModel;
+    private LoginViewModel loginViewModel;
+    private CreateEventViewModel createEventViewModel;
+    private FilterEventViewModel filterEventViewModel;
+    private HomeViewModel homeViewModel;
+    private DisplayEventViewModel displayEventViewModel;
     private ModifyEventViewModel modifyEventViewModel;
+    private ViewEventViewModel viewEventViewModel;
+
+    EventFactory eventFactory = new CommonEventFactory();
+    // function to create and add the register view to the card layout
+
+
+    private CreateEventController createEventController;
+    private DisplayEventController displayEventController;
     private ModifyEventController modifyEventController;
+    private RegisterController registerController;
 
     // ensure that you are using card layout
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
-    EventFactory eventFactory = new CommonEventFactory();
-    // function to create and add the register view to the card layout
-    public RegisterView addRegisterView() {
+
+    public AppBuilder addRegisterView() {
         // create new RegisterViewModel to manage state of the register view
         this.registerViewModel = new RegisterViewModel();
         this.registerView = new RegisterView(registerViewModel);
 
-        // set the parent panel for navigation purposes (cardPanel contains all views in the card layout)
-        registerView.setParentPanel(cardPanel);
-
         cardPanel.add(registerView, registerView.getViewName());
-        return this.registerView;
+        return this;
     }
 
-    public CreateEventView addCreateEventView() {
+
+    public AppBuilder addCreateEventView() {
         this.createEventViewModel = new CreateEventViewModel();
-        CreateEventPresenter eventPresenter = new CreateEventPresenter(null, createEventViewModel);
+        CreateEventPresenter eventPresenter = new CreateEventPresenter(viewManagerModel, createEventViewModel, homeViewModel);
         EventInputBoundary createEventInputBoundary = new EventInteractor(
                 eventDAO,
                 eventPresenter,
                 eventFactory
         );
-        this.createEventController = new CreateEventController(createEventInputBoundary);
+        CreateEventController createEventController = new CreateEventController(createEventInputBoundary);
+//        CreateEventPresenter eventPresenter = new CreateEventPresenter(null, createEventViewModel);
+//        EventFactory eventFactory = new CommonEventFactory();
+//        EventInputBoundary createEventInputBoundary = new EventInteractor(
+//                eventDAO,
+//                eventPresenter,
+//                eventFactory
+//        );
+//        this.createEventController = new CreateEventController(createEventInputBoundary);
         this.createEventView = new CreateEventView(createEventViewModel, createEventController);
-        createEventView.setParentPanel(cardPanel); // Set parentPanel
         cardPanel.add(createEventView, createEventView.getViewName());
-        return createEventView;
+        return this;
     }
 
     public ModifyEventView addModifyEventView() {
@@ -130,71 +167,91 @@ public class AppBuilder {
         this.modifyEventController = new ModifyEventController(modifyEventInputBoundary);
         this.modifyEventView = new ModifyEventView(modifyEventViewModel, modifyEventController);
         modifyEventView.setParentPanel(cardPanel); // Set parentPanel
-        cardPanel.add(modifyEventView,  modifyEventView.getViewName());
+        cardPanel.add(modifyEventView, modifyEventView.getViewName());
         return modifyEventView;
     }
 
-    public HomeView addMainView() {
+    public AppBuilder addMainView() {
         HomeViewModel homeViewModel = new HomeViewModel();
-        DisplayEventView displayEventView = new DisplayEventView();
+//        DisplayEventView displayEventView = new DisplayEventView();
         DisplayEventViewModel displayEventViewModel = new DisplayEventViewModel();
-        DisplayEventPresenter DisplayEventPresenter = new DisplayEventPresenter(displayEventView, displayEventViewModel);
+        DisplayEventPresenter DisplayEventPresenter = new DisplayEventPresenter(viewManagerModel, displayEventViewModel);
 
         DisplayEventInteractor displayEventInteractor = new DisplayEventInteractor(eventDAO, DisplayEventPresenter, eventFactory);
         DisplayEventController displayEventController = new DisplayEventController(displayEventInteractor);
         HomeView homeView = new HomeView(homeViewModel, displayEventController);
         homeView.setParentPanel(cardPanel);
-        cardPanel.add(homeView, homeView.getViewName());
-        return homeView;
+        return this;
     }
 
-    public LoginView addLoginView() {
-        if (this.loginViewModel == null) {
-            this.loginViewModel = new LoginViewModel();
-        }
-        LoginView loginView = new LoginView(this.loginViewModel);
-        loginView.setParentPanel(cardPanel);
+    public AppBuilder addHomeView() {
+        homeViewModel = new HomeViewModel();
+        displayEventViewModel = new DisplayEventViewModel();
+        final DisplayEventOutputBoundary displayEventOutputBoundary = new DisplayEventPresenter(viewManagerModel, displayEventViewModel);
+
+
+        DisplayEventInputBoundary displayEventInteractor = new DisplayEventInteractor(eventDAO, displayEventOutputBoundary, eventFactory);
+        ;
+        DisplayEventController displayEventController = new DisplayEventController(displayEventInteractor);
+        homeView = new HomeView(homeViewModel, displayEventController);
+        cardPanel.add(homeView, homeView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addLoginView() {
+        loginViewModel = new LoginViewModel();
+        loginView = new LoginView(loginViewModel);
         cardPanel.add(loginView, loginView.getViewName());
 
-        return loginView;
+        return this;
     }
 
-    public FilterEventView addFilterEventView() {
-        this.filterEventViewModel = new FilterEventViewModel();
-        this.filterEventView = new FilterEventView(filterEventViewModel);
-
-        filterEventView.setParentPanel(cardPanel);
+    public AppBuilder addFilterEventView() {
+        filterEventViewModel = new FilterEventViewModel();
+        filterEventView = new FilterEventView(filterEventViewModel);
 
         cardPanel.add(filterEventView, filterEventView.getViewName());
-        return this.filterEventView;
+        return this;
+    }
+
+    public AppBuilder addViewEventView() {
+        viewEventViewModel = new ViewEventViewModel();
+        viewEventView = new ViewEventView(viewEventViewModel);
+
+        cardPanel.add(viewEventView, viewEventView.getViewName());
+        return this;
     }
 
     public AppBuilder addFilterEventUseCase() {
-        if (filterEventView == null || filterEventView == null) {
-            throw new IllegalStateException("RegisterView or RegisterViewModel is not initialized.");
-        }
         final FilterEventOutputBoundary filterEventOutputBoundary = new FilterEventPresenter(viewManagerModel,
                 filterEventViewModel);
+        final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
+
 
         final FilterEventInputBoundary userFilterEventInteractor = new FilterEventInteractor(
                 eventDAO, filterEventOutputBoundary);
 
-        final FilterEventController controller = new FilterEventController(userFilterEventInteractor);
+        final ViewEventInputBoundary viewEventInteractor = new ViewEventInteractor(
+                eventDAO, viewEventOutputBoundary
+        );
 
-        filterEventView.setFilterEventsController(controller);
-
+        final FilterEventController filterEventController = new FilterEventController(userFilterEventInteractor);
+        final ViewEventController viewEventController = new ViewEventController(viewEventInteractor);
+        filterEventView.setFilterEventsController(filterEventController);
+        filterEventView.setViewEventController(viewEventController);
         return this;
     }
 
 
     public AppBuilder addRegisterUseCase() {
         // make sure RegisterView and RegisterViewModel are initialized (debugging)
-        if (registerView == null || registerViewModel == null) {
-            throw new IllegalStateException("RegisterView or RegisterViewModel is not initialized.");
-        }
         // create input and output boundaries
-        final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel,
-                createEventViewModel, registerViewModel);
+        System.out.println("Initializing Register Use Case...");
+        // Ensure all required objects are initialized
+        System.out.println("viewManagerModel: " + viewManagerModel);
+        System.out.println("registerViewModel: " + registerViewModel);
+        System.out.println("loginViewModel: " + loginViewModel);
+        final RegisterOutputBoundary registerOutputBoundary = new RegisterPresenter(viewManagerModel, registerViewModel, loginViewModel);
         final RegisterInputBoundary userRegisterInteractor = new RegisterInteractor(
                 userDAO, registerOutputBoundary, userFactory);
         // create controller
@@ -202,14 +259,60 @@ public class AppBuilder {
 
         // set the RegisterController in the RegisterView
         registerView.setRegisterController(controller);
+        return this;
+    }
 
+    public AppBuilder addLoginUseCase() {
+        final LoginOutputBoundary loginOutputBoundary = new
+                LoginPresenter(viewManagerModel,
+                loginViewModel, homeViewModel);
+        final LoginInputBoundary loginInteractor = new LoginInteractor(
+                userDAO, loginOutputBoundary);
+
+        final LoginController loginController = new LoginController(loginInteractor);
+        loginView.setLoginController(loginController);
+        return this;
+    }
+
+    public AppBuilder addCreateEventUseCase() {
+        final EventOutputBoundary eventOutputBoundary = new CreateEventPresenter(viewManagerModel, createEventViewModel, homeViewModel);
+
+        final EventInputBoundary eventInputInteractor = new EventInteractor(eventDAO, eventOutputBoundary, eventFactory);
+
+        final CreateEventController eventController = new CreateEventController(eventInputInteractor);
+        createEventView.setCreateEventController(eventController);
+        return this;
+    }
+
+    public AppBuilder addViewEventUseCase() {
+        final ViewEventOutputBoundary viewEventOutputBoundary = new
+                ViewEventPresenter(viewManagerModel,
+                viewEventViewModel,
+                homeViewModel);
+        final ViewEventInputBoundary viewEventInteractor = new ViewEventInteractor(
+                eventDAO, viewEventOutputBoundary
+        );
+        final ViewEventController viewEventController = new ViewEventController((viewEventInteractor));
+        viewEventView.setViewEventController(viewEventController);
+        return this;
+    }
+
+    public AppBuilder addHomeUseCase() {
+        final HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel,
+                loginViewModel,
+                createEventViewModel, filterEventViewModel);
+
+        final HomeInputBoundary homeInteractor = new HomeInteractor(homeOutputBoundary);
+
+        final HomeController homeController = new HomeController(homeInteractor);
+        homeView.setHomeController(homeController);
         return this;
     }
 
 
     public JFrame build() {
         // debugging
-        System.out.println("Setting initial view to: " + registerView.getViewName());
+//        System.out.println("Setting initial view to: " + registerView.getViewName());
 //        cardLayout.show(cardPanel, registerView.getViewName());
 //        cardLayout.show(cardPanel, createEventView.getViewName());
 //        cardLayout.show(cardPanel, filterEventView.getViewName());
@@ -224,26 +327,19 @@ public class AppBuilder {
         // create main application window
         final JFrame application = new JFrame("EventHiveUofT");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         // set the window to be maximized when the application starts
         application.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         // add the cardPanel to the JFrame, the main container with the CardLayout for switching views
         application.add(cardPanel);
-
         // set initial viewManagerModel to the register view
         viewManagerModel.setState(registerView.getViewName());
-
-//        // notify any listeners that the state of the ViewManagerModel has changed
-//        viewManagerModel.firePropertyChanged();
-
-
+        // notify any listeners that the state of the ViewManagerModel has changed
+        viewManagerModel.firePropertyChanged();
         // return JFrame so it can be displayed in the application
         return application;
 
     }
-
-    public JPanel getCardPanel() {
-        return this.cardPanel;
-    }
 }
+//    public JPanel getCardPanel() {
+//        return this.cardPanel;
+//    }

@@ -9,6 +9,11 @@ public class CreateEventState {
     private float longitude, latitude;
     private int capacity;
     private List<String> tags;
+    private String usernameState;
+
+    public String getUsernameState() {return usernameState;}
+
+    public void setUsernameState(String usernameState) { this.usernameState = usernameState;}
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

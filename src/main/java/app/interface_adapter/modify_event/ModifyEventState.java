@@ -10,6 +10,11 @@ public class ModifyEventState {
     private int capacity;
     private List<String> tags;
     private boolean deleteEvent;
+    private String usernameState;
+
+    private String getUsernameState() {return usernameState;}
+
+    private void setUsernameState(String usernameState) { this.usernameState = usernameState;}
 
     public boolean getDeleteEvent() { return deleteEvent; }
     public void setDeleteEvent(boolean deleteEvent) { this.deleteEvent = deleteEvent; }
