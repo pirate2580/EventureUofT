@@ -199,7 +199,7 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
         } else if ("Description".equals(fieldName)) {
             currentState.setDescription(updatedDescriptionInputField.getText());
         } else if ("Capacity".equals(fieldName)) {
-            currentState.setCapacity(parseInt(updatedCapacityInputField.getText()));
+            currentState.setCapacity(updatedCapacityInputField.getText());
         } else if ("Tags".equals(fieldName)) {
             currentState.setTags(updatedTagsInputField.getText());
         } else if ("Date and time".equals(fieldName)) {
@@ -207,9 +207,9 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
         } else if ("Organizers".equals(fieldName)) {
             currentState.setOrganizer(updatedOrgInputField.getText());
         } else if ("Latitude".equals(fieldName)) {
-            currentState.setLatitude(parseFloat(updatedLatitudeInputField.getText()));
+            currentState.setLatitude(updatedLatitudeInputField.getText());
         } else if ("Longitude".equals(fieldName)) {
-            currentState.setLongitude(parseFloat(updatedLongitudeInputField.getText()));
+            currentState.setLongitude(updatedLongitudeInputField.getText());
         } else if ("DeleteEvent".equals(fieldName)) {
             currentState.setDeleteEvent(deleteEventCheckbox.isSelected());
         }
@@ -236,7 +236,7 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
         if (e.getSource() == modifyEventButton) {
             ModifyEventState currentState = modifyEventViewModel.getState();
             modifyEventController.execute(currentState.getOldTitle(), currentState.getNewTitle(), currentState.getDescription(),
-                    currentState.getDateTime(), currentState.getCapacity(), currentState.getLatitude(), currentState.getLongitude(),
+                    currentState.getDateTime(), parseInt(currentState.getCapacity()), parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()),
                     currentState.getDeleteEvent(), currentState.getTags(), "TMP", currentState.getOrganizer());
             System.out.println("Event created!");
         } else if (e.getSource() == homeButton) {
