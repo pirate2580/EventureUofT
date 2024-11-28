@@ -230,7 +230,7 @@ public class AppBuilder {
 
     public AppBuilder addFilterEventUseCase() {
         final FilterEventOutputBoundary filterEventOutputBoundary = new FilterEventPresenter(viewManagerModel,
-                filterEventViewModel);
+                filterEventViewModel, homeViewModel);
         final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
 
 

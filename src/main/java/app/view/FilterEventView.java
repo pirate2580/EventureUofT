@@ -30,6 +30,7 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 
 //    private final JTextField locationTextField;
     private final JButton submitFilterButton;
+    private final JButton backButton;
     private final JPanel eventsPanel; // Panel to hold events dynamically
 
 //    private final JList<String> filteredEventsInfo;
@@ -91,9 +92,15 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         // Create a submit button
         submitFilterButton = new JButton("Filter Events");
         submitFilterButton.addActionListener(e -> applyFilters());
+        backButton = new JButton("Back to Home");
+        backButton.addActionListener(e -> goToHome());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(submitFilterButton);
+        buttonPanel.add(backButton);
 
         // Add the submit button to the SOUTH
-        add(submitFilterButton, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private void applyFilters() {
@@ -166,6 +173,10 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
     private void viewEvent(Event event) {
 //        System.out.println(event.getTitle());
         viewEventController.execute(event.getTitle());
+    }
+
+    private void goToHome() {
+        filterEventController.switchToHomeView();
     }
 
     public String getViewName() {

@@ -29,13 +29,11 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
 //        }
 
         filterEventPresenter.prepareSuccessView(filterEventOutputData);
+    }
 
+    @Override
+    public void switchToHomeView() {
+        filterEventPresenter.switchToHomeView();
 
-//        if (filteredEvents.isEmpty()) {
-//            filterEventPresenter.prepareFailView("No events found matching the criteria.");
-//        } else {
-//            FilterEventOutputData outputData = new FilterEventOutputData(filteredEvents);
-//            filterEventPresenter.prepareSuccessView(outputData);
-//        }
     }
 }

@@ -46,33 +46,6 @@ public class Main {
                 .addViewEventUseCase()
                 .addHomeUseCase()
                 .build();
-//        final JFrame application = appBuilder
-//                .addRegisterView()
-//                .addRegisterUseCase()
-//                .addHomeView()
-//                .addHomeUseCase()
-//                .addLoginView()
-//                .addLoginUseCase()
-//                .addCreateEventView()
-//                .addCreateEventUseCase()
-//                .addFilterEventView()
-//                .addFilterEventUseCase()
-////                .addFilterEventView()
-////                .addFilterEventUseCase()
-//                .addViewEventView()
-//                .addViewEventUseCase()
-//                .build();
-//        final JFrame application = appBuilder
-//                .addRegisterView()
-//                .addLoginView()
-//                .addCreateEventView()
-//                .addHomeView()
-//                .addRegisterUseCase()
-//                .addLoginUseCase()
-//                .addCreateEventUseCase()
-//                .addFilterEventView()
-//                .addFilterEventUseCase()
-//                .addHomeUseCase().build();
 
         application.pack();
         application.setVisible(true);

@@ -1,6 +1,7 @@
 package app.interface_adapter.filter_event;
 
 import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.home.HomeViewModel;
 import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.filter_event.FilterEventOutputData;
 import app.entity.Event.Event;
@@ -14,11 +15,14 @@ public class FilterEventPresenter implements FilterEventOutputBoundary{
 
     private final ViewManagerModel viewManagerModel;
     private final FilterEventViewModel filterEventViewModel;
+    private final HomeViewModel homeViewModel;
 
     public FilterEventPresenter(ViewManagerModel viewManagerModel,
-                                FilterEventViewModel filterEventViewModel) {
+                                FilterEventViewModel filterEventViewModel,
+                                HomeViewModel homeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.filterEventViewModel = filterEventViewModel;
+        this.homeViewModel = homeViewModel;
     }
 
     /**
@@ -43,5 +47,11 @@ public class FilterEventPresenter implements FilterEventOutputBoundary{
     @Override
     public void prepareFailView(String errorMessage) {
 
+    }
+
+    @Override
+    public void switchToHomeView() {
+        viewManagerModel.setState(homeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

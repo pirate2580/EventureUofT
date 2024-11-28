@@ -21,4 +21,6 @@ public class FilterEventController {
         final FilterEventInputData filterEventInputData = new FilterEventInputData(tags);
         this.userFilterEventUseCaseInteractor.execute(filterEventInputData);
     }
+
+    public void switchToHomeView() {this.userFilterEventUseCaseInteractor.switchToHomeView();}
 }
