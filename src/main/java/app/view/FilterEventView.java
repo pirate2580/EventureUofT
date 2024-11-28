@@ -190,4 +190,5 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
     public void setViewEventController(ViewEventController controller) {
         this.viewEventController = controller;
     }
+
 }
