@@ -124,12 +124,16 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
 
         // Clear the events panel
         eventsPanel.removeAll();
-        if (events != null){
+        if (events != null) {
             // Add each event to the panel
             for (Event event : events) {
                 JPanel eventPanel = new JPanel();
                 eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
                 eventPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+                // Ensure the panel spans the full width
+                eventPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                eventPanel.setMaximumSize(new Dimension(eventsPanel.getWidth(), Integer.MAX_VALUE));
 
                 JLabel titleLabel = new JLabel("Title: " + event.getTitle());
                 JLabel organizerLabel = new JLabel("Organizer: " + event.getOrganizer());
@@ -151,13 +155,12 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
                 eventPanel.setBorder(new LineBorder(Color.GRAY));
 
                 eventsPanel.add(eventPanel);
-                // Refresh the events panel
-                eventsPanel.revalidate();
-                eventsPanel.repaint();
             }
+
+            // Refresh the events panel
+            eventsPanel.revalidate();
+            eventsPanel.repaint();
         }
-
-
     }
 
     private void viewEvent(Event event) {
