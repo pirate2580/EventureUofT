@@ -15,19 +15,22 @@ public class RSVPEventInteractor implements RSVPEventInputBoundary {
 
     @Override
     public void execute(RSVPEventInputData rsvpEventInputData) {
-        Event event = rsvpEventDataAccessObject.findEventById(rsvpEventInputData.getEventId());
-        User user = rsvpEventDataAccessObject.findUserByUsername(rsvpEventInputData.getUsername());
+//        Event event = rsvpEventDataAccessObject.findEventById(rsvpEventInputData.getEventId());
+//        User user = rsvpEventDataAccessObject.findUserByUsername(rsvpEventInputData.getUsername());
+        rsvpEventDataAccessObject.addUserToRSVPList(rsvpEventInputData.getUsername(), rsvpEventInputData.getEventId());
+        rsvpEventPresenter.prepareSuccessView(new RSVPEventOutputData(rsvpEventInputData.getUsername(),
+                rsvpEventInputData.getEventId()));
 
-        if (event == null) {
-            rsvpEventPresenter.prepareFailView("Event not found.");
-        } else if (user == null) {
-            rsvpEventPresenter.prepareFailView("User not found.");
-        } else if (event.getAttendeesIdList().size() >= event.getCapacity()) {
-            rsvpEventPresenter.prepareFailView("Event is at full capacity.");
-        } else {
-            rsvpEventDataAccessObject.addUserToEvent(user, event);
-            RSVPEventOutputData outputData = new RSVPEventOutputData(user.getUsername(), event.getTitle());
-            rsvpEventPresenter.prepareSuccessView(outputData);
-        }
+//        if (event == null) {
+//            rsvpEventPresenter.prepareFailView("Event not found.");
+//        } else if (user == null) {
+//            rsvpEventPresenter.prepareFailView("User not found.");
+//        } else if (event.getAttendeesIdList().size() >= event.getCapacity()) {
+//            rsvpEventPresenter.prepareFailView("Event is at full capacity.");
+//        } else {
+//            rsvpEventDataAccessObject.addUserToEvent(user, event);
+//            RSVPEventOutputData outputData = new RSVPEventOutputData(user.getUsername(), event.getTitle());
+//            rsvpEventPresenter.prepareSuccessView(outputData);
+//        }
     }
 }

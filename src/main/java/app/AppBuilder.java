@@ -36,6 +36,8 @@ import app.interface_adapter.modify_event.ModifyEventViewModel;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
+import app.interface_adapter.rsvp_event.RSVPController;
+import app.interface_adapter.rsvp_event.RSVPPresenter;
 import app.interface_adapter.view_event.ViewEventController;
 import app.interface_adapter.view_event.ViewEventPresenter;
 import app.interface_adapter.view_event.ViewEventViewModel;
@@ -62,6 +64,9 @@ import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
 import app.interface_adapter.create_event.CreateEventViewModel;
 
+import app.use_case.rsvp_event.RSVPEventInputBoundary;
+import app.use_case.rsvp_event.RSVPEventInteractor;
+import app.use_case.rsvp_event.RSVPEventOutputBoundary;
 import app.use_case.view_event.ViewEventInputBoundary;
 import app.use_case.view_event.ViewEventInteractor;
 import app.use_case.view_event.ViewEventOutputBoundary;
@@ -184,6 +189,7 @@ public class AppBuilder {
         return this;
     }
 
+
     public AppBuilder addHomeView() {
         homeViewModel = new HomeViewModel();
         displayEventViewModel = new DisplayEventViewModel();
@@ -289,10 +295,15 @@ public class AppBuilder {
                 ViewEventPresenter(viewManagerModel,
                 viewEventViewModel,
                 homeViewModel);
+        final RSVPEventOutputBoundary rsvpEventOutputBoundary = new RSVPPresenter(viewManagerModel, homeViewModel);
+
         final ViewEventInputBoundary viewEventInteractor = new ViewEventInteractor(
                 eventDAO, viewEventOutputBoundary
         );
+        final RSVPEventInputBoundary rsvpEventInteractor = new RSVPEventInteractor(eventDAO, rsvpEventOutputBoundary);
+        final RSVPController  rsvpController = new RSVPController(rsvpEventInteractor);
         final ViewEventController viewEventController = new ViewEventController((viewEventInteractor));
+        viewEventView.setRSVPEventController(rsvpController);
         viewEventView.setViewEventController(viewEventController);
         return this;
     }
@@ -308,6 +319,8 @@ public class AppBuilder {
         homeView.setHomeController(homeController);
         return this;
     }
+
+
 
 
     public JFrame build() {

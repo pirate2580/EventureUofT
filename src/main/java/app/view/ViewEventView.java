@@ -2,6 +2,7 @@ package app.view;
 
 import app.entity.Event.Event;
 import app.interface_adapter.filter_event.FilterEventState;
+import app.interface_adapter.rsvp_event.RSVPController;
 import app.interface_adapter.view_event.ViewEventController;
 import app.interface_adapter.view_event.ViewEventState;
 import app.interface_adapter.view_event.ViewEventViewModel;
@@ -22,6 +23,7 @@ public class ViewEventView extends JPanel implements PropertyChangeListener{
     private final JButton rsvpButton;
     private final JButton homeButton;
     private ViewEventController viewEventController;
+    private RSVPController rsvpController;
 
     public ViewEventView(ViewEventViewModel viewEventViewModel) {
         this.viewEventViewModel = viewEventViewModel;
@@ -46,7 +48,14 @@ public class ViewEventView extends JPanel implements PropertyChangeListener{
     }
 
     private void rsvpEvent() {
-        // TODO: store the username in all states so rsvp event works
+        ViewEventState currentState = viewEventViewModel.getState();
+        rsvpController.execute(currentState.getUsernameState(), currentState.getViewEvent().getEventId());
+        JOptionPane.showMessageDialog(
+                null,
+                "You have RSVPed to: " + currentState.getViewEvent().getEventId(),
+                "RSVP Success",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     @Override
@@ -121,5 +130,9 @@ public class ViewEventView extends JPanel implements PropertyChangeListener{
 
     public void setViewEventController(ViewEventController controller) {
         this.viewEventController = controller;
+    }
+
+    public void setRSVPEventController (RSVPController controller) {
+        this.rsvpController = controller;
     }
 }

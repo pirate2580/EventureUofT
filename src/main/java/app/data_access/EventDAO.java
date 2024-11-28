@@ -5,6 +5,7 @@ import app.entity.User.CommonUserFactory;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
 import app.use_case.modify_event.ModifyEventUserDataAccessInterface;
 import app.use_case.display_event.DisplayEventDataAccessInterface;
+import app.use_case.rsvp_event.RSVPEventUserDataAccessInterface;
 import app.use_case.view_event.ViewEventInputData;
 import app.use_case.view_event.ViewEventUserDataAccessInterface;
 import com.google.api.core.ApiFuture;
@@ -37,7 +38,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -229,5 +230,23 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
 
         // Return null if no event is found or an error occurs
         return null;
+    }
+
+    @Override
+    public void addUserToRSVPList(String username, String eventId) {
+        try {
+            // Reference to the event document
+            DocumentReference docRef = eventCollection.document(eventId);
+
+            // Use arrayUnion to add the username to the rsvpList array
+            ApiFuture<WriteResult> writeResult = docRef.update("rsvpList", com.google.cloud.firestore.FieldValue.arrayUnion(username));
+
+            // Wait for the operation to complete
+            WriteResult result = writeResult.get();
+
+            System.out.println("User " + username + " added to RSVP list for event: " + eventId + " at " + result.getUpdateTime());
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error adding user to RSVP list: " + e.getMessage());
+        }
     }
 }
