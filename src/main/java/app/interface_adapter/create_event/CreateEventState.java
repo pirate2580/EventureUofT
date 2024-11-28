@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEventState {
-    private String title, description, eventId, organizer;
+    private String title, description, eventId, organizer, longitude, latitude, capacity;
     private String dateTimeError, capacityError, latitudeError, longitudeError, dateTime;
-    private float longitude, latitude;
-    private int capacity;
     private List<String> tags;
     private String usernameState;
 
@@ -33,20 +31,20 @@ public class CreateEventState {
     public String getOrganizer() { return organizer; }
     public void setOrganizer(String organizer) { this.organizer = organizer; }
 
-    public int getCapacity() { return capacity; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public String getCapacity() { return capacity; }
+    public void setCapacity(String capacity) { this.capacity = capacity; }
 
     public String getCapacityError() { return capacityError; }
     public void setCapacityError(String capacityError) { this.capacityError = capacityError; }
 
-    public float getLongitude() { return longitude; }
-    public void setLongitude(float longitude) { this.longitude = longitude; }
+    public String getLongitude() { return longitude; }
+    public void setLongitude(String longitude) { this.longitude = longitude; }
 
     public String getLongitudeError() { return longitudeError; }
     public void setLongitudeError(String longitudeError) { this.longitudeError = longitudeError; }
 
-    public float getLatitude() { return latitude; }
-    public void setLatitude(float latitude) { this.latitude = latitude; }
+    public String getLatitude() { return latitude; }
+    public void setLatitude(String latitude) { this.latitude = latitude; }
 
     public String getLatitudeError() { return latitudeError; }
     public void setLatitudeError(String latitudeError) { this.latitudeError = latitudeError; }
