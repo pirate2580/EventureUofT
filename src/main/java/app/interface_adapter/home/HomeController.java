@@ -1,5 +1,6 @@
 package app.interface_adapter.home;
 
+import app.interface_adapter.view_event.ViewEventController;
 import app.use_case.home.HomeInputBoundary;
 /**
  * convert raw user data to something useful, and then store it in
@@ -23,4 +24,5 @@ public class HomeController {
     }
 
     public void switchToFilterEventView() {this.homeUseCaseInteractor.switchToFilterEventView(); }
+
 }
