@@ -11,7 +11,7 @@ EventHive-UofT aims to enhance student engagement by providing a visually intuit
 - **RSVP and Event Details**: Sign up for events and view comprehensive details.
 - **Event Posting**: Enable students to post and share events.
 
-## Group Members
+## Contributors
 - Fiona Verzivolli (FionaVerzivolli)
 - Andrew Sasmito (AndrewSasmito)
 - Naoroj Farhan (pirate2580)

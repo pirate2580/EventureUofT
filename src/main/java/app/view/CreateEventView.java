@@ -172,7 +172,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         } else if ("Description".equals(fieldName)) {
             currentState.setDescription(descriptionInputField.getText());
         } else if ("Capacity".equals(fieldName)) {
-            currentState.setCapacity(parseInt(capacityInputField.getText()));
+            currentState.setCapacity(capacityInputField.getText());
         } else if ("Tags".equals(fieldName)) {
             currentState.setTags(tagsInputField.getText());
         } else if ("Date and time".equals(fieldName)) {
@@ -180,9 +180,9 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         } else if ("Organizers".equals(fieldName)) {
             currentState.setOrganizer(orgInputField.getText());
         } else if ("Latitude".equals(fieldName)) {
-            currentState.setLatitude(parseFloat(latitudeInputField.getText()));
+            currentState.setLatitude(latitudeInputField.getText());
         } else if ("Longitude".equals(fieldName)) {
-            currentState.setLongitude(parseFloat(longitudeInputField.getText()));
+            currentState.setLongitude(longitudeInputField.getText());
         }
         createEventViewModel.setState(currentState);
     }
@@ -206,8 +206,8 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if (e.getSource() == createEventButton) {
             CreateEventState currentState = createEventViewModel.getState();
-            createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), currentState.getCapacity(),
-                    currentState.getLatitude(), currentState.getLongitude(), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
+            createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), parseInt(currentState.getCapacity()),
+                    parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
             // Handle button click event
             System.out.println("Event created!");
         } else if (e.getSource() == homeButton) {
