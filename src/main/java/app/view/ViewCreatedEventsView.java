@@ -109,6 +109,12 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
 
     private void sendNotificationEmail(String eventName) {
         notifyUserController.execute(eventName);
+        JOptionPane.showMessageDialog(
+                null,
+                "You have notified all the users who have rsvped to " + eventName,
+                "Notification success",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     private void viewCreatedEvents() {
