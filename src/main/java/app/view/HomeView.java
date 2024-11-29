@@ -46,6 +46,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton filterButton;
     private final JButton createEventButton;
     private final JButton viewRSVPButton;
+    private final JButton viewCreatedButton;
 
     // Double declaring the zoom level, which is adjusted later in the code
     private double ZOOM_LEVEL;
@@ -72,6 +73,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         filterButton = createButton("Filter", evt -> handleFilterAction());
         createEventButton = createButton("Create event", evt -> handleEventAction());
         viewRSVPButton = createButton("View RSVP", evt -> handleViewRSVPAction());
+        viewCreatedButton = createButton("View Created", evt -> handleViewCreatedEvents());
 
 
         // Set panel layout
@@ -110,6 +112,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         sidebar.add(createEventButton);
         sidebar.add(filterButton);
         sidebar.add(viewRSVPButton);
+        sidebar.add(viewCreatedButton);
 
         // Set the sidebar to be at the screen's left
         add(sidebar, BorderLayout.WEST);
@@ -375,6 +378,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     private void handleViewRSVPAction() {
         homeController.switchToViewRSVPView();
+    }
+
+    private void handleViewCreatedEvents() {
+        homeController.switchToViewCreatedEventsView();
     }
 
     /**

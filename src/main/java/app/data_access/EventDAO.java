@@ -2,10 +2,12 @@ package app.data_access;
 
 import app.entity.Event.CommonEvent;
 import app.entity.User.CommonUserFactory;
+import app.interface_adapter.view_created_events.ViewCreatedEventsViewModel;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
 import app.use_case.modify_event.ModifyEventUserDataAccessInterface;
 import app.use_case.display_event.DisplayEventDataAccessInterface;
 import app.use_case.rsvp_event.RSVPEventUserDataAccessInterface;
+import app.use_case.view_created_events.ViewCreatedDataAccessInterface;
 import app.use_case.view_event.ViewEventInputData;
 import app.use_case.view_event.ViewEventUserDataAccessInterface;
 import com.google.api.core.ApiFuture;
@@ -38,7 +40,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface, ViewCreatedDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -55,6 +57,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
      *
      * @param event, the event we want to save.
      */
+    @Override
     public void saveEvent(Event event) {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("organizer", event.getOrganizer());
@@ -286,6 +289,56 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
 
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error adding user to RSVP list and updating RSVPEvents: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Create event DAO
+     * @param usernameState
+     * @param event to save onto the database
+     */
+    @Override
+    public void saveEvent(String usernameState, Event event) {
+        Map<String, Object> eventData = new HashMap<>();
+        eventData.put("creator_username", usernameState);
+        eventData.put("organizer", event.getOrganizer());
+        eventData.put("title", event.getTitle());
+        eventData.put("description", event.getDescription());
+        eventData.put("time", event.getDateTime());
+        eventData.put("capacity", event.getCapacity());
+        eventData.put("latitude", event.getLatitude());
+        eventData.put("longitude", event.getLongitude());
+        eventData.put("tags", event.getTags());
+
+        try {
+            DocumentReference docRef = eventCollection.document(event.getTitle());
+            WriteResult result = docRef.set(eventData).get();
+            System.out.println("Event saved at: " + result.getUpdateTime());
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error saving event to Firestore: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> getCreatedEvents(String username) {
+        try {
+            // Query Firestore for events where "creator_username" matches the given username
+            ApiFuture<QuerySnapshot> future = eventCollection.whereEqualTo("creator_username", username).get();
+
+            // Get query results
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            // Extract the titles of the matching events
+            List<String> createdEventTitles = new ArrayList<>();
+            for (QueryDocumentSnapshot document : documents) {
+                String title = document.getString("title");
+                createdEventTitles.add(title);
+            }
+
+            return createdEventTitles; // Return the list of titles
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error retrieving created events for user " + username + ": " + e.getMessage());
+            return new ArrayList<>(); // Return an empty list in case of error
         }
     }
 }

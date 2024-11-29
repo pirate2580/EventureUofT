@@ -5,4 +5,5 @@ public interface HomeOutputBoundary {
     void switchToLoginView();
     void switchToFilterEventView();
     void switchToViewRSVPView();
+    void switchToViewCreatedEventsView();
 }

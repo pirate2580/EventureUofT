@@ -28,4 +28,6 @@ public class HomeInteractor implements HomeInputBoundary{
     @Override
     public void switchToViewRSVPView() {homePresenter.switchToViewRSVPView(); }
 
+    @Override
+    public void switchToViewCreatedEventsView() {homePresenter.switchToViewCreatedEventsView(); }
 }

@@ -206,10 +206,10 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if (e.getSource() == createEventButton) {
             CreateEventState currentState = createEventViewModel.getState();
-            createEventController.execute(currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), parseInt(currentState.getCapacity()),
+            createEventController.execute(currentState.getUsernameState(), currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), parseInt(currentState.getCapacity()),
                     parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
             // Handle button click event
-            System.out.println("Event created!");
+            System.out.println("Event created create event!");
         } else if (e.getSource() == homeButton) {
 //            navigateTo("Home");
             createEventController.switchToHomeView();

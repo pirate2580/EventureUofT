@@ -39,6 +39,8 @@ public class Main {
                 .addHomeView()
                 .addViewRSVPView()
                 .addViewRSVPUseCase()
+                .addViewCreatedEventsView()
+                .addViewCreatedEventsUseCase()
                 .addFilterEventView()
                 .addViewEventView()
                 .addRegisterUseCase()
