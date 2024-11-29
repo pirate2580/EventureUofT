@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import app.interface_adapter.notify_users.NotifyUserController;
 import app.interface_adapter.view_created_events.ViewCreatedEventsController;
 import app.interface_adapter.view_created_events.ViewCreatedEventsState;
 import app.interface_adapter.view_created_events.ViewCreatedEventsViewModel;
@@ -20,6 +21,7 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
     private final JButton backButton;
     private final JButton viewCreatedEventsButton;
     private ViewCreatedEventsController viewCreatedEventsController;
+    private NotifyUserController notifyUserController;
 
     public ViewCreatedEventsView(ViewCreatedEventsViewModel viewCreatedEventsViewModel) {
         this.viewCreatedEventsViewModel = viewCreatedEventsViewModel;
@@ -67,7 +69,7 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
 
         if (createdEvents != null && !createdEvents.isEmpty()) {
             for (String eventName : createdEvents) {
-                // Create a panel for each event to group the label and separator
+                // Create a panel for each event
                 JPanel eventPanel = new JPanel();
                 eventPanel.setLayout(new BorderLayout());
                 eventPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // Add padding to the panel
@@ -75,7 +77,14 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
                 // Create the event label
                 JLabel eventLabel = new JLabel(eventName);
                 eventLabel.setFont(new Font("Arial", Font.PLAIN, 18)); // Customize font size
-                eventPanel.add(eventLabel, BorderLayout.CENTER);
+                eventPanel.add(eventLabel, BorderLayout.WEST);
+
+                // Create the "Send Notification Email" button
+                JButton sendNotificationButton = new JButton("Send Notification Email to RSVPED users");
+                sendNotificationButton.setFont(new Font("Arial", Font.PLAIN, 14)); // Customize font size
+                sendNotificationButton.addActionListener(e -> sendNotificationEmail(eventName)); // Attach action listener
+
+                eventPanel.add(sendNotificationButton, BorderLayout.EAST);
 
                 // Add the event panel to the main events panel
                 eventsPanel.add(eventPanel);
@@ -98,6 +107,10 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
         eventsPanel.repaint();
     }
 
+    private void sendNotificationEmail(String eventName) {
+        notifyUserController.execute(eventName);
+    }
+
     private void viewCreatedEvents() {
         ViewCreatedEventsState currentState = viewCreatedEventsViewModel.getState();
         viewCreatedEventsController.execute(currentState.getUsernameState());
@@ -117,6 +130,10 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
      */
     public void setViewCreatedEventsController(ViewCreatedEventsController controller) {
         this.viewCreatedEventsController = controller;
+    }
+
+    public void setNotificationController(NotifyUserController controller) {
+        this.notifyUserController = controller;
     }
 
     /**

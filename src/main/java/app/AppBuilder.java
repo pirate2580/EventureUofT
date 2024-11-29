@@ -33,6 +33,8 @@ import app.interface_adapter.home.HomeViewModel;
 import app.interface_adapter.modify_event.ModifyEventController;
 import app.interface_adapter.modify_event.ModifyEventPresenter;
 import app.interface_adapter.modify_event.ModifyEventViewModel;
+import app.interface_adapter.notify_users.NotifyUserController;
+import app.interface_adapter.notify_users.NotifyUserPresenter;
 import app.interface_adapter.register.RegisterController;
 import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
@@ -66,6 +68,9 @@ import app.use_case.home.HomeOutputBoundary;
 import app.use_case.login.LoginInputBoundary;
 import app.use_case.login.LoginInteractor;
 import app.use_case.login.LoginOutputBoundary;
+import app.use_case.notify_users.NotifyUserInputBoundary;
+import app.use_case.notify_users.NotifyUserInteractor;
+import app.use_case.notify_users.NotifyUserOutputBoundary;
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInteractor;
 import app.use_case.register.RegisterOutputBoundary;
@@ -296,20 +301,6 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addViewCreatedEventsUseCase() {
-        final ViewCreatedOutputBoundary viewCreatedOutputBoundary = new ViewCreatedEventsPresenter(viewManagerModel,
-                viewCreatedEventsViewModel, homeViewModel);
-        final ViewCreatedInputBoundary viewCreatedInteractor = new ViewCreatedInteractor(
-                eventDAO, viewCreatedOutputBoundary
-        );
-
-        final ViewCreatedEventsController viewCreatedEventsController = new ViewCreatedEventsController(viewCreatedInteractor);
-
-        viewCreatedEventsView.setViewCreatedEventsController(viewCreatedEventsController);
-        return this;
-    }
-
-
     public AppBuilder addRegisterUseCase() {
         // make sure RegisterView and RegisterViewModel are initialized (debugging)
         // create input and output boundaries
@@ -369,6 +360,28 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewCreatedEventsUseCase() {
+        final ViewCreatedOutputBoundary viewCreatedOutputBoundary = new ViewCreatedEventsPresenter(viewManagerModel,
+                viewCreatedEventsViewModel, homeViewModel);
+
+        final NotifyUserOutputBoundary notifyUserOutputBoundary = new NotifyUserPresenter(viewManagerModel, homeViewModel);
+
+
+        final ViewCreatedInputBoundary viewCreatedInteractor = new ViewCreatedInteractor(
+                eventDAO, viewCreatedOutputBoundary
+        );
+
+        final NotifyUserInputBoundary notifyUserInteractor = new NotifyUserInteractor(eventDAO, notifyUserOutputBoundary);
+
+        final ViewCreatedEventsController viewCreatedEventsController = new ViewCreatedEventsController(viewCreatedInteractor);
+
+        final NotifyUserController notifyUserController = new NotifyUserController(notifyUserInteractor);
+        viewCreatedEventsView.setViewCreatedEventsController(viewCreatedEventsController);
+        viewCreatedEventsView.setNotificationController(notifyUserController);
+
+        return this;
+    }
+
     public AppBuilder addHomeUseCase() {
         final HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel,
                 loginViewModel,
@@ -388,8 +401,6 @@ public class AppBuilder {
         homeView.setViewEventController(viewEventController);
         return this;
     }
-
-
 
 
     public JFrame build() {

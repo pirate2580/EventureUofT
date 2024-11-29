@@ -6,6 +6,7 @@ import app.interface_adapter.view_created_events.ViewCreatedEventsViewModel;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
 import app.use_case.modify_event.ModifyEventUserDataAccessInterface;
 import app.use_case.display_event.DisplayEventDataAccessInterface;
+import app.use_case.notify_users.NotifyUserDataAccessInterface;
 import app.use_case.rsvp_event.RSVPEventUserDataAccessInterface;
 import app.use_case.view_created_events.ViewCreatedDataAccessInterface;
 import app.use_case.view_event.ViewEventInputData;
@@ -40,7 +41,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface, ViewCreatedDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface, ViewCreatedDataAccessInterface, NotifyUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -339,6 +340,55 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error retrieving created events for user " + username + ": " + e.getMessage());
             return new ArrayList<>(); // Return an empty list in case of error
+        }
+    }
+
+    @Override
+    public void notifyUsers(String eventTitle) {
+        try {
+            // Get the event document by title
+            DocumentReference eventDocRef = eventCollection.document(eventTitle);
+            DocumentSnapshot eventDocSnapshot = eventDocRef.get().get();
+
+            if (eventDocSnapshot.exists()) {
+                // Extract the RSVP list
+                List<String> rsvpList = (List<String>) eventDocSnapshot.get("rsvpList");
+
+                if (rsvpList != null && !rsvpList.isEmpty()) {
+                    // Fetch emails of users in RSVP list
+                    List<String> emails = new ArrayList<>();
+                    CollectionReference usersCollection = db.collection("Users");
+
+                    for (String username : rsvpList) {
+                        DocumentReference userDocRef = usersCollection.document(username);
+                        DocumentSnapshot userDocSnapshot = userDocRef.get().get();
+
+                        if (userDocSnapshot.exists()) {
+                            String email = userDocSnapshot.getString("email");
+                            if (email != null) {
+                                emails.add(email);
+                            }
+                        }
+                    }
+
+                    // Send email notifications
+                    EmailSender emailSender = new EmailSender(); // Use the Mailgun email sender class
+                    for (String email : emails) {
+                        emailSender.sendEmail(email, "Event Notification: " + eventTitle,
+                                "You have RSVP'd for the event: " + eventTitle + ". Here are the details:\n\n" +
+                                        "Description: " + eventDocSnapshot.getString("description") + "\n" +
+                                        "Time: " + eventDocSnapshot.getString("time") + "\n" +
+                                        "Organizer: " + eventDocSnapshot.getString("organizer") + "\n\n" +
+                                        "We look forward to seeing you there!");
+                    }
+                } else {
+                    System.out.println("No users found in RSVP list for event: " + eventTitle);
+                }
+            } else {
+                System.out.println("Event with title " + eventTitle + " not found.");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error notifying users for event " + eventTitle + ": " + e.getMessage());
         }
     }
 }
