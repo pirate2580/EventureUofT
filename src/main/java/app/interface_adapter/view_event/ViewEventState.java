@@ -8,7 +8,8 @@ public class ViewEventState {
 
     public String getUsernameState() {return usernameState;}
 
-    public void setUsernameState(String usernameState) { this.usernameState = usernameState;}
+    public void setUsernameState(String usernameState) {
+        this.usernameState = usernameState;}
 
     public Event getViewEvent() {
         return this.event;

@@ -37,6 +37,8 @@ public class Main {
                 .addLoginView()
                 .addCreateEventView()
                 .addHomeView()
+                .addViewRSVPView()
+                .addViewRSVPUseCase()
                 .addFilterEventView()
                 .addViewEventView()
                 .addRegisterUseCase()

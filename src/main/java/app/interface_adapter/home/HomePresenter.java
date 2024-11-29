@@ -7,7 +7,10 @@ import app.interface_adapter.filter_event.FilterEventState;
 import app.interface_adapter.filter_event.FilterEventViewModel;
 import app.interface_adapter.login.LoginState;
 import app.interface_adapter.login.LoginViewModel;
+import app.interface_adapter.view_rsvp.ViewRSVPState;
+import app.interface_adapter.view_rsvp.ViewRSVPViewModel;
 import app.use_case.home.HomeOutputBoundary;
+import app.view.ViewRSVPView;
 
 /**
  * Take output data and turn it into raw strings
@@ -26,12 +29,14 @@ public class HomePresenter implements HomeOutputBoundary {
     private final LoginViewModel loginViewModel;
     private final CreateEventViewModel createEventViewModel;
     private final FilterEventViewModel filterEventViewModel;
+    private final ViewRSVPViewModel viewRSVPViewModel;
 
-    public HomePresenter(ViewManagerModel viewManagerModel, LoginViewModel loginViewModel, CreateEventViewModel createEventViewModel, FilterEventViewModel filterEventViewModel) {
+    public HomePresenter(ViewManagerModel viewManagerModel, LoginViewModel loginViewModel, CreateEventViewModel createEventViewModel, FilterEventViewModel filterEventViewModel, ViewRSVPViewModel viewRSVPViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loginViewModel = loginViewModel;
         this.createEventViewModel = createEventViewModel;
         this.filterEventViewModel = filterEventViewModel;
+        this.viewRSVPViewModel = viewRSVPViewModel;
     }
 
     @Override
@@ -57,7 +62,17 @@ public class HomePresenter implements HomeOutputBoundary {
         filterEventState.setUsernameState(loginState.getUsername());
         this.filterEventViewModel.firePropertyChanged();
         viewManagerModel.setState(filterEventViewModel.getViewName());
-        System.out.println(filterEventViewModel.getViewName());
+//        System.out.println(filterEventViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToViewRSVPView() {
+        final ViewRSVPState viewRSVPState = viewRSVPViewModel.getState();
+        final LoginState loginState = loginViewModel.getState();
+        viewRSVPState.setUsernameState(loginState.getUsername());
+        this.viewRSVPViewModel.firePropertyChanged();;
+        viewManagerModel.setState(viewRSVPViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 

@@ -4,9 +4,6 @@ import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.filter_event.FilterEventOutputData;
-import app.entity.Event.Event;
-import java.util.List;
-import app .view.FilterEventView;
 
 /**
  * The presenter for the Filter Event Use Case

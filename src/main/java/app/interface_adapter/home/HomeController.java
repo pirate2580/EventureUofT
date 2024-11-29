@@ -25,4 +25,5 @@ public class HomeController {
 
     public void switchToFilterEventView() {this.homeUseCaseInteractor.switchToFilterEventView(); }
 
+    public void switchToViewRSVPView() {this.homeUseCaseInteractor.switchToViewRSVPView(); }
 }

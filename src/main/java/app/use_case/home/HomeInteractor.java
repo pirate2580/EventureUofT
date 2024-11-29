@@ -25,4 +25,7 @@ public class HomeInteractor implements HomeInputBoundary{
     @Override
     public void switchToFilterEventView() {homePresenter.switchToFilterEventView();}
 
+    @Override
+    public void switchToViewRSVPView() {homePresenter.switchToViewRSVPView(); }
+
 }

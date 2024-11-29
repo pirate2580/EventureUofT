@@ -38,9 +38,13 @@ import app.interface_adapter.register.RegisterPresenter;
 import app.interface_adapter.register.RegisterViewModel;
 import app.interface_adapter.rsvp_event.RSVPController;
 import app.interface_adapter.rsvp_event.RSVPPresenter;
+import app.interface_adapter.rsvp_event.RSVPViewModel;
 import app.interface_adapter.view_event.ViewEventController;
 import app.interface_adapter.view_event.ViewEventPresenter;
 import app.interface_adapter.view_event.ViewEventViewModel;
+import app.interface_adapter.view_rsvp.ViewRSVPController;
+import app.interface_adapter.view_rsvp.ViewRSVPPresenter;
+import app.interface_adapter.view_rsvp.ViewRSVPViewModel;
 import app.use_case.create_event.EventInputBoundary;
 import app.use_case.create_event.EventInteractor;
 import app.use_case.display_event.DisplayEventInputBoundary;
@@ -70,6 +74,9 @@ import app.use_case.rsvp_event.RSVPEventOutputBoundary;
 import app.use_case.view_event.ViewEventInputBoundary;
 import app.use_case.view_event.ViewEventInteractor;
 import app.use_case.view_event.ViewEventOutputBoundary;
+import app.use_case.view_rsvp.ViewRSVPInputBoundary;
+import app.use_case.view_rsvp.ViewRSVPInteractor;
+import app.use_case.view_rsvp.ViewRSVPOutputBoundary;
 import app.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -103,6 +110,7 @@ public class AppBuilder {
     private FilterEventView filterEventView;
     private ViewEventView viewEventView;
     private ModifyEventView modifyEventView;
+    private ViewRSVPView viewRSVPView;
 
 
     private RegisterViewModel registerViewModel;
@@ -113,15 +121,13 @@ public class AppBuilder {
     private DisplayEventViewModel displayEventViewModel;
     private ModifyEventViewModel modifyEventViewModel;
     private ViewEventViewModel viewEventViewModel;
+    private ViewRSVPViewModel viewRSVPViewModel;
 
     EventFactory eventFactory = new CommonEventFactory();
     // function to create and add the register view to the card layout
 
 
-    private CreateEventController createEventController;
-    private DisplayEventController displayEventController;
     private ModifyEventController modifyEventController;
-    private RegisterController registerController;
 
     // ensure that you are using card layout
     public AppBuilder() {
@@ -220,6 +226,14 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewRSVPView() {
+        viewRSVPViewModel = new ViewRSVPViewModel();
+        viewRSVPView = new ViewRSVPView(viewRSVPViewModel);
+
+        cardPanel.add(viewRSVPView, viewRSVPView.getViewName());
+        return this;
+    }
+
     public AppBuilder addViewEventView() {
         viewEventViewModel = new ViewEventViewModel();
         viewEventView = new ViewEventView(viewEventViewModel);
@@ -245,6 +259,25 @@ public class AppBuilder {
         final ViewEventController viewEventController = new ViewEventController(viewEventInteractor);
         filterEventView.setFilterEventsController(filterEventController);
         filterEventView.setViewEventController(viewEventController);
+        return this;
+    }
+
+    public AppBuilder addViewRSVPUseCase() {
+        final ViewRSVPOutputBoundary viewRSVPOutputBoundary = new ViewRSVPPresenter(viewManagerModel,
+                viewRSVPViewModel, homeViewModel);
+        final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
+
+        final ViewRSVPInputBoundary viewRSVPInteractor = new ViewRSVPInteractor(
+                userDAO, viewRSVPOutputBoundary
+        );
+
+        final ViewEventInputBoundary viewEventInteractor = new ViewEventInteractor(
+                eventDAO, viewEventOutputBoundary
+        );
+
+        final ViewRSVPController viewRSVPController = new ViewRSVPController(viewRSVPInteractor);
+        viewRSVPView.setViewRSVPController(viewRSVPController);
+        viewRSVPView.setViewRSVPController(viewRSVPController);
         return this;
     }
 
@@ -311,7 +344,7 @@ public class AppBuilder {
     public AppBuilder addHomeUseCase() {
         final HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel,
                 loginViewModel,
-                createEventViewModel, filterEventViewModel);
+                createEventViewModel, filterEventViewModel, viewRSVPViewModel);
 
         final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
 
