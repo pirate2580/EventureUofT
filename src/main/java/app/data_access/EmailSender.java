@@ -43,11 +43,15 @@ public class EmailSender {
         OkHttpClient client = new OkHttpClient();
 
         RequestBody formBody = new FormBody.Builder()
-                .add("from", "Your App Name <noreply@sandbox9c50024e32714e008fc2b9c8a247a85a.mailgun.org>")
+                .add("from", "<noreply@sandbox" + API_BASE_URL.substring(36) + ">")
                 .add("to", recipientEmail)
                 .add("subject", subject)
                 .add("text", body)
                 .build();
+
+//        final String API_KEY = "60d782da6f7da87d6f8b53aa8ad91ee6-c02fd0ba-f1cc51a5";
+//        final String API_BASE_URL = "https://api.mailgun.net/v3/sandbox9800495778a04cb9af64d5a4074893dc.mailgun.org/messages";
+
 
         Request request = new Request.Builder()
                 .url(API_BASE_URL)
