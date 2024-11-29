@@ -313,10 +313,18 @@ public class AppBuilder {
                 loginViewModel,
                 createEventViewModel, filterEventViewModel);
 
+        final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
+
+
         final HomeInputBoundary homeInteractor = new HomeInteractor(homeOutputBoundary);
 
+        final ViewEventInputBoundary viewEventInteractor = new ViewEventInteractor(eventDAO, viewEventOutputBoundary);
+
         final HomeController homeController = new HomeController(homeInteractor);
+
+        final ViewEventController viewEventController = new ViewEventController(viewEventInteractor);
         homeView.setHomeController(homeController);
+        homeView.setViewEventController(viewEventController);
         return this;
     }
 

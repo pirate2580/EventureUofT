@@ -140,7 +140,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
     @Override
     public List<Event> findEvents(List<String> tags) {
         try {
-            System.out.println("I love what");
+//            System.out.println("I love what");
             CollectionReference eventsRef = eventCollection;
             ApiFuture<QuerySnapshot> future;
             if (!tags.isEmpty()) {
@@ -203,7 +203,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
             // Wait for the operation to complete
             WriteResult result = writeResult.get();
 
-            System.out.println("Event deleted at");
+//            System.out.println("Event deleted at");
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error deleting event from Firestore: " + e.getMessage());
         }
@@ -252,7 +252,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
                     );
                 }
             } else {
-                System.out.println("No event found with title: " + title);
+//                System.out.println("No event found with title: " + title);
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error viewing event from Firestore: " + e.getMessage());
