@@ -12,14 +12,25 @@ public class LoginInteractor implements LoginInputBoundary {
 
     @Override
     public void execute(LoginInputData loginInputData) {
+        if (loginInputData == null) {
+            throw new NullPointerException("LoginInputData cannot be null");
+        }
+
+        String username = loginInputData.getUsername();
+        String password = loginInputData.getPassword();
+
+        if (username == null || password == null) {
+            loginPresenter.prepareFailView("Username or password cannot be empty.");
+            return;
+        }
         User user = userDataAccessObject.findUserByUsername(loginInputData.getUsername());
         if (user == null) {
             loginPresenter.prepareFailView("Username does not exist.");
-        } else if (!user.getPassword().equals(loginInputData.getPassword())) {
+        } else if (!user.verifyPassword(password)) {
             loginPresenter.prepareFailView("Incorrect password.");
         } else {
             LoginOutputData outputData = new LoginOutputData(user.getUsername(), true);
-            loginPresenter.prepareSuccessView(outputData, "user logged in successfully");
+            loginPresenter.prepareSuccessView(outputData, "User logged in successfully.");
         }
     }
     @Override
