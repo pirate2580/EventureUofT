@@ -10,16 +10,6 @@ public interface RSVPEventUserDataAccessInterface {
      * @return The Event object if found, null otherwise.
      */
 
-    Event findEventById(String eventId);
-    /**
-     * Finds a user by their username.
-     * @param username The username of the user to find.
-     * @return The User object if found, null otherwise.
-     */
-
-    User findUserByUsername(String username);
+    void addUserToRSVPList(String username, String eventId);
     //Adds a user to an event's attendees list.
-
-    void addUserToEvent(User user, Event event);
-    // TODO: Plz check this method if competent after Integration of Google API.
 }

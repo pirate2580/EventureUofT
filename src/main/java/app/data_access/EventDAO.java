@@ -5,6 +5,7 @@ import app.entity.User.CommonUserFactory;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
 import app.use_case.modify_event.ModifyEventUserDataAccessInterface;
 import app.use_case.display_event.DisplayEventDataAccessInterface;
+import app.use_case.rsvp_event.RSVPEventUserDataAccessInterface;
 import app.use_case.view_event.ViewEventInputData;
 import app.use_case.view_event.ViewEventUserDataAccessInterface;
 import com.google.api.core.ApiFuture;
@@ -37,7 +38,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface, RSVPEventUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -139,7 +140,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
     @Override
     public List<Event> findEvents(List<String> tags) {
         try {
-            System.out.println("I love what");
+//            System.out.println("I love what");
             CollectionReference eventsRef = eventCollection;
             ApiFuture<QuerySnapshot> future;
             if (!tags.isEmpty()) {
@@ -202,7 +203,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
             // Wait for the operation to complete
             WriteResult result = writeResult.get();
 
-            System.out.println("Event deleted at");
+//            System.out.println("Event deleted at");
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error deleting event from Firestore: " + e.getMessage());
         }
@@ -251,7 +252,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
                     );
                 }
             } else {
-                System.out.println("No event found with title: " + title);
+//                System.out.println("No event found with title: " + title);
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error viewing event from Firestore: " + e.getMessage());
@@ -259,5 +260,32 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
 
         // Return null if no event is found or an error occurs
         return null;
+    }
+
+    @Override
+    public void addUserToRSVPList(String username, String eventId) {
+        try {
+            // Reference to the event document
+            DocumentReference eventDocRef = eventCollection.document(eventId);
+
+            // Add the username to the RSVP list in the event document
+            ApiFuture<WriteResult> eventWriteResult = eventDocRef.update("rsvpList", com.google.cloud.firestore.FieldValue.arrayUnion(username));
+            eventWriteResult.get(); // Wait for operation to complete
+
+            System.out.println("User " + username + " added to RSVP list for event: " + eventId);
+
+            // Reference to the user document in the "Users" collection
+            CollectionReference userCollection = db.collection("Users");
+            DocumentReference userDocRef = userCollection.document(username);
+
+            // Add the event ID to the RSVPEvents array in the user document
+            ApiFuture<WriteResult> userWriteResult = userDocRef.update("RSVPEvents", com.google.cloud.firestore.FieldValue.arrayUnion(eventId));
+            userWriteResult.get(); // Wait for operation to complete
+
+            System.out.println("Event " + eventId + " added to RSVPEvents list for user: " + username);
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error adding user to RSVP list and updating RSVPEvents: " + e.getMessage());
+        }
     }
 }

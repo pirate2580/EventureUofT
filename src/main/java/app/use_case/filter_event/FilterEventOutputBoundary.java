@@ -13,4 +13,6 @@ public interface FilterEventOutputBoundary {
      * @param errorMessage The explanation of the failure.
      */
     void prepareFailView(String errorMessage);
+
+    void switchToHomeView();
 }

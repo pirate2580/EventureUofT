@@ -65,9 +65,9 @@ public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAc
         try {
             DocumentReference docRef = usersCollection.document(user.getUsername());
             WriteResult result = docRef.set(userData).get();
-            System.out.println("User saved at: " + result.getUpdateTime());
+//            System.out.println("User saved at: " + result.getUpdateTime());
         } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error saving user to Firestore: " + e.getMessage());
+//            System.err.println("Error saving user to Firestore: " + e.getMessage());
         }
     }
 

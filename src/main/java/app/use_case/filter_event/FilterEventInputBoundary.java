@@ -4,4 +4,5 @@ public interface FilterEventInputBoundary {
     // @param filterEventInputData containing event filter criteria.
 
     void execute(FilterEventInputData filterEventInputData);
+    void switchToHomeView();
 }
