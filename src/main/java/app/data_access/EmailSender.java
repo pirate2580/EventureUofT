@@ -1,14 +1,37 @@
 package app.data_access;
 
 import okhttp3.*;
-import org.json.JSONObject;
-
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class EmailSender {
-    private static final String API_BASE_URL = "https://api.mailgun.net/v3/sandbox9c50024e32714e008fc2b9c8a247a85a.mailgun.org/messages";
+    private static final String ENV_FILE_PATH = "private/.env";
+    private static final String API_KEY;
+    private static final String API_BASE_URL;
 
-    private static final String API_KEY = "166c053debe0fa7a91d668be6cf4b4b1-c02fd0ba-b0e3a531";
+    // Static block to load environment variables from the .env file
+    static {
+        String apiKey = null;
+        String apiBaseUrl = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(ENV_FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("API_KEY=")) {
+                    apiKey = line.substring("API_KEY=".length()).trim();
+                } else if (line.startsWith("API_BASE_URL=")) {
+                    apiBaseUrl = line.substring("API_BASE_URL=".length()).trim();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading .env file: " + e.getMessage());
+        }
+
+        API_KEY = apiKey;
+        API_BASE_URL = apiBaseUrl;
+    }
+
     /**
      * Sends an email using Mailgun.
      *
