@@ -46,7 +46,7 @@ Because this design principle focuses mostly on the user being able to physicall
 program, their posture, and the amount of space they have while using it, it is inapplicable to our project because our project is purely 
 software based and will not have any physical components for the user to reach/touch/need space to access.
 
-### Who this program is marketed to:
+## Who this program is marketed to:
 
 This program is marketed towards students and faculty members of the University of Toronto who want to create, modify, or RSVP to events that are happening on campus. Of course, the user base could be more than only UofT students and staff and include those who just want to attend UofT events. The reason that this is marketed towards students and faculty members of UofT is because the focus of the application is to serve as an event hub for the University, with a large
 focus on the school's campus, which is achieved by introducing an interactive map centered at the University of Toronto's campus. Because school and work can be very fast paced, this program can help students keep track of what events are happening,
