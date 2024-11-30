@@ -20,4 +20,13 @@ public interface ModifyEventUserDataAccessInterface {
      * @param eventName the name of the event to delete.
      */
     public void deleteEvent(String eventName);
+
+
+    /**
+     * Function to get an event by its ID from the Firebase Database.
+     *
+     * @param eventId, the event we want to save.
+     */
+
+    public Event getEventById(String eventId);
 }
