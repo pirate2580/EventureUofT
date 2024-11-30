@@ -128,4 +128,26 @@ public class CommonEvent implements Event {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    // Setter for organizer
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    @Override
+    public boolean isFull() {
+        return attendeesIdList.size() >= capacity;
+    }
+
+    // Method to add an attendee
+    public void addAttendee(User user) {
+        if (!isFull() && !attendeesIdList.contains(user)) {
+            attendeesIdList.add(user);
+        }
+    }
+
 }

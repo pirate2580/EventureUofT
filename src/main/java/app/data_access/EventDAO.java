@@ -288,4 +288,65 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
             System.err.println("Error adding user to RSVP list and updating RSVPEvents: " + e.getMessage());
         }
     }
+
+
+    private List<String> getTags(Object rawTags) {
+        if (rawTags instanceof List<?>) {
+            List<?> rawList = (List<?>) rawTags;
+            List<String> tags = new ArrayList<>();
+            for (Object tag : rawList) {
+                if (tag instanceof String) {
+                    tags.add((String) tag);
+                }
+            }
+            return tags;
+        }
+        return new ArrayList<>();
+    }
+
+
+    @Override
+    public Event getEventById(String eventId) {
+        try {
+            DocumentReference docRef = eventCollection.document(eventId);
+
+            ApiFuture<DocumentSnapshot> future = docRef.get();
+
+            DocumentSnapshot document = future.get();
+
+            if (document.exists()) {
+                Map<String, Object> data = document.getData();
+
+                if (data != null) {
+                    String organizer = (String) data.get("organizer");
+                    String title = (String) data.get("title");
+                    String description = (String) data.get("description");
+                    String time = (String) data.get("time");
+                    Long capacityLong = (Long) data.get("capacity");
+                    int capacity = capacityLong != null ? capacityLong.intValue() : 0;
+                    Double latitudeLong = (Double) data.get("latitude");
+                    float latitude = latitudeLong != null ? latitudeLong.floatValue() : 0.0f;
+                    Double longitudeLong = (Double) data.get("longitude");
+                    float longitude = longitudeLong != null ? longitudeLong.floatValue() : 0.0f;
+                    List<String> tags = getTags(data.get("tags"));
+
+                    return new CommonEvent(
+                            eventId,
+                            organizer,
+                            title,
+                            description,
+                            time,
+                            capacity,
+                            latitude,
+                            longitude,
+                            tags
+                    );
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error retrieving event from Firestore: " + e.getMessage());
+        }
+
+        return null;
+    }
 }
