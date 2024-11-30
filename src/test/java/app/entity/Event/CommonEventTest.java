@@ -55,15 +55,20 @@ public class CommonEventTest {
         event.setDescription("New Description");
         event.setDateTime("2024-12-01T12:00");
         event.setCapacity(200);
+        event.setTags(List.of("Gaming"));
+        event.setOrganizer("A");
         event.setLatitude(45.0f);
         event.setLongitude(-80.0f);
 
         assertEquals("New Title", event.getTitle());
+        assertEquals("A", event.getOrganizer());
         assertEquals("New Description", event.getDescription());
         assertEquals("2024-12-01T12:00", event.getDateTime());
         assertEquals(200, event.getCapacity());
         assertEquals(45.0f, event.getLatitude());
         assertEquals(-80.0f, event.getLongitude());
+        assertEquals(List.of("Gaming"), event.getTags());
+        assertEquals(false, event.isFull());
     }
 
     @Test
@@ -91,4 +96,24 @@ public class CommonEventTest {
         assertEquals(1, event.getAttendeesIdList().size());
         assertEquals(user, event.getAttendeesIdList().get(0));
     }
+
+    @Test
+    void testAddAttendee() {
+        CommonUser user = new CommonUser("username1", "email1", "password1");
+
+        assertTrue(event.getAttendeesIdList().isEmpty());
+        event.addAttendee(user);
+
+        assertEquals(1, event.getAttendeesIdList().size());
+        assertEquals(user, event.getAttendeesIdList().get(0));
+
+        event.addAttendee(user);
+        assertEquals(1, event.getAttendeesIdList().size());
+
+        event.setCapacity(1);
+        CommonUser user2 = new CommonUser("username2", "email2", "password2");
+        event.addAttendee(user2); // This should not add the user as the event is full
+        assertEquals(1, event.getAttendeesIdList().size());
+    }
+
 }
