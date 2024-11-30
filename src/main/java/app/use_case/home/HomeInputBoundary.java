@@ -7,5 +7,7 @@ public interface HomeInputBoundary {
     void switchToLoginView();
     void switchtoCreateEventView();
     void switchToFilterEventView();
-//    void switchToEventView();
+    void switchToViewRSVPView();
+
+    void switchToViewCreatedEventsView();
 }

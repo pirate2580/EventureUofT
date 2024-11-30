@@ -24,13 +24,10 @@ public class ViewEventPresenter implements ViewEventOutputBoundary {
         final ViewEventState viewEventState = viewEventViewModel.getState();
         final HomeState homeState = homeViewModel.getState();
         viewEventState.setUsernameState(homeState.getUsernameState());
-        this.viewEventViewModel.firePropertyChanged();;
+        this.viewEventViewModel.firePropertyChanged();
 
         viewManagerModel.setState(viewEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
-
-//        System.out.println("sigma patrick bateman clown");
-//        System.out.println(viewEventState.getUsernameState());
 
         viewEventState.setViewEvent(outputData.getEvent());
         this.viewEventViewModel.setState(viewEventState);

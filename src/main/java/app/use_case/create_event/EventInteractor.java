@@ -42,7 +42,7 @@ public class EventInteractor implements EventInputBoundary {
         if (event == null) {
             throw new IllegalStateException("EventFactory returned null check your input or factory implementation.");
         }
-        eventDataAccessObject.saveEvent(event);
+        eventDataAccessObject.saveEvent(eventInputData.getUsernameState(), event);
         final EventOutputData eventOutputData = new EventOutputData(event.getTitle(), false);
         eventPresenter.prepareSuccessView(eventOutputData);
     }

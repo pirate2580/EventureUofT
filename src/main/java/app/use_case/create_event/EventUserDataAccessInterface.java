@@ -13,6 +13,6 @@ public interface EventUserDataAccessInterface {
      * Saves the event to the database
      * @param event to save onto the database
      */
-    void saveEvent(Event event);
+    void saveEvent(String usernameState, Event event);
 
 }

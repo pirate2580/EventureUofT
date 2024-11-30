@@ -1,8 +1,5 @@
 package app.use_case.rsvp_event;
 
-import app.entity.Event.Event;
-import app.entity.User.User;
-
 public class RSVPEventInteractor implements RSVPEventInputBoundary {
     private final RSVPEventUserDataAccessInterface rsvpEventDataAccessObject;
     private final RSVPEventOutputBoundary rsvpEventPresenter;
