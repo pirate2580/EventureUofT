@@ -35,7 +35,7 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         this.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // Add "EventureUofT" heading
-        JLabel titleLabel = new JLabel("EventureUofT", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("EventHiveUofT", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setForeground(Color.decode("#2E4C34"));

@@ -1,6 +1,7 @@
 package app.entity.User;
 import app.entity.Event.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 // TODO: is this clean architecture for entities to rely on another?
@@ -127,4 +128,11 @@ public class CommonUser implements User{
         return Objects.equals(this.password, providedPassword);
     }
 
+    public void setRsvpedEvents(ArrayList<Event> rsvpedEvents) {
+        this.rsvpedEvents = rsvpedEvents;
+    }
+
+    public void setCreatedEvents(ArrayList<Event> createdEvents) {
+        this.createdEvents = createdEvents;
+    }
 }
