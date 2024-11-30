@@ -15,6 +15,11 @@ public class ViewEventInteractor implements ViewEventInputBoundary {
 
     @Override
     public void execute(ViewEventInputData viewEventInputData) {
+        if (viewEventInputData == null || viewEventInputData.getTitle() == null) {
+            viewEventPresenter.prepareFailView("Event title cannot be null.");
+            return;
+        }
+
         Event event = eventDataAccessObject.viewEvent(viewEventInputData.getTitle());
         // guaranteed to be successful by the way its implemented, this usecase is related to a button on an event
         // in the UI

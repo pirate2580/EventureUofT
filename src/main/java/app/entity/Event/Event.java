@@ -69,11 +69,16 @@ public interface Event {
      */
     public List<String> getTags();
 
+
+    boolean isFull();
+
     void setTitle(String title);
     void setDescription(String description);
     void setDateTime(String dateTime);
     void setCapacity(int capacity);
     void setLatitude(float latitude);
     void setLongitude(float longitude);
+    void setTags(List<String> tags);
+    void setOrganizer(String organizer);
 
 }

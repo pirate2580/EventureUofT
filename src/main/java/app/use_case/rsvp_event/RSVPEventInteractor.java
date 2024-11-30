@@ -12,6 +12,16 @@ public class RSVPEventInteractor implements RSVPEventInputBoundary {
 
     @Override
     public void execute(RSVPEventInputData rsvpEventInputData) {
+        if (rsvpEventInputData.getUsername() == null) {
+            rsvpEventPresenter.prepareFailView("Username cannot be null.");
+            return;
+        }
+
+        if (rsvpEventInputData.getEventId() == null) {
+            rsvpEventPresenter.prepareFailView("Event ID cannot be null.");
+            return;
+        }
+
         rsvpEventDataAccessObject.addUserToRSVPList(rsvpEventInputData.getUsername(), rsvpEventInputData.getEventId());
         rsvpEventPresenter.prepareSuccessView(new RSVPEventOutputData(rsvpEventInputData.getUsername(),
                 rsvpEventInputData.getEventId()));

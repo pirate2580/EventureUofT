@@ -19,6 +19,10 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
 
     @Override
     public void execute(FilterEventInputData filterEventInputData) {
+        if (filterEventInputData == null || filterEventInputData.getTags() == null) {
+            filterEventPresenter.prepareFailView("Please provide a valid filter event");
+            return;
+        }
         // Retrieve events based on the provided criteria.
 //        System.out.println(filterEventDataAccessObject);
         List<Event> filteredEvents = filterEventDataAccessObject.findEvents(filterEventInputData.getTags());

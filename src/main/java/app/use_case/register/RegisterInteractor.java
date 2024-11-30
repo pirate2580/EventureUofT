@@ -31,6 +31,11 @@ public class RegisterInteractor implements RegisterInputBoundary {
 
     @Override
     public void execute(RegisterInputData registerInputData) {
+        if (registerInputData == null) {
+            userPresenter.prepareFailView("Register input data cannot be null.");
+            return;
+        }
+
         if (userDataAccessObject.existsByUsername(registerInputData.getUsername())) { // TODO: change it so it uses the DB
             userPresenter.prepareFailView("Username already exists.");
         }
