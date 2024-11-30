@@ -14,10 +14,13 @@ import java.util.*;
 import app.interface_adapter.display_event.DisplayEventController;
 import app.interface_adapter.home.HomeController;
 import app.interface_adapter.home.HomeViewModel;
+import app.interface_adapter.view_event.ViewEventState;
+import app.interface_adapter.view_rsvp.ViewRSVPController;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.*;
 import java.awt.geom.Point2D;
 import app.interface_adapter.view_event.ViewEventController;
+import app.interface_adapter.view_rsvp.ViewRSVPController;
 
 public class HomeView extends JPanel implements PropertyChangeListener {
 
@@ -42,6 +45,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton logOutButton;
     private final JButton filterButton;
     private final JButton createEventButton;
+    private final JButton viewRSVPButton;
+    private final JButton viewCreatedButton;
 
     // Double declaring the zoom level, which is adjusted later in the code
     private double ZOOM_LEVEL;
@@ -67,6 +72,9 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         logOutButton = createButton("Log out", evt -> handleLogoutAction());
         filterButton = createButton("Filter", evt -> handleFilterAction());
         createEventButton = createButton("Create event", evt -> handleEventAction());
+        viewRSVPButton = createButton("View RSVP", evt -> handleViewRSVPAction());
+        viewCreatedButton = createButton("View Created", evt -> handleViewCreatedEvents());
+
 
         // Set panel layout
         setLayout(new BorderLayout());
@@ -81,6 +89,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * @param parentPanel .
      * */
     public void setParentPanel(JPanel parentPanel) {
+
         this.parentPanel = parentPanel;
     }
 
@@ -102,6 +111,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         sidebar.add(logOutButton);
         sidebar.add(createEventButton);
         sidebar.add(filterButton);
+        sidebar.add(viewRSVPButton);
+        sidebar.add(viewCreatedButton);
 
         // Set the sidebar to be at the screen's left
         add(sidebar, BorderLayout.WEST);
@@ -365,6 +376,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         homeController.switchToFilterEventView();
     }
 
+    private void handleViewRSVPAction() {
+        homeController.switchToViewRSVPView();
+    }
+
+    private void handleViewCreatedEvents() {
+        homeController.switchToViewCreatedEventsView();
+    }
+
     /**
      * Function to navigate from this screen to a different screen
      * using the name of the new screen.
@@ -425,5 +444,4 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     public void setViewEventController(ViewEventController controller) {
         this.viewEventController = controller;
     }
-
 }

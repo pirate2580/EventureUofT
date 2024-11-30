@@ -1,6 +1,7 @@
 package app.data_access;
 
 import app.entity.User.CommonUserFactory;
+import app.use_case.view_rsvp.ViewRSVPDataAccessInterface;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -31,7 +32,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAccessInterface, ModifyUserDataAccessInterface{
+public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAccessInterface, ModifyUserDataAccessInterface, ViewRSVPDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference usersCollection;
@@ -190,6 +191,26 @@ public class UserDAO implements RegisterUserDataAccessInterface, LoginUserDataAc
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error updating user in Firestore: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public List<String> getRSVPEvents(String username) {
+        try {
+            // Directly retrieve the RSVPEvents field for the given username
+            DocumentReference docRef = usersCollection.document(username);
+
+            // Get the document snapshot
+            DocumentSnapshot snapshot = docRef.get().get();
+
+            // Assume username exists, retrieve RSVPEvents field
+            List<String> rsvpEvents = (List<String>) snapshot.get("RSVPEvents");
+
+            // Return the RSVP events or an empty list if RSVPEvents is null
+            return rsvpEvents != null ? rsvpEvents : new ArrayList<>();
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error retrieving RSVP events for user: " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 }

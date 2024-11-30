@@ -8,6 +8,7 @@ import java.util.List;
  * will prepare data one triggered
  */
 public class EventInputData {
+    private String usernameState;
     private String title;
     private String description;
     private String dateTime;
@@ -33,8 +34,9 @@ public class EventInputData {
      * @param eventId
      * @param organizer
      */
-    public EventInputData(String eventId, String organizer, String title, String description, String dateTime, int capacity, float latitude,
+    public EventInputData(String usernameState, String eventId, String organizer, String title, String description, String dateTime, int capacity, float latitude,
                           float longitude, List<String> tags) {
+        this.usernameState = usernameState;
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;
@@ -45,6 +47,8 @@ public class EventInputData {
         this.eventId = eventId;
         this.organizer = organizer;
     }
+
+    public String getUsernameState() {return this.usernameState;}
 
     public String getTitle() {
         return title;

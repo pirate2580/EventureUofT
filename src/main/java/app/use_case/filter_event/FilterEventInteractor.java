@@ -20,7 +20,7 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
     @Override
     public void execute(FilterEventInputData filterEventInputData) {
         // Retrieve events based on the provided criteria.
-        System.out.println(filterEventDataAccessObject);
+//        System.out.println(filterEventDataAccessObject);
         List<Event> filteredEvents = filterEventDataAccessObject.findEvents(filterEventInputData.getTags());
         final FilterEventOutputData filterEventOutputData = new FilterEventOutputData(filteredEvents);
 //        for (Event event: filteredEvents){

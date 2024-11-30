@@ -29,9 +29,9 @@ public class CreateEventController {
      * @param eventId
      * @param organizer
      */
-    public void execute(String title, String description, String dateTime, int capacity, float latitude,
+    public void execute(String usernameState, String title, String description, String dateTime, int capacity, float latitude,
                         float longitude, List<String> tags, String eventId, String organizer) {
-        final EventInputData eventInputData = new EventInputData( eventId, organizer,
+        final EventInputData eventInputData = new EventInputData( usernameState, eventId, organizer,
                 title, description, dateTime, capacity, latitude, longitude, tags);
 
         this.userEventUseCaseInteractor.execute(eventInputData);

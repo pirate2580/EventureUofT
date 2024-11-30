@@ -1,4 +1,5 @@
 /private/serviceAccount.json
+/private/.env
 /target
 
 # Ignore all .DS_Store files
