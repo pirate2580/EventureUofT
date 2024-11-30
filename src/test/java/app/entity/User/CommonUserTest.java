@@ -18,7 +18,7 @@ public class CommonUserTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize a CommonUser and sample events
+
         user = new CommonUser("testuser", "test@example.com", "password123");
         user.setRsvpedEvents(new ArrayList<>());
         user.setCreatedEvents(new ArrayList<>());
@@ -51,13 +51,22 @@ public class CommonUserTest {
 
     @Test
     void testSetEmail() {
-        user.setEmail("newemail@example.com");
+        String email = "newemail@example.com";
+        user.setEmail(email);
+        System.out.println("setEmail called with: " + email); // Debugging
         assertEquals("newemail@example.com", user.getEmail());
+    }
+
+    @Test
+    void testSetEmailNull() {
+        user.setEmail(null);
+        assertNull(user.getEmail());
     }
 
     @Test
     void testSetPassword() {
         user.setPassword("newpassword123");
+        System.out.println("Test " + user.getPassword()); // Debugging
         assertEquals("newpassword123", user.getPassword());
     }
 
@@ -78,10 +87,66 @@ public class CommonUserTest {
     void testRemoveRsvpedEvent() {
         user.addRsvpedEvent(event1);
         user.addRsvpedEvent(event2);
-        user.removeRsvpedEvent(event1);
+
+        user.removeRsvpedEvent(event1); // Remove an existing event
         assertEquals(1, user.getRsvpedEvents().size());
         assertFalse(user.getRsvpedEvents().contains(event1));
+        assertTrue(user.getRsvpedEvents().contains(event2));
     }
+
+    @Test
+    void testRemoveRsvpedEventNonExistent() {
+        user.addRsvpedEvent(event1);
+
+        user.removeRsvpedEvent(event2); // Attempt to remove an event that doesn't exist
+        assertEquals(1, user.getRsvpedEvents().size());
+        assertTrue(user.getRsvpedEvents().contains(event1));
+        assertFalse(user.getRsvpedEvents().contains(event2));
+    }
+
+    @Test
+    void testRemoveRsvpedEventNull() {
+        user.addRsvpedEvent(event1);
+        assertEquals(1, user.getRsvpedEvents().size());
+        assertTrue(user.getRsvpedEvents().contains(event1));
+    }
+
+    @Test
+    void testRemoveRsvpedEventFromEmptyList() {
+        assertTrue(user.getRsvpedEvents().isEmpty());
+
+        user.removeRsvpedEvent(event1); // Attempt to remove an event from an empty list
+        assertTrue(user.getRsvpedEvents().isEmpty()); // List should remain empty
+    }
+
+    @Test
+    void testRemoveCreatedEventNull() {
+        user.addCreatedEvent(event1);
+        assertEquals(1, user.getCreatedEvents().size());
+        assertTrue(user.getCreatedEvents().contains(event1));
+    }
+
+
+    @Test
+    void testRemoveCreatedEventWithDuplicates() {
+        user.addCreatedEvent(event1);
+        user.addCreatedEvent(event1); // Add the same event twice
+
+        user.removeCreatedEvent(event1); // Remove one instance of the event
+        assertEquals(1, user.getCreatedEvents().size());
+        assertTrue(user.getCreatedEvents().contains(event1)); // The other instance should remain
+    }
+
+    @Test
+    void testRemoveRsvpedEventDuplicateEntries() {
+        user.addRsvpedEvent(event1);
+        user.addRsvpedEvent(event1); // Add the same event twice
+
+        user.removeRsvpedEvent(event1); // Remove one instance
+        assertEquals(1, user.getRsvpedEvents().size());
+        assertTrue(user.getRsvpedEvents().contains(event1)); // The other instance should remain
+    }
+
 
     @Test
     void testAddCreatedEvent() {
@@ -106,6 +171,67 @@ public class CommonUserTest {
 
     @Test
     void testEmptyCreatedEvents() {
+        assertTrue(user.getCreatedEvents().isEmpty());
+    }
+
+    // Additional tests for edge cases
+
+    @Test
+    void testRemoveNonExistentRsvpedEvent() {
+        user.addRsvpedEvent(event1);
+        user.removeRsvpedEvent(event2); // event2 is not in the list
+        assertEquals(1, user.getRsvpedEvents().size());
+        assertTrue(user.getRsvpedEvents().contains(event1));
+    }
+
+    @Test
+    void testRemoveNonExistentCreatedEvent() {
+        user.addCreatedEvent(event1);
+        user.removeCreatedEvent(event2); // event2 is not in the list
+        assertEquals(1, user.getCreatedEvents().size());
+        assertTrue(user.getCreatedEvents().contains(event1));
+    }
+
+    @Test
+    void testSetRsvpedEvents() {
+        List<Event> newRsvpedEvents = new ArrayList<>();
+        newRsvpedEvents.add(event1);
+        newRsvpedEvents.add(event2);
+        user.setRsvpedEvents(new ArrayList<>(newRsvpedEvents));
+        assertEquals(newRsvpedEvents.size(), user.getRsvpedEvents().size());
+    }
+
+    @Test
+    void testSetCreatedEvents() {
+        List<Event> newCreatedEvents = new ArrayList<>();
+        newCreatedEvents.add(event1);
+        newCreatedEvents.add(event2);
+        user.setCreatedEvents(new ArrayList<>(newCreatedEvents));
+        assertEquals(newCreatedEvents.size(), user.getCreatedEvents().size());
+    }
+
+    @Test
+    void testSetRsvpedEventsEmptyList() {
+        ArrayList<Event> emptyList = new ArrayList<>();
+        user.setRsvpedEvents(emptyList);
+        assertTrue(user.getRsvpedEvents().isEmpty());
+    }
+
+
+    @Test
+    void testSetCreatedEventsEmptyList() {
+        ArrayList<Event> emptyList = new ArrayList<>();
+        user.setCreatedEvents(emptyList);
+        assertTrue(user.getCreatedEvents().isEmpty());
+    }
+
+
+
+    @Test
+    void testRemoveCreatedEventEmptyList() {
+        // Test removing an event from an empty list
+        assertTrue(user.getCreatedEvents().isEmpty());
+        user.removeCreatedEvent(event1); // Should do nothing, no exception expected
         assertTrue(user.getCreatedEvents().isEmpty());
     }
 }
