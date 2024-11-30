@@ -10,4 +10,6 @@ public interface HomeInputBoundary {
     void switchToViewRSVPView();
 
     void switchToViewCreatedEventsView();
+
+    void switchToModifyEventView();
 }

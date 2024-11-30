@@ -3,17 +3,17 @@ package app.use_case.modify_event;
 import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModifyEventInteractor implements ModifyEventInputBoundary {
     private final ModifyEventUserDataAccessInterface modifyEventUserDataAccessObject;
     private final ModifyEventOutputBoundary modifyEventPresenter;
-    private final EventFactory eventFactory;
 
     public ModifyEventInteractor(ModifyEventUserDataAccessInterface modifyEventUserDataAccessObject,
-                                 ModifyEventOutputBoundary modifyEventPresenter,
-                                 EventFactory eventFactory) {
+                                 ModifyEventOutputBoundary modifyEventPresenter) {
         this.modifyEventUserDataAccessObject = modifyEventUserDataAccessObject;
         this.modifyEventPresenter = modifyEventPresenter;
-        this.eventFactory = eventFactory;
     }
 
     @Override
@@ -32,6 +32,11 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
         }
     }
 
+    @Override
+    public void switchToHomeView() {
+        modifyEventPresenter.switchToHomeView();
+    }
+
     private void handleDeleteEvent(String eventName) {
         try {
             modifyEventUserDataAccessObject.deleteEvent(eventName);
@@ -44,29 +49,24 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
 
     private void handleUpdateEvent(ModifyEventInputData modifyEventInputData) {
         try {
-            Event existingEvent = modifyEventUserDataAccessObject.getEventById(modifyEventInputData.getEventId());
 
-            if (existingEvent == null) {
-                modifyEventPresenter.prepareFailView("Event not found for updating.");
-                return;
-            }
-
+            Map<String, Object> updatedFields = new HashMap<>();
             // Update the event's fields with the new values
-            existingEvent.setTitle(modifyEventInputData.getUpdatedTitle());
-            existingEvent.setDescription(modifyEventInputData.getUpdatedDescription());
-            existingEvent.setDateTime(modifyEventInputData.getUpdatedDateTime());
-            existingEvent.setCapacity(modifyEventInputData.getUpdatedCapacity());
-            existingEvent.setLatitude(modifyEventInputData.getUpdatedLatitude());
-            existingEvent.setLongitude(modifyEventInputData.getUpdatedLongitude());
-            existingEvent.setTags(modifyEventInputData.getUpdatedTags());
-            existingEvent.setOrganizer(modifyEventInputData.getUpdatedOrganizer());
+            updatedFields.put("title", modifyEventInputData.getUpdatedTitle());
+            updatedFields.put("description", modifyEventInputData.getUpdatedDescription());
+            updatedFields.put("time", modifyEventInputData.getUpdatedDateTime());
+            updatedFields.put("capacity", modifyEventInputData.getUpdatedCapacity());
+            updatedFields.put("latitude", modifyEventInputData.getUpdatedLatitude());
+            updatedFields.put("longitude", modifyEventInputData.getUpdatedLongitude());
+            updatedFields.put("tags", modifyEventInputData.getUpdatedTags());
+            updatedFields.put("organizer", modifyEventInputData.getUpdatedOrganizer());
 
             try {
-                modifyEventUserDataAccessObject.saveEvent(existingEvent);
+                modifyEventUserDataAccessObject.modifyEvent(modifyEventInputData.getOldTitle(), updatedFields);
 
                 ModifyEventOutputData outputData = new ModifyEventOutputData(
-                        existingEvent.getEventId(),
-                        existingEvent.getTitle(),
+                        modifyEventInputData.getEventId(),
+                        modifyEventInputData.getUpdatedTitle(),
                         "Event updated successfully."
                 );
                 modifyEventPresenter.prepareSuccessView(outputData);

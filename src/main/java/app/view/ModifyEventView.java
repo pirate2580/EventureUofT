@@ -4,6 +4,7 @@ package app.view;
 import app.interface_adapter.modify_event.ModifyEventController;
 import app.interface_adapter.modify_event.ModifyEventState;
 import app.interface_adapter.modify_event.ModifyEventViewModel;
+import app.interface_adapter.view_event.ViewEventController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,10 +30,9 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
     private ModifyEventController modifyEventController;
     private JPanel parentPanel;
 
-    public ModifyEventView(ModifyEventViewModel modifyEventViewModel, ModifyEventController controller) {
+    public ModifyEventView(ModifyEventViewModel modifyEventViewModel) {
         this.modifyEventViewModel = modifyEventViewModel;
         this.modifyEventViewModel.addPropertyChangeListener(this);
-        this.modifyEventController = controller;
 
         // Configure the layout
         this.setLayout(new BorderLayout());
@@ -240,7 +240,7 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
                     currentState.getDeleteEvent(), currentState.getTags(), "TMP", currentState.getOrganizer());
             System.out.println("Event created!");
         } else if (e.getSource() == homeButton) {
-            navigateTo("Home");
+            goToHome();
             System.out.println("Went home!");
         } else if (e.getSource() == deleteEventCheckbox) {
             updateState("DeleteEvent"); // Ensure the state is updated when the checkbox is toggled
@@ -272,28 +272,7 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
         this.modifyEventController = controller;
     }
 
-    /**
-     * Function to navigate from this screen to a different screen
-     * using the name of the new screen.
-     * @param viewName the name of the view you want to navigate to
-     * */
-    public void navigateTo(String viewName) {
-        // Check if the parentPanel is valid for debugging purposes
-        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
-            // Debug statement in console:
-            System.out.println("Navigating to: " + viewName);
 
-            CardLayout layout = (CardLayout) parentPanel.getLayout();
-            layout.show(parentPanel, viewName);
-
-            // Revalidate and redraw the parent panel after you navigate to it
-            parentPanel.revalidate();
-            parentPanel.repaint();
-        } else {
-            // Console error statement if the navigation doesn't work
-            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
-        }
-    }
     private JButton createHomeButton() {
         JButton button = new JButton("Home");
         button.setFont(new Font("Arial", Font.BOLD, 14));
@@ -303,5 +282,8 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
+    }
+    private void goToHome() {
+        modifyEventController.switchToHomeView();
     }
 }

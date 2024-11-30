@@ -4,4 +4,5 @@ public interface ModifyEventOutputBoundary {
 
     void prepareSuccessView(ModifyEventOutputData outputData);
     void prepareFailView(String errorMessage);
+    void switchToHomeView();
 }
