@@ -15,7 +15,7 @@ public class NotifyUserInteractor implements NotifyUserInputBoundary {
         // Send notifications to RSVPed users for the given event
         notifyUserDataAccessInterface.notifyUsers(notifyUserInputData.getEventName());
 
-        NotifyUserOutputData notifyUserOutputData = new NotifyUserOutputData("notifcation sent");
+        NotifyUserOutputData notifyUserOutputData = new NotifyUserOutputData("notification sent");
         // Prepare and pass a success view to the presenter
         notifyUserPresenter.prepareSuccessView(notifyUserOutputData);
     }
