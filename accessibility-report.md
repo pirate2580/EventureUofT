@@ -45,3 +45,14 @@ physical effort principle.
 Because this design principle focuses mostly on the user being able to physically reach any components they will use to interact with our 
 program, their posture, and the amount of space they have while using it, it is inapplicable to our project because our project is purely 
 software based and will not have any physical components for the user to reach/touch/need space to access.
+
+### Who this program is marketed to:
+
+This program is marketed towards students and faculty members of the University of Toronto who want to create, modify, or RSVP to events that are happening on campus. Of course, the user base could be more than only UofT students and staff and include those who just want to attend UofT events. The reason that this is marketed towards students and faculty members of UofT is because the focus of the application is to serve as an event hub for the University, with a large
+focus on the school's campus, which is achieved by introducing an interactive map centered at the University of Toronto's campus. Because school and work can be very fast paced, this program can help students keep track of what events are happening,
+can let them RSVP whenever they need, can allow organizers to notify all attendees by email, and can give them an idea of where
+the events take place right away.
+
+## Are there certain demographics that are less likely to use this program? 
+
+There are certain demographics that are less likely to use this program, including those with disabilities such as blindness or those with personal/social limitations such as not being able to access public spaces. This is because our project does not have screen readers to help those who have trouble seeing, and the main purpose of our program is to help users participate in events across campus, which is something somebody with personal or social limitations might not find appealing.
