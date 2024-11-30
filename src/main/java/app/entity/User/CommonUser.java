@@ -132,6 +132,7 @@ public class CommonUser implements User{
         this.rsvpedEvents = rsvpedEvents;
     }
 
-    public void setCreatedEvents(ArrayList<Object> objects) {
+    public void setCreatedEvents(ArrayList<Event> createdEvents) {
+        this.createdEvents = createdEvents;
     }
 }
