@@ -38,7 +38,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.setBackground(Color.decode("#D3D3D3"));
         this.setBorder(new EmptyBorder(20, 20, 20 ,20));
 
-        JLabel titleLabel = new JLabel("EventureUofT", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("EventHiveUofT", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setForeground(Color.decode("#2E4C34")); // Dark green color
