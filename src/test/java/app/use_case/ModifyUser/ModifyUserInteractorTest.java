@@ -4,6 +4,7 @@ import app.entity.User.User;
 import app.entity.User.UserFactory;
 import app.entity.User.CommonUserFactory;
 import app.use_case.modify_user.*;
+import app.use_case.register.RegisterOutputData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -350,4 +351,25 @@ class ModifyUserInteractorTest {
 
         assertTrue(existingUser.verifyPassword("currentPass"));
     }
+
+    @Test
+    void testGetUsername() {
+        String expectedUsername = "testUser";
+        RegisterOutputData outputData = new RegisterOutputData(expectedUsername, false);
+
+        String actualUsername = outputData.getUsername();
+
+        assertEquals(expectedUsername, actualUsername, "The username should match the expected value.");
+    }
+
+    @Test
+    void testIsUseCaseFailed() {
+        RegisterOutputData outputData = new RegisterOutputData("testUser", true);
+
+        boolean useCaseFailed = outputData.isUseCaseFailed();
+
+        assertTrue(useCaseFailed, "The useCaseFailed should be true.");
+    }
+
+
 }
