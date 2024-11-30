@@ -1,4 +1,4 @@
-package use_case;
+package use_case.ModifyUser;
 
 import app.entity.User.User;
 import app.entity.User.UserFactory;
