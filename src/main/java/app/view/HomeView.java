@@ -175,8 +175,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * to the map.
      * */
     private JXMapViewer setupMapViewer() {
-        JXMapViewer mapViewer = new JXMapViewer();
-
+        JXMapViewer mapViewer = MapViewerSingleton.getInstance();
+//
         TileFactoryInfo info = new TileFactoryInfo(
                 1, 17, 17, 256, true, true,
                 "https://tile.openstreetmap.org/", "x", "y", "z") {
