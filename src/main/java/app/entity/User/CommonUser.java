@@ -1,16 +1,19 @@
 package app.entity.User;
-import app.entity.Event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import app.entity.Event.Event;
+
 // TODO: is this clean architecture for entities to rely on another?
 // TODO: 12am stupid question, is it clean architecture to have an implementation of adding events to a user
 // This doesn't rely on the database but still idk?
+
 /**
- * Implementation of the User interface
+ * Implementation of the User interface.
  */
-public class CommonUser implements User{
+public class CommonUser implements User {
     private String username;
     private String password;
     private String email;
@@ -22,7 +25,7 @@ public class CommonUser implements User{
 
     // Note that the two list attributes are not put in the constructor
 
-    public CommonUser(String username, String email, String password){
+    public CommonUser(String username, String email, String password) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -37,6 +40,7 @@ public class CommonUser implements User{
     public String getEmail() {
         return this.email;
     }
+
     @Override
     public String getPassword() {
         return this.password;
@@ -52,8 +56,8 @@ public class CommonUser implements User{
     public void removeRsvpedEvent(Event event) {
         // TODO: might need a special event.equals method
         // TODO: check edge cases on implementation
-        for (int i = 0; i < this.rsvpedEvents.size(); i++){
-            if (this.rsvpedEvents.get(i).equals(event)){
+        for (int i = 0; i < this.rsvpedEvents.size(); i++) {
+            if (this.rsvpedEvents.get(i).equals(event)) {
                 this.rsvpedEvents.remove(i);
                 break;
             }
@@ -70,8 +74,8 @@ public class CommonUser implements User{
     public void removeCreatedEvent(Event event) {
         // TODO: might need a special event.equals method
         // TODO: check edge cases on implementation
-        for (int i = 0; i < this.createdEvents.size(); i++){
-            if (this.createdEvents.get(i).equals(event)){
+        for (int i = 0; i < this.createdEvents.size(); i++) {
+            if (this.createdEvents.get(i).equals(event)) {
                 this.createdEvents.remove(i);
                 break;
             }
@@ -88,10 +92,8 @@ public class CommonUser implements User{
         return this.createdEvents;
     }
 
-
-
-    //Setters for users' info modification
     /**
+     * Setters for users' info modification
      * Sets the username for the user.
      * @param username the new username to set
      */
@@ -128,10 +130,18 @@ public class CommonUser implements User{
         return Objects.equals(this.password, providedPassword);
     }
 
+    /**
+     * A list consisting the events the user rsvped.
+     * @param rsvpedEvents events the user has RSVPed.
+     */
     public void setRsvpedEvents(ArrayList<Event> rsvpedEvents) {
         this.rsvpedEvents = rsvpedEvents;
     }
 
+    /**
+     * A list consisting events the user has created.
+     * @param createdEvents events the user created.
+     */
     public void setCreatedEvents(ArrayList<Event> createdEvents) {
         this.createdEvents = createdEvents;
     }
