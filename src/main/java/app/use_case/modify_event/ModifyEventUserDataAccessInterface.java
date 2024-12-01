@@ -2,6 +2,8 @@ package app.use_case.modify_event;
 
 import app.entity.Event.Event;
 
+import java.util.Map;
+
 /**
  * Data Access Object for the Modify Event Use Case.
  */
@@ -28,4 +30,12 @@ public interface ModifyEventUserDataAccessInterface {
      * @param eventId, the event we want to save.
      */
     public Event getEventById(String eventId);
+
+    /**
+     * Modifies an existing event in the Firestore database.
+     *
+     * @param eventName The name of the event to modify.
+     * @param updatedFields A map containing the fields to update and their new values.
+     */
+    public void modifyEvent(String eventName, Map<String, Object> updatedFields);
 }

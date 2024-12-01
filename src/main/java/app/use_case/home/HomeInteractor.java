@@ -30,4 +30,7 @@ public class HomeInteractor implements HomeInputBoundary{
 
     @Override
     public void switchToViewCreatedEventsView() {homePresenter.switchToViewCreatedEventsView(); }
+
+    @Override
+    public void switchToModifyEventView() { homePresenter.switchToModifyEventView(); }
 }

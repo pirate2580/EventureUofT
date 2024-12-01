@@ -28,4 +28,6 @@ public class HomeController {
     public void switchToViewRSVPView() {this.homeUseCaseInteractor.switchToViewRSVPView(); }
 
     public void switchToViewCreatedEventsView() {this.homeUseCaseInteractor.switchToViewCreatedEventsView(); }
+
+    public void switchToModifyEventView() { this.homeUseCaseInteractor.switchToModifyEventView(); }
 }

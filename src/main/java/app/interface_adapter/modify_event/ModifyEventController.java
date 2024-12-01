@@ -32,4 +32,6 @@ public class ModifyEventController {
                 updatedDescription, updatedDateTime, updatedCapacity, updatedLatitude, updatedLongitude, deleteEvent, updatedTags, updatedOrganizer);
         this.userEventUseCaseInteractor.execute(modifyEventInputData);
     }
+
+    public void switchToHomeView() {this.userEventUseCaseInteractor.switchToHomeView();}
 }
