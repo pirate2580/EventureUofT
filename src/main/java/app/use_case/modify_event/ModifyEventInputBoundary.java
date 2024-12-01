@@ -7,4 +7,6 @@ public interface ModifyEventInputBoundary {
      * @param modifyEventInputData The input data containing details for modifying the event.
      */
     void execute(ModifyEventInputData modifyEventInputData);
+
+    void switchToHomeView();
 }

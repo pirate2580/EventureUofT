@@ -1,17 +1,23 @@
 package app.interface_adapter.modify_event;
 
 
+import app.interface_adapter.ViewManagerModel;
+import app.interface_adapter.home.HomeState;
+import app.interface_adapter.home.HomeViewModel;
 import app.use_case.modify_event.ModifyEventOutputBoundary;
 import app.use_case.modify_event.ModifyEventOutputData;
 import app.view.ModifyEventView;
 
 public class ModifyEventPresenter implements ModifyEventOutputBoundary {
+    private final ViewManagerModel viewManagerModel;
     private final ModifyEventViewModel modifyEventViewModel;
-    private final ModifyEventView modifyEventManagerModel;
-    public ModifyEventPresenter(ModifyEventView modifyEventManagerModel,
-                            ModifyEventViewModel modifyEventViewModel) {
-        this.modifyEventManagerModel = modifyEventManagerModel;
+    private final HomeViewModel homeViewModel;
+    public ModifyEventPresenter(ViewManagerModel viewManagerModel,
+                            ModifyEventViewModel modifyEventViewModel,
+                                HomeViewModel homeViewModel) {
+        this.viewManagerModel = viewManagerModel;
         this.modifyEventViewModel = modifyEventViewModel;
+        this.homeViewModel = homeViewModel;
     }
 
     /**
@@ -23,7 +29,13 @@ public class ModifyEventPresenter implements ModifyEventOutputBoundary {
      */
     @Override
     public void prepareSuccessView(ModifyEventOutputData outputData) {
+        final ModifyEventState modifyEventState = modifyEventViewModel.getState();
+        final HomeState homeState = homeViewModel.getState();
+        modifyEventState.setUsernameState(homeState.getUsernameState());
+        this.modifyEventViewModel.firePropertyChanged();
 
+        this.modifyEventViewModel.setState(modifyEventState);
+        modifyEventViewModel.firePropertyChanged();
     }
 
     /**
@@ -38,5 +50,11 @@ public class ModifyEventPresenter implements ModifyEventOutputBoundary {
         final ModifyEventState modifyEventState = modifyEventViewModel.getState();
         modifyEventState.setCapacityError(errorMessage); // Not sure which error I should use
         modifyEventViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToHomeView() {
+        viewManagerModel.setState(homeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

@@ -68,6 +68,7 @@ import app.use_case.home.HomeOutputBoundary;
 import app.use_case.login.LoginInputBoundary;
 import app.use_case.login.LoginInteractor;
 import app.use_case.login.LoginOutputBoundary;
+import app.use_case.modify_event.ModifyEventOutputBoundary;
 import app.use_case.notify_users.NotifyUserInputBoundary;
 import app.use_case.notify_users.NotifyUserInteractor;
 import app.use_case.notify_users.NotifyUserOutputBoundary;
@@ -140,8 +141,6 @@ public class AppBuilder {
     // function to create and add the register view to the card layout
 
 
-    private ModifyEventController modifyEventController;
-
     // ensure that you are using card layout
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -179,20 +178,12 @@ public class AppBuilder {
         return this;
     }
 
-    public ModifyEventView addModifyEventView() {
-        this.modifyEventViewModel = new ModifyEventViewModel("modifyEvent");
-        ModifyEventPresenter modifyEventPresenter = new ModifyEventPresenter(null, modifyEventViewModel);
-        EventFactory eventFactory = new CommonEventFactory();
-        ModifyEventInputBoundary modifyEventInputBoundary = new ModifyEventInteractor(
-                eventDAO,
-                modifyEventPresenter,
-                eventFactory
-        );
-        this.modifyEventController = new ModifyEventController(modifyEventInputBoundary);
-        this.modifyEventView = new ModifyEventView(modifyEventViewModel, modifyEventController);
-        modifyEventView.setParentPanel(cardPanel); // Set parentPanel
-        cardPanel.add(modifyEventView, modifyEventView.getViewName());
-        return modifyEventView;
+    public AppBuilder addModifyEventView() {
+        modifyEventViewModel = new ModifyEventViewModel();
+        modifyEventView = new ModifyEventView(modifyEventViewModel);
+
+        cardPanel.add(modifyEventView, modifyEventViewModel.getViewName());
+        return this;
     }
 
     public AppBuilder addMainView() {
@@ -301,6 +292,19 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addModifyEventUseCase() {
+        final ModifyEventOutputBoundary modifyEventOutputBoundary = new ModifyEventPresenter(viewManagerModel,
+                modifyEventViewModel, homeViewModel);
+
+        final ModifyEventInputBoundary modifyEventInteractor = new ModifyEventInteractor(
+                eventDAO, modifyEventOutputBoundary
+        );
+
+        final ModifyEventController modifyEventController = new ModifyEventController(modifyEventInteractor);
+        modifyEventView.setModifyEventController(modifyEventController);
+        return this;
+    }
+
     public AppBuilder addRegisterUseCase() {
         // make sure RegisterView and RegisterViewModel are initialized (debugging)
         // create input and output boundaries
@@ -385,7 +389,7 @@ public class AppBuilder {
     public AppBuilder addHomeUseCase() {
         final HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel,
                 loginViewModel,
-                createEventViewModel, filterEventViewModel, viewRSVPViewModel, viewCreatedEventsViewModel);
+                createEventViewModel, filterEventViewModel, viewRSVPViewModel, viewCreatedEventsViewModel, modifyEventViewModel);
 
         final ViewEventOutputBoundary viewEventOutputBoundary = new ViewEventPresenter(viewManagerModel, viewEventViewModel, homeViewModel);
 

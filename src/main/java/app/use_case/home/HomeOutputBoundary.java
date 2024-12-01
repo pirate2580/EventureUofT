@@ -6,4 +6,5 @@ public interface HomeOutputBoundary {
     void switchToFilterEventView();
     void switchToViewRSVPView();
     void switchToViewCreatedEventsView();
+    void switchToModifyEventView();
 }

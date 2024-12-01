@@ -10,9 +10,9 @@ public class ModifyEventState {
     private boolean deleteEvent;
     private String usernameState;
 
-    private String getUsernameState() {return usernameState;}
+    public String getUsernameState() {return usernameState;}
 
-    private void setUsernameState(String usernameState) { this.usernameState = usernameState;}
+    public void setUsernameState(String usernameState) { this.usernameState = usernameState;}
 
     public boolean getDeleteEvent() { return deleteEvent; }
     public void setDeleteEvent(boolean deleteEvent) { this.deleteEvent = deleteEvent; }
