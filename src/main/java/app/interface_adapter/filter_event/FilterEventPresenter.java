@@ -6,9 +6,9 @@ import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.filter_event.FilterEventOutputData;
 
 /**
- * The presenter for the Filter Event Use Case
+ * The presenter for the Filter Event Use Case.
  */
-public class FilterEventPresenter implements FilterEventOutputBoundary{
+public class FilterEventPresenter implements FilterEventOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final FilterEventViewModel filterEventViewModel;
@@ -24,7 +24,7 @@ public class FilterEventPresenter implements FilterEventOutputBoundary{
 
     /**
      * Prepares the succeess view for the Filter Event Use case which would be a list of the
-     * Events matching the filter
+     * Events matching the filter.
      * @param outputData The output data including the list of filtered events.
      */
     @Override
@@ -38,7 +38,7 @@ public class FilterEventPresenter implements FilterEventOutputBoundary{
 
     /**
      * Prepares the fail view for the Filter Event use case, probably just hte same as the
-     * success view except it says its empty
+     * success view except it says its empty.
      * @param errorMessage The explanation of the failure.
      */
     @Override

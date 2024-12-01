@@ -1,16 +1,11 @@
 package app.interface_adapter.display_event;
 
-
-import app.entity.Event.CommonEvent;
-import app.use_case.display_event.DisplayEventInputBoundary;
-import app.use_case.display_event.DisplayEventInputData;
-import app.use_case.display_event.DisplayEventInteractor;
-
 import java.util.ArrayList;
-import java.util.List;
+
+import app.use_case.display_event.DisplayEventInputBoundary;
 
 /**
- * Controller for the Event Use Case
+ * Controller for the Event Use Case.
  */
 public class DisplayEventController {
 
@@ -21,11 +16,12 @@ public class DisplayEventController {
     }
 
     /**
-     * Execute the create Event use Case
+     * Executes the display event use case and retrieves event details.
+     * @return a nested {@link ArrayList} containing event details. Each inner list represents an event,
+     *         with its elements containing event-specific information.
      */
     public ArrayList<ArrayList<Object>> execute() {
         return this.displayEventInteractor.execute();
     }
-
 
 }

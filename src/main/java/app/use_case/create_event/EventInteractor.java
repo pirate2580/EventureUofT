@@ -1,10 +1,7 @@
 package app.use_case.create_event;
 
-
-
 import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
-
 
 /**
  * The Event Interactor
@@ -13,14 +10,13 @@ import app.entity.Event.EventFactory;
  * Do a similar thing for other errors
  * Otherwise, interact with the database through hte userDAO to save the user and prepare a success view to the
  * front end.
- *
  * NOTE: userPresenter is just the outputBoundary class
  * Note: EventInteractor is an implementation of the inputBoundary interface
  */
 public class EventInteractor implements EventInputBoundary {
-    EventUserDataAccessInterface eventDataAccessObject;
-    EventOutputBoundary eventPresenter;
-    EventFactory eventFactory;
+    private final EventUserDataAccessInterface eventDataAccessObject;
+    private final EventOutputBoundary eventPresenter;
+    private final EventFactory eventFactory;
 
     public EventInteractor(EventUserDataAccessInterface eventDataAccessObject,
                            EventOutputBoundary eventPresenter,
@@ -34,9 +30,9 @@ public class EventInteractor implements EventInputBoundary {
     @Override
     public void execute(EventInputData eventInputData) {
         final Event event = eventFactory.create(eventInputData.getEventId(), eventInputData.getOrganizer(),
-                    eventInputData.getTitle(), eventInputData.getDescription(), eventInputData.getDateTime(),
-                    eventInputData.getCapacity(), eventInputData.getLatitude(), eventInputData.getLongitude(),
-                    eventInputData.getTags());
+                eventInputData.getTitle(), eventInputData.getDescription(), eventInputData.getDateTime(),
+                eventInputData.getCapacity(), eventInputData.getLatitude(), eventInputData.getLongitude(),
+                eventInputData.getTags());
         // debugging statement
         if (event == null) {
             throw new IllegalStateException("EventFactory returned null check your input or factory implementation.");
@@ -47,7 +43,7 @@ public class EventInteractor implements EventInputBoundary {
     }
 
     @Override
-    public void switchToHomeView(){
+    public void switchToHomeView() {
         eventPresenter.switchToHomeView();
     }
 }

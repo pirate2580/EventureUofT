@@ -1,18 +1,15 @@
 package app.use_case.create_event;
 
-
 import app.entity.Event.Event;
 
 /**
- * Data Access Object for the Event Use Case.
- * TODO: notice that although this file is in Use Case, it is implemented in the data_access
- * folder
+ * Data Access Object for the Event Use Case folder.
  */
 public interface EventUserDataAccessInterface {
     /**
-     * Saves the event to the database
-     * @param event to save onto the database
+     * Saves the event to the database.
+     * @param usernameState The username of the user creating the event.
+     * @param event         The event to save. Must not be {@code null}.
      */
     void saveEvent(String usernameState, Event event);
-
 }

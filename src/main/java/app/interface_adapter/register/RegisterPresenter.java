@@ -1,14 +1,13 @@
 package app.interface_adapter.register;
 
+import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.login.LoginState;
 import app.interface_adapter.login.LoginViewModel;
 import app.use_case.register.RegisterOutputBoundary;
-import app.interface_adapter.ViewManagerModel;
-
 import app.use_case.register.RegisterOutputData;
 
 /**
- * The Presenter for the register Use Case
+ * The Presenter for the register Use Case.
  */
 public class RegisterPresenter implements RegisterOutputBoundary {
     private final RegisterViewModel registerViewModel;
@@ -16,7 +15,7 @@ public class RegisterPresenter implements RegisterOutputBoundary {
     private final ViewManagerModel viewManagerModel;
 
     public RegisterPresenter(ViewManagerModel viewManagerModel,
-                           RegisterViewModel registerViewModel,
+                             RegisterViewModel registerViewModel,
                              LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.registerViewModel = registerViewModel;
@@ -46,9 +45,7 @@ public class RegisterPresenter implements RegisterOutputBoundary {
 
     @Override
     public void switchToLoginView() {
-//        System.out.println(loginViewModel.getViewName());
         viewManagerModel.setState(loginViewModel.getViewName());
-
         viewManagerModel.firePropertyChanged();
     }
 }
