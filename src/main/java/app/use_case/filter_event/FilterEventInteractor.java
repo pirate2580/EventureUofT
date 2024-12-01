@@ -2,6 +2,8 @@ package app.use_case.filter_event;
 
 import java.util.List;
 
+// The FilterEventInteractor filtering events in the application, it uses the Event Data Access to
+// retrieve relevant events and sends the results through the presenter.
 import app.entity.Event.Event;
 
 /**
@@ -28,10 +30,11 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
 
     @Override
     public void execute(FilterEventInputData filterEventInputData) {
-        if (filterEventInputData == null || filterEventInputData.getTags() == null) {
+        if (filterEventInputData.getTags().isEmpty()) {
             filterEventPresenter.prepareFailView("Please provide a valid filter event");
             return;
         }
+        // Retrieve events based on the provided criteria.
         List<Event> filteredEvents = filterEventDataAccessObject.findEvents(filterEventInputData.getTags());
         final FilterEventOutputData filterEventOutputData = new FilterEventOutputData(filteredEvents);
 

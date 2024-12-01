@@ -5,6 +5,8 @@ import app.interface_adapter.home.HomeViewModel;
 import app.use_case.filter_event.FilterEventOutputBoundary;
 import app.use_case.filter_event.FilterEventOutputData;
 
+import java.util.ArrayList;
+
 /**
  * The presenter for the Filter Event Use Case.
  */
@@ -43,7 +45,8 @@ public class FilterEventPresenter implements FilterEventOutputBoundary {
      */
     @Override
     public void prepareFailView(String errorMessage) {
-
+        final FilterEventState filterEventState = filterEventViewModel.getState();
+        filterEventState.setFilteredEvents(new ArrayList<>());
     }
 
     @Override
