@@ -10,6 +10,7 @@ public interface ModifyEventOutputBoundary {
      * Prepares the success view for the Modify Event Use Case.
      * This method is invoked when the event modification is successful. It communicates
      * the results of the operation to the presenter, which prepares the success view.
+     *
      * @param outputData The output data containing details of the modified event.
      *                   Must not be {@code null}.
      */
@@ -24,4 +25,11 @@ public interface ModifyEventOutputBoundary {
      *                     Must not be {@code null}.
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Switches to the home view.
+     * This method notifies the presenter to navigate back to the home view
+     * after completing the modify event operation.
+     */
+    void switchToHomeView();
 }

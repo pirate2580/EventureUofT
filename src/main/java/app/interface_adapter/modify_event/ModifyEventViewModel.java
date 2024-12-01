@@ -19,7 +19,6 @@ public class ModifyEventViewModel extends ViewModel<ModifyEventState> {
     public static final String EVENT_TAGS_LABEL = "Set event tags";
 
     public static final String CREATE_EVENT_BUTTON_LABEL = "Create Event";
-    // public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
     public ModifyEventViewModel() {
         super("modifyEvent");

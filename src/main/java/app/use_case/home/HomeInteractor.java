@@ -2,17 +2,17 @@ package app.use_case.home;
 
 /**
  * Interactor for the Home Use Case.
- * This class implements the business logic for the home use case. It acts as a mediator
- * between the input boundary and the output boundary by handling navigation requests
- * from the home view and forwarding them to the presenter.
+ * This class implements the business logic for navigating between different views
+ * in the application from the home view. It interacts with the presenter to handle
+ * transitions based on user actions.
  */
 public class HomeInteractor implements HomeInputBoundary {
-    private final HomeOutputBoundary homePresenter;
+
+    private HomeOutputBoundary homePresenter;
 
     /**
      * Constructs a new {@link HomeInteractor}.
-     *
-     * @param homePresenter The output boundary responsible for preparing the home use case views.
+     * @param homePresenter The output boundary responsible for preparing the appropriate views.
      *                      Must not be {@code null}.
      */
     public HomeInteractor(HomeOutputBoundary homePresenter) {
@@ -20,17 +20,16 @@ public class HomeInteractor implements HomeInputBoundary {
     }
 
     /**
-     * Executes the default action for the Home Use Case.
-     * Currently, this method is a placeholder and can be extended with
-     * additional logic as needed.
+     * Executes the default logic for the home use case.
+     * This method is currently a placeholder and may be used for additional logic in the future.
      */
     @Override
     public void execute() {
-        // Placeholder for default execution logic
     }
 
     /**
-     * Switches the application to the login view.
+     * Switches to the login view.
+     * Notifies the presenter to prepare the login view.
      */
     @Override
     public void switchToLoginView() {
@@ -38,7 +37,8 @@ public class HomeInteractor implements HomeInputBoundary {
     }
 
     /**
-     * Switches the application to the create event view.
+     * Switches to the create event view.
+     * Notifies the presenter to prepare the create event view.
      */
     @Override
     public void switchtoCreateEventView() {
@@ -46,7 +46,8 @@ public class HomeInteractor implements HomeInputBoundary {
     }
 
     /**
-     * Switches the application to the filter event view.
+     * Switches to the filter event view.
+     * Notifies the presenter to prepare the filter event view.
      */
     @Override
     public void switchToFilterEventView() {
@@ -54,7 +55,8 @@ public class HomeInteractor implements HomeInputBoundary {
     }
 
     /**
-     * Switches the application to the view RSVP view.
+     * Switches to the RSVP view.
+     * Notifies the presenter to prepare the view for RSVP events.
      */
     @Override
     public void switchToViewRSVPView() {
@@ -62,10 +64,20 @@ public class HomeInteractor implements HomeInputBoundary {
     }
 
     /**
-     * Switches the application to the view created events view.
+     * Switches to the view created events view.
+     * Notifies the presenter to prepare the view for created events.
      */
     @Override
     public void switchToViewCreatedEventsView() {
         homePresenter.switchToViewCreatedEventsView();
+    }
+
+    /**
+     * Switches to the modify event view.
+     * Notifies the presenter to prepare the view for modifying events.
+     */
+    @Override
+    public void switchToModifyEventView() {
+        homePresenter.switchToModifyEventView();
     }
 }

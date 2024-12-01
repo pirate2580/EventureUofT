@@ -12,6 +12,7 @@ public class ModifyEventOutputData {
 
     /**
      * Contains details for a modification.
+     *
      * @param eventId      The ID of the event modified.
      * @param updatedTitle The updated title of the event.
      * @param message      The success message.
@@ -24,6 +25,7 @@ public class ModifyEventOutputData {
 
     /**
      * Retrieves the unique ID of the modified event.
+     *
      * @return The event ID as a {@link String}.
      */
     public String getEventId() {
@@ -32,6 +34,7 @@ public class ModifyEventOutputData {
 
     /**
      * Retrieves the updated title of the modified event.
+     *
      * @return The updated title as a {@link String}, or {@code null} if the title was not modified.
      */
     public String getUpdatedTitle() {
@@ -40,6 +43,7 @@ public class ModifyEventOutputData {
 
     /**
      * Retrieves the message describing the result of the modification.
+     *
      * @return The message as a {@link String}.
      */
     public String getMessage() {

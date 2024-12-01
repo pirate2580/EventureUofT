@@ -1,41 +1,24 @@
 package app.use_case.modify_event;
 
-import app.entity.Event.Event;
-import app.entity.Event.EventFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interactor for the Modify Event Use Case.
- * This class implements the business logic for modifying events, including
- * updating event details or deleting an event. It interacts with the data access
- * object (DAO) to persist changes and communicates the results to the presenter.
+ * This class implements the business logic for modifying events, including updating
+ * or deleting an event. It interacts with the data access layer and presenter to
+ * handle these operations and prepare the appropriate views.
  */
 public class ModifyEventInteractor implements ModifyEventInputBoundary {
-
     private final ModifyEventUserDataAccessInterface modifyEventUserDataAccessObject;
     private final ModifyEventOutputBoundary modifyEventPresenter;
-    private final EventFactory eventFactory;
 
-    /**
-     * Constructs a new {@link ModifyEventInteractor}.
-     * @param modifyEventUserDataAccessObject The DAO for accessing and modifying event data. Must not be {@code null}.
-     * @param modifyEventPresenter            The output boundary for preparing views. Must not be {@code null}.
-     * @param eventFactory                    The factory for creating event objects. Must not be {@code null}.
-     */
     public ModifyEventInteractor(ModifyEventUserDataAccessInterface modifyEventUserDataAccessObject,
-                                 ModifyEventOutputBoundary modifyEventPresenter,
-                                 EventFactory eventFactory) {
+                                 ModifyEventOutputBoundary modifyEventPresenter) {
         this.modifyEventUserDataAccessObject = modifyEventUserDataAccessObject;
         this.modifyEventPresenter = modifyEventPresenter;
-        this.eventFactory = eventFactory;
     }
 
-    /**
-     * Executes the event modification use case.
-     * Depending on the input data, this method handles either updating event details
-     * or deleting an event. It validates input and communicates success or failure
-     * to the presenter.
-     * @param modifyEventInputData The input data containing details for modifying the event. Must not be {@code null}.
-     */
     @Override
     public void execute(ModifyEventInputData modifyEventInputData) {
         String eventName = modifyEventInputData.getOldTitle();
@@ -53,15 +36,16 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
         }
     }
 
-    /**
-     * Handles the deletion of an event.
-     * @param eventName The name of the event to delete. Must not be {@code null}.
-     */
+    @Override
+    public void switchToHomeView() {
+        modifyEventPresenter.switchToHomeView();
+    }
+
     private void handleDeleteEvent(String eventName) {
         try {
             modifyEventUserDataAccessObject.deleteEvent(eventName);
-            ModifyEventOutputData outputData =
-                    new ModifyEventOutputData("Temp", eventName, "Event deleted successfully.");
+            ModifyEventOutputData outputData = new ModifyEventOutputData("Temp", eventName,
+                    "Event deleted successfully.");
             modifyEventPresenter.prepareSuccessView(outputData);
         }
         catch (Exception e) {
@@ -69,43 +53,34 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
         }
     }
 
-    /**
-     * Handles the updating of event details.
-     * @param modifyEventInputData The input data containing updated event details. Must not be {@code null}.
-     */
     private void handleUpdateEvent(ModifyEventInputData modifyEventInputData) {
         try {
-            Event existingEvent = modifyEventUserDataAccessObject.getEventById(modifyEventInputData.getEventId());
 
-            if (existingEvent == null) {
-                modifyEventPresenter.prepareFailView("Event not found for updating.");
-                return;
-            }
-
+            Map<String, Object> updatedFields = new HashMap<>();
             // Update the event's fields with the new values
-            existingEvent.setTitle(modifyEventInputData.getUpdatedTitle());
-            existingEvent.setDescription(modifyEventInputData.getUpdatedDescription());
-            existingEvent.setDateTime(modifyEventInputData.getUpdatedDateTime());
-            existingEvent.setCapacity(modifyEventInputData.getUpdatedCapacity());
-            existingEvent.setLatitude(modifyEventInputData.getUpdatedLatitude());
-            existingEvent.setLongitude(modifyEventInputData.getUpdatedLongitude());
-            existingEvent.setTags(modifyEventInputData.getUpdatedTags());
-            existingEvent.setOrganizer(modifyEventInputData.getUpdatedOrganizer());
+            updatedFields.put("title", modifyEventInputData.getUpdatedTitle());
+            updatedFields.put("description", modifyEventInputData.getUpdatedDescription());
+            updatedFields.put("time", modifyEventInputData.getUpdatedDateTime());
+            updatedFields.put("capacity", modifyEventInputData.getUpdatedCapacity());
+            updatedFields.put("latitude", modifyEventInputData.getUpdatedLatitude());
+            updatedFields.put("longitude", modifyEventInputData.getUpdatedLongitude());
+            updatedFields.put("tags", modifyEventInputData.getUpdatedTags());
+            updatedFields.put("organizer", modifyEventInputData.getUpdatedOrganizer());
 
             try {
-                modifyEventUserDataAccessObject.saveEvent(existingEvent);
+                modifyEventUserDataAccessObject.modifyEvent(modifyEventInputData.getOldTitle(), updatedFields);
 
                 ModifyEventOutputData outputData = new ModifyEventOutputData(
-                        existingEvent.getEventId(),
-                        existingEvent.getTitle(),
+                        modifyEventInputData.getEventId(),
+                        modifyEventInputData.getUpdatedTitle(),
                         "Event updated successfully."
                 );
                 modifyEventPresenter.prepareSuccessView(outputData);
             }
             catch (Exception saveException) {
-                modifyEventPresenter.prepareFailView("Failed to save updated event. "
-                        + "Reason: " + saveException.getMessage());
+                modifyEventPresenter.prepareFailView("Failed to save updated event. Reason: " + saveException.getMessage());
             }
+
         }
         catch (Exception e) {
             modifyEventPresenter.prepareFailView("Failed to update event. Reason: " + e.getMessage());
