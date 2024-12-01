@@ -6,7 +6,6 @@ import app.interface_adapter.home.HomeState;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.modify_event.ModifyEventOutputBoundary;
 import app.use_case.modify_event.ModifyEventOutputData;
-import app.view.ModifyEventView;
 
 public class ModifyEventPresenter implements ModifyEventOutputBoundary {
     private final ViewManagerModel viewManagerModel;

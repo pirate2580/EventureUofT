@@ -1,8 +1,5 @@
 package app.use_case.modify_event;
 
-import app.entity.Event.Event;
-import app.entity.Event.EventFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,34 +45,30 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
     }
 
     private void handleUpdateEvent(ModifyEventInputData modifyEventInputData) {
+
+        Map<String, Object> updatedFields = new HashMap<>();
+        // Update the event's fields with the new values
+        updatedFields.put("title", modifyEventInputData.getUpdatedTitle());
+        updatedFields.put("description", modifyEventInputData.getUpdatedDescription());
+        updatedFields.put("time", modifyEventInputData.getUpdatedDateTime());
+        updatedFields.put("capacity", modifyEventInputData.getUpdatedCapacity());
+        updatedFields.put("latitude", modifyEventInputData.getUpdatedLatitude());
+        updatedFields.put("longitude", modifyEventInputData.getUpdatedLongitude());
+        updatedFields.put("tags", modifyEventInputData.getUpdatedTags());
+        updatedFields.put("organizer", modifyEventInputData.getUpdatedOrganizer());
+
         try {
+            modifyEventUserDataAccessObject.modifyEvent(modifyEventInputData.getOldTitle(), updatedFields);
 
-            Map<String, Object> updatedFields = new HashMap<>();
-            // Update the event's fields with the new values
-            updatedFields.put("title", modifyEventInputData.getUpdatedTitle());
-            updatedFields.put("description", modifyEventInputData.getUpdatedDescription());
-            updatedFields.put("time", modifyEventInputData.getUpdatedDateTime());
-            updatedFields.put("capacity", modifyEventInputData.getUpdatedCapacity());
-            updatedFields.put("latitude", modifyEventInputData.getUpdatedLatitude());
-            updatedFields.put("longitude", modifyEventInputData.getUpdatedLongitude());
-            updatedFields.put("tags", modifyEventInputData.getUpdatedTags());
-            updatedFields.put("organizer", modifyEventInputData.getUpdatedOrganizer());
-
-            try {
-                modifyEventUserDataAccessObject.modifyEvent(modifyEventInputData.getOldTitle(), updatedFields);
-
-                ModifyEventOutputData outputData = new ModifyEventOutputData(
-                        modifyEventInputData.getEventId(),
-                        modifyEventInputData.getUpdatedTitle(),
-                        "Event updated successfully."
-                );
-                modifyEventPresenter.prepareSuccessView(outputData);
-            } catch (Exception saveException) {
-                modifyEventPresenter.prepareFailView("Failed to save updated event. Reason: " + saveException.getMessage());
-            }
-
-        } catch (Exception e) {
-            modifyEventPresenter.prepareFailView("Failed to update event. Reason: " + e.getMessage());
+            ModifyEventOutputData outputData = new ModifyEventOutputData(
+                    modifyEventInputData.getEventId(),
+                    modifyEventInputData.getUpdatedTitle(),
+                    "Event updated successfully."
+            );
+            modifyEventPresenter.prepareSuccessView(outputData);
+        } catch (Exception saveException) {
+            modifyEventPresenter.prepareFailView("Failed to save updated event. Reason: " + saveException.getMessage());
         }
+
     }
 }

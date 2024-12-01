@@ -1,7 +1,6 @@
 package app.interface_adapter.create_event;
 
 import app.interface_adapter.ViewModel;
-import app.interface_adapter.create_event.CreateEventState;
 
 public class CreateEventViewModel extends ViewModel<CreateEventState> {
     public static final String TITLE_LABEL = "Event View";

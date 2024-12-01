@@ -5,7 +5,6 @@ package app.use_case.create_event;
 import app.entity.Event.Event;
 import app.entity.Event.EventFactory;
 
-import javax.swing.*;
 
 /**
  * The Event Interactor

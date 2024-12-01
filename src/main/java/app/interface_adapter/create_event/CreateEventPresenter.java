@@ -4,7 +4,6 @@ import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.create_event.EventOutputBoundary;
 import app.use_case.create_event.EventOutputData;
-import app.view.CreateEventView;
 
 /**
  * The Presenter for the create Event Use Case
