@@ -4,28 +4,30 @@ import app.entity.Event.Event;
 
 /**
  * Data Access Object for the Modify Event Use Case.
+ * This interface defines the methods for interacting with the data layer
+ * to perform operations such as saving, deleting, and retrieving events.
  */
 public interface ModifyEventUserDataAccessInterface {
-    /**
-     * Function to save an event to the Firebase Database.
-     *
-     * @param event, the event we want to save.
-     */
-    public void saveEvent(Event event);
-
 
     /**
-     * Function to delete an event from the Firebase Database.
-     *
-     * @param eventName the name of the event to delete.
+     * Saves an event to the database.
+     * This method persists the given event to the database.
+     * @param event The event to save. Must not be {@code null}.
      */
-    public void deleteEvent(String eventName);
-
+    void saveEvent(Event event);
 
     /**
-     * Function to get an event by its ID from the Firebase Database.
-     *
-     * @param eventId, the event we want to save.
+     * Deletes an event from the database.
+     * This method removes the event with the specified name from the database.
+     * @param eventName The name of the event to delete. Must not be {@code null}.
      */
-    public Event getEventById(String eventId);
+    void deleteEvent(String eventName);
+
+    /**
+     * Retrieves an event by its ID from the database.
+     * This method fetches the event corresponding to the given ID.
+     * @param eventId The ID of the event to retrieve. Must not be {@code null}.
+     * @return The {@link Event} object if found, or {@code null} if no event with the specified ID exists.
+     */
+    Event getEventById(String eventId);
 }

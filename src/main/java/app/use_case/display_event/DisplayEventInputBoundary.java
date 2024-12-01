@@ -1,24 +1,16 @@
 package app.use_case.display_event;
 
-import app.entity.Event.CommonEvent;
-import app.use_case.create_event.EventInputData;
-
 import java.util.ArrayList;
 
 /**
  * Input Boundary for the actions relating to creating an event.
  */
 public interface DisplayEventInputBoundary {
-
     /**
-     * Execute the event creation use case.
+     * Executes the Display Event use case.
+     * Retrieves details of all events and prepares them for display.
+     * @return A nested {@link ArrayList} containing event details.
+     *         Each inner {@link ArrayList} represents a single event's properties.
      */
     ArrayList<ArrayList<Object>> execute();
-
-    /**
-     * Executes the switch to the login view use case once
-     * event created.
-     * TODO note this idea of switching to different usecases after a certain
-     * use case outcome
-     */
 }
