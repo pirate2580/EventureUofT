@@ -10,12 +10,11 @@ public interface EventInputBoundary {
      * @param eventInputData the input data
      */
     void execute(EventInputData eventInputData);
-    void switchToHomeView();
 
     /**
      * Executes the switch to the login view use case once
      * event created.
-     * TODO note this idea of switching to different usecases after a certain
      * use case outcome
      */
+    void switchToHomeView();
 }

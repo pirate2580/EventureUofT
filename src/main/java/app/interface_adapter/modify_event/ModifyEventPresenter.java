@@ -1,19 +1,30 @@
 package app.interface_adapter.modify_event;
 
-
 import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.home.HomeState;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.modify_event.ModifyEventOutputBoundary;
 import app.use_case.modify_event.ModifyEventOutputData;
-import app.view.ModifyEventView;
 
+/**
+ * Presenter for the Modify Event Use Case.
+ * This class prepares the views for the Modify Event Use Case. It updates the
+ * state of the view models and communicates with the ViewManagerModel to handle
+ * transitions between views based on the success or failure of the use case.
+ */
 public class ModifyEventPresenter implements ModifyEventOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final ModifyEventViewModel modifyEventViewModel;
     private final HomeViewModel homeViewModel;
+
+    /**
+     * Constructs a new {@link ModifyEventPresenter}.
+     * @param viewManagerModel    The model managing transitions between views. Must not be {@code null}.
+     * @param modifyEventViewModel The view model for the modify event view. Must not be {@code null}.
+     * @param homeViewModel       The view model for the home view. Must not be {@code null}.
+     */
     public ModifyEventPresenter(ViewManagerModel viewManagerModel,
-                            ModifyEventViewModel modifyEventViewModel,
+                                ModifyEventViewModel modifyEventViewModel,
                                 HomeViewModel homeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.modifyEventViewModel = modifyEventViewModel;
@@ -21,7 +32,7 @@ public class ModifyEventPresenter implements ModifyEventOutputBoundary {
     }
 
     /**
-     * Prepares the success view for the Event user use case
+     * Prepares the success view for the Event user use case.
      * This will probably just lead to the main screen of the application
      * whatever that ends up being
      *
@@ -48,7 +59,7 @@ public class ModifyEventPresenter implements ModifyEventOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage) {
         final ModifyEventState modifyEventState = modifyEventViewModel.getState();
-        modifyEventState.setCapacityError(errorMessage); // Not sure which error I should use
+        modifyEventState.setCapacityError(errorMessage);
         modifyEventViewModel.firePropertyChanged();
     }
 

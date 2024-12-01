@@ -3,10 +3,9 @@ package app.interface_adapter.display_event;
 import app.interface_adapter.ViewManagerModel;
 import app.use_case.display_event.DisplayEventOutputBoundary;
 import app.use_case.display_event.DisplayEventOutputData;
-import app.view.DisplayEventView;
 
 /**
- * The Presenter for the create Event Use Case
+ * The Presenter for the create Event Use Case.
  */
 public class DisplayEventPresenter implements DisplayEventOutputBoundary {
     private final ViewManagerModel viewManagerModel;
@@ -19,7 +18,7 @@ public class DisplayEventPresenter implements DisplayEventOutputBoundary {
     }
 
     /**
-     * Prepares the success view for the Event user use case
+     * Prepares the success view for the Event user use case.
      * This will probably just lead to the main screen of the application
      * whatever that ends up being
      *

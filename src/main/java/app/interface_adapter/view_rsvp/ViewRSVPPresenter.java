@@ -6,12 +6,24 @@ import app.interface_adapter.home.HomeViewModel;
 import app.use_case.view_rsvp.ViewRSVPOutputBoundary;
 import app.use_case.view_rsvp.ViewRSVPOutputData;
 
-public class ViewRSVPPresenter implements  ViewRSVPOutputBoundary {
+/**
+ * Presenter for the View RSVP Use Case.
+ * This class handles the presentation logic for the View RSVP feature.
+ * It updates the view state with RSVP data provided by the use case and
+ * manages transitions between the RSVP view and the home view.
+ */
+public class ViewRSVPPresenter implements ViewRSVPOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final ViewRSVPViewModel viewRSVPViewModel;
     private final HomeViewModel homeViewModel;
 
+    /**
+     * Constructs a new {@link ViewRSVPPresenter}.
+     * @param viewManagerModel   the model responsible for managing view transitions. Must not be {@code null}.
+     * @param viewRSVPViewModel  the ViewModel representing the state of the RSVP view. Must not be {@code null}.
+     * @param homeViewModel      the ViewModel representing the state of the home view. Must not be {@code null}.
+     */
     public ViewRSVPPresenter(ViewManagerModel viewManagerModel,
                              ViewRSVPViewModel viewRSVPViewModel,
                              HomeViewModel homeViewModel) {
@@ -20,7 +32,13 @@ public class ViewRSVPPresenter implements  ViewRSVPOutputBoundary {
         this.homeViewModel = homeViewModel;
     }
 
-
+    /**
+     * Prepares the success view for the View RSVP Use Case.
+     * Updates the state of the RSVP view with the username and RSVP event data
+     * retrieved from the use case output. Notifies the ViewModel to reflect
+     * these changes in the UI.
+     * @param outputData the output data containing RSVP event details.
+     */
     @Override
     public void prepareSuccessView(ViewRSVPOutputData outputData) {
         final ViewRSVPState viewRSVPState = viewRSVPViewModel.getState();
@@ -33,6 +51,11 @@ public class ViewRSVPPresenter implements  ViewRSVPOutputBoundary {
         viewRSVPViewModel.firePropertyChanged();
     }
 
+    /**
+     * Switches the application to the home view.
+     * Updates the view manager to transition to the home view and triggers
+     * the necessary property change notifications.
+     */
     @Override
     public void switchToHomeView() {
         viewManagerModel.setState(homeViewModel.getViewName());

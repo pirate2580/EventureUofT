@@ -39,7 +39,7 @@ public class HomePresenter implements HomeOutputBoundary {
     private final ModifyEventViewModel modifyEventViewModel;
 
     public HomePresenter(ViewManagerModel viewManagerModel, LoginViewModel loginViewModel, CreateEventViewModel createEventViewModel, FilterEventViewModel filterEventViewModel, ViewRSVPViewModel viewRSVPViewModel, ViewCreatedEventsViewModel viewCreatedEventsViewModel
-    , ModifyEventViewModel modifyEventViewModel) {
+            , ModifyEventViewModel modifyEventViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loginViewModel = loginViewModel;
         this.createEventViewModel = createEventViewModel;

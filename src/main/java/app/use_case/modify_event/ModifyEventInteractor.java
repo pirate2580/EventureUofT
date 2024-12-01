@@ -1,11 +1,14 @@
 package app.use_case.modify_event;
 
-import app.entity.Event.Event;
-import app.entity.Event.EventFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Interactor for the Modify Event Use Case.
+ * This class implements the business logic for modifying events, including updating
+ * or deleting an event. It interacts with the data access layer and presenter to
+ * handle these operations and prepare the appropriate views.
+ */
 public class ModifyEventInteractor implements ModifyEventInputBoundary {
     private final ModifyEventUserDataAccessInterface modifyEventUserDataAccessObject;
     private final ModifyEventOutputBoundary modifyEventPresenter;
@@ -27,7 +30,8 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
 
         if (modifyEventInputData.getDeleteEvent()) {
             handleDeleteEvent(eventName);
-        } else {
+        }
+        else {
             handleUpdateEvent(modifyEventInputData);
         }
     }
@@ -40,9 +44,11 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
     private void handleDeleteEvent(String eventName) {
         try {
             modifyEventUserDataAccessObject.deleteEvent(eventName);
-            ModifyEventOutputData outputData = new ModifyEventOutputData("Temp", eventName, "Event deleted successfully.");
+            ModifyEventOutputData outputData = new ModifyEventOutputData("Temp", eventName,
+                    "Event deleted successfully.");
             modifyEventPresenter.prepareSuccessView(outputData);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             modifyEventPresenter.prepareFailView("Failed to delete event. Reason: " + e.getMessage());
         }
     }
@@ -70,11 +76,13 @@ public class ModifyEventInteractor implements ModifyEventInputBoundary {
                         "Event updated successfully."
                 );
                 modifyEventPresenter.prepareSuccessView(outputData);
-            } catch (Exception saveException) {
+            }
+            catch (Exception saveException) {
                 modifyEventPresenter.prepareFailView("Failed to save updated event. Reason: " + saveException.getMessage());
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             modifyEventPresenter.prepareFailView("Failed to update event. Reason: " + e.getMessage());
         }
     }
