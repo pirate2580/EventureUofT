@@ -37,4 +37,5 @@ public interface HomeOutputBoundary {
      * created by the user.
      */
     void switchToViewCreatedEventsView();
+    void switchToModifyEventView();
 }

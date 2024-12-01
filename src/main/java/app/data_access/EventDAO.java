@@ -452,4 +452,28 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
 
         return null;
     }
+
+    /**
+     * Modifies an existing event in the Firestore database.
+     *
+     * @param eventName The name of the event to modify.
+     * @param updatedFields A map containing the fields to update and their new values.
+     */
+    public void modifyEvent(String eventName, Map<String, Object> updatedFields) {
+        try {
+            // Find the document with the eventName
+            DocumentReference eventDocRef = eventCollection.document(eventName);
+
+            // Update the document with the provided fields
+            ApiFuture<WriteResult> writeResult = eventDocRef.update(updatedFields);
+
+            // Wait for the operation to complete
+            WriteResult result = writeResult.get();
+            System.out.println("Event modified at: " + result.getUpdateTime());
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error modifying event in Firestore: " + e.getMessage());
+        }
+    }
+
 }

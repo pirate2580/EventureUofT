@@ -51,4 +51,6 @@ public class ModifyEventController {
                 updatedTags, updatedOrganizer);
         this.userEventUseCaseInteractor.execute(modifyEventInputData);
     }
+
+    public void switchToHomeView() {this.userEventUseCaseInteractor.switchToHomeView();}
 }

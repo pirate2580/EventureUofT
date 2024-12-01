@@ -47,6 +47,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton createEventButton;
     private final JButton viewRSVPButton;
     private final JButton viewCreatedButton;
+    private final JButton modifyEventButton;
 
     // Double declaring the zoom level, which is adjusted later in the code
     private double ZOOM_LEVEL;
@@ -74,6 +75,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         createEventButton = createButton("Create event", evt -> handleEventAction());
         viewRSVPButton = createButton("View RSVP", evt -> handleViewRSVPAction());
         viewCreatedButton = createButton("View Created", evt -> handleViewCreatedEvents());
+        modifyEventButton = createButton("Modify Event", evt -> handleViewModifyEvent());
 
 
         // Set panel layout
@@ -113,6 +115,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         sidebar.add(filterButton);
         sidebar.add(viewRSVPButton);
         sidebar.add(viewCreatedButton);
+        sidebar.add(modifyEventButton);
 
         // Set the sidebar to be at the screen's left
         add(sidebar, BorderLayout.WEST);
@@ -172,8 +175,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * to the map.
      * */
     private JXMapViewer setupMapViewer() {
-        JXMapViewer mapViewer = new JXMapViewer();
-
+        JXMapViewer mapViewer = MapViewerSingleton.getInstance();
+//
         TileFactoryInfo info = new TileFactoryInfo(
                 1, 17, 17, 256, true, true,
                 "https://tile.openstreetmap.org/", "x", "y", "z") {
@@ -383,6 +386,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private void handleViewCreatedEvents() {
         homeController.switchToViewCreatedEventsView();
     }
+
+    private void handleViewModifyEvent() { homeController.switchToModifyEventView(); }
 
     /**
      * Function to navigate from this screen to a different screen

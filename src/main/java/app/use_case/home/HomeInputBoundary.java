@@ -44,4 +44,6 @@ public interface HomeInputBoundary {
      * created by the user.
      */
     void switchToViewCreatedEventsView();
+
+    void switchToModifyEventView();
 }

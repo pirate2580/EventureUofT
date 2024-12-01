@@ -58,6 +58,24 @@ public class CommonEventFactoryTest {
     }
 
     @Test
+    void testCreateWithEmptyDateTimeThrowsException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            factory.create("E002", "Organizer1", "Title", "Description", "",
+                    100, 43.65f, -79.38f, Arrays.asList("tag1", "tag2"));
+        });
+        assertEquals("DateTime cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
+    void testCreateWithNullDateTimeThrowsException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            factory.create("E002", "Organizer1", "Title", "Description", null,
+                    100, 43.65f, -79.38f, Arrays.asList("tag1", "tag2"));
+        });
+        assertEquals("DateTime cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
     void testCreateWithNullDescriptionThrowsException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             factory.create("E003", "Organizer1", "Title", null, "2024-11-30T10:00",
@@ -94,10 +112,28 @@ public class CommonEventFactoryTest {
     }
 
     @Test
+    void testCreateWithInvalidLongitudeThrowsException2() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            factory.create("E005", "Organizer1", "Title", "Description", "2024-11-30T10:00",
+                    100, 43.65f, -76.0f, Arrays.asList("tag1", "tag2"));
+        });
+        assertEquals("Longitude must be between -79 and -80 (inclusive", exception.getMessage());
+    }
+
+    @Test
     void testCreateWithInvalidLatitudeThrowsException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             factory.create("E006", "Organizer1", "Title", "Description", "2024-11-30T10:00",
                     100, 42.0f, -79.38f, Arrays.asList("tag1", "tag2"));
+        });
+        assertEquals("Latitude must be between 43 and 44 (inclusive", exception.getMessage());
+    }
+
+    @Test
+    void testCreateWithInvalidLatitudeThrowsException2() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            factory.create("E006", "Organizer1", "Title", "Description", "2024-11-30T10:00",
+                    100, 45.0f, -79.38f, Arrays.asList("tag1", "tag2"));
         });
         assertEquals("Latitude must be between 43 and 44 (inclusive", exception.getMessage());
     }

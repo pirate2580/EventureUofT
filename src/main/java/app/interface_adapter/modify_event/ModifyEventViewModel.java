@@ -21,8 +21,8 @@ public class ModifyEventViewModel extends ViewModel<ModifyEventState> {
     public static final String CREATE_EVENT_BUTTON_LABEL = "Create Event";
     // public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
-    public ModifyEventViewModel(String viewName) {
-        super(viewName);
+    public ModifyEventViewModel() {
+        super("modifyEvent");
         setState(new ModifyEventState());
     }
 }
