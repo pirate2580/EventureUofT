@@ -4,11 +4,11 @@ import app.interface_adapter.ViewManagerModel;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.create_event.EventOutputBoundary;
 import app.use_case.create_event.EventOutputData;
-import app.view.CreateEventView;
 
 /**
- * The Presenter for the create Event Use Case
+ * The Presenter for the create Event Use Case.
  */
+
 public class CreateEventPresenter implements EventOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final CreateEventViewModel createEventViewModel;
@@ -23,15 +23,15 @@ public class CreateEventPresenter implements EventOutputBoundary {
     }
 
     /**
-     * Prepares the success view for the Event user use case
+     * Prepares the success view for the Event user use case.
      * This will probably just lead to the main screen of the application
      * whatever that ends up being
      *
      * @param outputData the output data
      */
+
     @Override
     public void prepareSuccessView(EventOutputData outputData) {
-
     }
 
     /**
@@ -44,12 +44,13 @@ public class CreateEventPresenter implements EventOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage) {
         final CreateEventState createEventState = createEventViewModel.getState();
-        createEventState.setCapacityError(errorMessage); // Not sure which error I should use
+        createEventState.setCapacityError(errorMessage);
+        // Not sure which error I should use
         createEventViewModel.firePropertyChanged();
     }
 
     @Override
-    public void switchToHomeView(){
+    public void switchToHomeView() {
         viewManagerModel.setState(homeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

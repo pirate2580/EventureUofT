@@ -9,29 +9,43 @@ import java.beans.PropertyChangeSupport;
  * managing the property change events.
  *
  * @param <T> The type of state object contained in the model.
- * TODO: Naoroj: THIS IS COPIED FROM LAB 5, I DONT FULLY UNDERSTAND THIS FILES PURPOSE
- * I BELIEVE ITS JUST A CLASS THAT SPECIFIC VIEWMODELS INHERIT PROPERTIES FROM
+ *            TODO: Naoroj: THIS IS COPIED FROM LAB 5, I DONT FULLY UNDERSTAND THIS FILES PURPOSE
+ *            I BELIEVE ITS JUST A CLASS THAT SPECIFIC VIEWMODELS INHERIT PROPERTIES FROM
  */
 public class ViewModel<T> {
 
     private final String viewName;
-
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
     private T state;
 
+    /**
+     * Constructs a new {@link ViewModel}.
+     * @param viewName The name of the view associated with this ViewModel.
+     */
     public ViewModel(String viewName) {
         this.viewName = viewName;
     }
 
+    /**
+     * Retrieves the name of the view associated with this ViewModel.
+     * @return the view name.
+     */
     public String getViewName() {
         return this.viewName;
     }
 
+    /**
+     * Retrieves the current state of this ViewModel.
+     * @return the current state.
+     */
     public T getState() {
         return this.state;
     }
 
+    /**
+     * Sets the state of this ViewModel.
+     * @param state the new state to set.
+     */
     public void setState(T state) {
         this.state = state;
     }
@@ -50,6 +64,7 @@ public class ViewModel<T> {
      * <p/>
      * For example, the LoggedInView listens for two kinds of property changes;
      * it can use the property name to distinguish which property has changed.
+     *
      * @param propertyName the label for the property that was changed
      */
     public void firePropertyChanged(String propertyName) {
@@ -58,6 +73,7 @@ public class ViewModel<T> {
 
     /**
      * Adds a PropertyChangeListener to this ViewModel.
+     *
      * @param listener The PropertyChangeListener to be added
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {

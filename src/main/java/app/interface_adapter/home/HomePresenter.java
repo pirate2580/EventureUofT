@@ -12,7 +12,6 @@ import app.interface_adapter.view_created_events.ViewCreatedEventsViewModel;
 import app.interface_adapter.view_rsvp.ViewRSVPState;
 import app.interface_adapter.view_rsvp.ViewRSVPViewModel;
 import app.use_case.home.HomeOutputBoundary;
-import app.view.ViewRSVPView;
 
 /**
  * Take output data and turn it into raw strings
@@ -23,9 +22,9 @@ import app.view.ViewRSVPView;
  * make more sense to send it to the home view.
  * */
 public class HomePresenter implements HomeOutputBoundary {
-    //TODO: Take output data and turn it into raw strings to store info
+    // TODO: Take output data and turn it into raw strings to store info
 
-    //TODO: Send info to view model(?)
+    // TODO: Send info to view model(?)
 
     private final ViewManagerModel viewManagerModel;
     private final LoginViewModel loginViewModel;
@@ -34,7 +33,11 @@ public class HomePresenter implements HomeOutputBoundary {
     private final ViewRSVPViewModel viewRSVPViewModel;
     private final ViewCreatedEventsViewModel viewCreatedEventsViewModel;
 
-    public HomePresenter(ViewManagerModel viewManagerModel, LoginViewModel loginViewModel, CreateEventViewModel createEventViewModel, FilterEventViewModel filterEventViewModel, ViewRSVPViewModel viewRSVPViewModel, ViewCreatedEventsViewModel viewCreatedEventsViewModel) {
+    public HomePresenter(ViewManagerModel viewManagerModel, LoginViewModel loginViewModel,
+                         CreateEventViewModel createEventViewModel,
+                         FilterEventViewModel filterEventViewModel,
+                         ViewRSVPViewModel viewRSVPViewModel,
+                         ViewCreatedEventsViewModel viewCreatedEventsViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loginViewModel = loginViewModel;
         this.createEventViewModel = createEventViewModel;
@@ -66,7 +69,6 @@ public class HomePresenter implements HomeOutputBoundary {
         filterEventState.setUsernameState(loginState.getUsername());
         this.filterEventViewModel.firePropertyChanged();
         viewManagerModel.setState(filterEventViewModel.getViewName());
-//        System.out.println(filterEventViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 

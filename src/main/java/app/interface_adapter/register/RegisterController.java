@@ -1,28 +1,31 @@
 package app.interface_adapter.register;
 
-
 import app.use_case.register.RegisterInputBoundary;
 import app.use_case.register.RegisterInputData;
 
-
 /**
- * Controller for the Register Use Case
+ * Controller for the Register Use Case.
  */
 public class RegisterController {
 
     private final RegisterInputBoundary userRegisterUseCaseInteractor;
 
+    /**
+     * Constructs a new {@link RegisterController}.
+     * @param userRegisterUseCaseInteractor the interactor responsible for handling the register use case.
+     *                                      Must not be {@code null}.
+     */
     public RegisterController(RegisterInputBoundary userRegisterUseCaseInteractor) {
         this.userRegisterUseCaseInteractor = userRegisterUseCaseInteractor;
     }
 
     /**
-     * Execute the Register use Case
-     * @param username
-     * @param email
-     * @param password
-     * TODO: Naoroj: Note that the registerController takes in the use case interactor and once it prepares
-     * the data into the data structure inputData, it executes the use case interactor
+     * Executes the Register Use Case.
+     * Prepares the input data with the provided user details and passes it to the
+     * use case interactor for processing.
+     * @param username the username of the user. Must not be {@code null}.
+     * @param email    the email address of the user. Must not be {@code null}.
+     * @param password the password of the user. Must not be {@code null}.
      */
     public void execute(String username, String email, String password) {
         final RegisterInputData registerInputData = new RegisterInputData(
@@ -32,9 +35,9 @@ public class RegisterController {
     }
 
     /**
-     * Execute the switch to LoginView Use case
+     * Execute the switch to LoginView Use case.
      */
-    public void switchToLoginView(){
+    public void switchToLoginView() {
         this.userRegisterUseCaseInteractor.switchToLoginView();
     }
 }
