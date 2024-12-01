@@ -1,7 +1,17 @@
 package app.use_case.home;
 
+/**
+ * Input Data for the Home Use Case.
+ * This class serves as a data transfer object (DTO) for encapsulating information
+ * required by the Home Use Case. It can be expanded to include properties and methods
+ * as needed for future requirements.
+ */
 public class HomeInputData {
-    // There is no input data for the Home Use Case as it just is a front end with the map visualization
-    // The user clicks buttons powered by the controller
 
+    /**
+     * Constructs a new {@link HomeInputData}.
+     * This constructor can be extended to initialize properties as needed.
+     */
+    public HomeInputData() {
+    }
 }

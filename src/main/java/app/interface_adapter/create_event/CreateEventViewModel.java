@@ -1,8 +1,12 @@
 package app.interface_adapter.create_event;
 
 import app.interface_adapter.ViewModel;
-import app.interface_adapter.create_event.CreateEventState;
 
+/**
+ * ViewModel class for the Create Event feature.
+ * This class manages the state and labels for the Create Event UI.
+ * It extends the {@link ViewModel} class and uses {@link CreateEventState} as its state.
+ */
 public class CreateEventViewModel extends ViewModel<CreateEventState> {
     public static final String TITLE_LABEL = "Event View";
     public static final String EVENT_TITLE_LABEL = "Choose event title";
