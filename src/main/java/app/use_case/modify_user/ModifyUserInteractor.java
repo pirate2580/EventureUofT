@@ -1,14 +1,18 @@
 package app.use_case.modify_user;
 
-import app.entity.User.User;
 import org.springframework.stereotype.Component;
 
+import app.entity.User.User;
 
+/**
+ * The ModifyUserInteractor handles the business logic for modifying user account details.
+ * This class is responsible for verifying the user's current credentials, checking for duplicate
+ * usernames and emails, updating the user's information (username, email, password), and saving the changes.
+ */
 @Component
 public class ModifyUserInteractor implements ModifyUserInputBoundary {
     private final ModifyUserDataAccessInterface userDataAccess;
     private final ModifyUserOutputBoundary outputBoundary;
-
 
     public ModifyUserInteractor(ModifyUserDataAccessInterface userDataAccess,
                                 ModifyUserOutputBoundary outputBoundary) {
@@ -16,16 +20,15 @@ public class ModifyUserInteractor implements ModifyUserInputBoundary {
         this.outputBoundary = outputBoundary;
     }
 
+    /**
+     * Executes the modify user operation.
+     * This method first retrieves the user, verifies the password, checks for
+     * duplicate usernames/emails, and then updates the user's information accordingly.
+     * @param modifyUserInputData The data object containing all necessary inputs for modifying user details.
+     */
     @Override
     public void execute(ModifyUserInputData modifyUserInputData) {
-        /**
-         * Executes the modify user operation.
-         * This method first retrieves the user, verifies the password, checks for
-         * duplicate usernames/emails, and then updates the user's information accordingly.
-         * @param modifyUserInputData The data object containing all necessary inputs for modifying user details.
-         */
 
-        // Retrieve user from the database based on the current username.
         User user = userDataAccess.getUserByUsername(modifyUserInputData.getUsername());
 
         // If the user is not found, send a failure response through the output boundary.
@@ -41,15 +44,15 @@ public class ModifyUserInteractor implements ModifyUserInputBoundary {
         }
 
         // Check if the new username is already taken by another user.
-        if (!user.getUsername().equals(modifyUserInputData.getNewUsername()) &&
-            userDataAccess.doesUsernameExist(modifyUserInputData.getNewUsername())) {
+        if (!user.getUsername().equals(modifyUserInputData.getNewUsername())
+                && userDataAccess.doesUsernameExist(modifyUserInputData.getNewUsername())) {
             outputBoundary.prepareFailView("Username is already taken.");
             return;
         }
 
         // Check if the new email address is already taken by another user.
-        if (!user.getEmail().equals(modifyUserInputData.getNewEmail()) &&
-            userDataAccess.doesEmailExist(modifyUserInputData.getNewEmail())) {
+        if (!user.getEmail().equals(modifyUserInputData.getNewEmail())
+                && userDataAccess.doesEmailExist(modifyUserInputData.getNewEmail())) {
             outputBoundary.prepareFailView("Email is already taken.");
             return;
         }
@@ -73,14 +76,12 @@ public class ModifyUserInteractor implements ModifyUserInputBoundary {
         // Persist change
         boolean updateSuccessful = userDataAccess.updateUser(user);
         if (updateSuccessful) {
-            ModifyUserOutputData outputData = new ModifyUserOutputData(user.getUsername(), "User account successfully updated.");
+            ModifyUserOutputData outputData = new ModifyUserOutputData(user.getUsername(),
+                    "User account successfully updated.");
             outputBoundary.prepareSuccessView(outputData);
-        } else {
+        }
+        else {
             outputBoundary.prepareFailView("Failed to update user account.");
         }
     }
 }
-
-
-
-
