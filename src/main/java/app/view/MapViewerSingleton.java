@@ -1,53 +1,68 @@
 package app.view;
 
-// Import required libraries and imports
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.*;
-
-// Import applications specific classes for map functionality and JXMapViewer
-
-import app.interface_adapter.display_event.DisplayEventController;
-import app.interface_adapter.home.HomeController;
-import app.interface_adapter.home.HomeViewModel;
-import app.interface_adapter.view_event.ViewEventState;
-import app.interface_adapter.view_rsvp.ViewRSVPController;
 import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.*;
-import java.awt.geom.Point2D;
-import app.interface_adapter.view_event.ViewEventController;
-import app.interface_adapter.view_rsvp.ViewRSVPController;
+import org.jxmapviewer.viewer.DefaultTileFactory;
+import org.jxmapviewer.viewer.GeoPosition;
+import org.jxmapviewer.viewer.TileFactoryInfo;
 
+/**
+ * Singleton class for creating and managing a shared instance of the JXMapViewer.
+ */
 public class MapViewerSingleton {
-    private static JXMapViewer mapViewer; // Static field for single instance
+    /** Minimum zoom level for the map viewer. */
+    private static final int MIN_ZOOM_LEVEL = 1;
 
-    // Private constructor to prevent instantiation
-    private MapViewerSingleton() {}
+    /** Maximum zoom level for the map viewer. */
+    private static final int MAX_ZOOM_LEVEL = 17;
 
-    // Public static method to provide access to the instance
+    /** Tile size for the map viewer. */
+    private static final int TILE_SIZE = 256;
+
+    /** Default map zoom level. */
+    private static final int DEFAULT_ZOOM_LEVEL = 1;
+
+    /** URL template for OpenStreetMap tiles. */
+    private static final String TILE_BASE_URL = "https://tile.openstreetmap.org/";
+
+    /** Latitude of the University of Toronto campus. */
+    private static final double UOFT_LATITUDE = 43.6629;
+
+    /** Longitude of the University of Toronto campus. */
+    private static final double UOFT_LONGITUDE = -79.3957;
+
+    private static JXMapViewer mapViewer;
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private MapViewerSingleton() {
+    }
+
+    /**
+     * Provides access to the singleton instance of the JXMapViewer.
+     * If the instance does not exist, it is created and configured.
+     *
+     * @return the singleton instance of the {@link JXMapViewer}.
+     */
     public static JXMapViewer getInstance() {
         if (mapViewer == null) {
             mapViewer = new JXMapViewer();
 
             // Configure mapViewer as needed
             TileFactoryInfo info = new TileFactoryInfo(
-                    1, 17, 17, 256, true, true,
-                    "https://tile.openstreetmap.org/", "x", "y", "z") {
+                    MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, MAX_ZOOM_LEVEL, TILE_SIZE, true, true,
+                    TILE_BASE_URL, "x", "y", "z") {
                 @Override
                 public String getTileUrl(int x, int y, int zoom) {
-                    return this.baseURL + (17 - zoom) + "/" + x + "/" + y + ".png";
+                    return this.baseURL + (MAX_ZOOM_LEVEL - zoom) + "/" + x + "/" + y + ".png";
                 }
             };
 
             DefaultTileFactory tileFactory = new DefaultTileFactory(info);
             mapViewer.setTileFactory(tileFactory);
 
-            GeoPosition uoftCampus = new GeoPosition(43.6629, -79.3957);
-            mapViewer.setZoom(1);
+            GeoPosition uoftCampus = new GeoPosition(UOFT_LATITUDE, UOFT_LONGITUDE);
+            mapViewer.setZoom(DEFAULT_ZOOM_LEVEL);
             mapViewer.setAddressLocation(uoftCampus);
         }
 

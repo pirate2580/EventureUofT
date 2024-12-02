@@ -1,9 +1,22 @@
 package app.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -16,6 +29,21 @@ import app.interface_adapter.register.RegisterViewModel;
 
 public class RegisterView extends JPanel implements PropertyChangeListener {
     private static final String VIEW_NAME = "register";
+
+    private static final int PANEL_PADDING = 20;
+    private static final int INPUT_FIELD_WIDTH = 400;
+    private static final int INPUT_FIELD_HEIGHT = 30;
+    private static final int BUTTON_WIDTH = 150;
+    private static final int BUTTON_HEIGHT = 40;
+    private static final int VERTICAL_SPACING_HIGH = 5;
+    private static final int VERTICAL_SPACING_SMALL = 10;
+    private static final int VERTICAL_SPACING_MEDIUM = 20;
+    private static final int VERTICAL_SPACING_EXTRA_LARGE = 50;
+
+    // Font Sizes
+    private static final int TITLE_FONT_SIZE = 32;
+    private static final int INPUT_LABEL_FONT_SIZE = 14;
+    private static final int BUTTON_FONT_SIZE = 16;
 
     private final RegisterViewModel registerViewModel;
     private final JTextField usernameInputField;
@@ -31,12 +59,12 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
         // Configure panel layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.decode("#D3D3D3")); // Light gray background
-        this.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.setBackground(Color.decode("#D3D3D3"));
+        this.setBorder(new EmptyBorder(PANEL_PADDING, PANEL_PADDING, PANEL_PADDING, PANEL_PADDING));
 
         // Add "EventureUofT" heading
         JLabel titleLabel = new JLabel("EventHiveUofT", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, TITLE_FONT_SIZE));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setForeground(Color.decode("#2E4C34"));
 
@@ -55,36 +83,36 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         addDocumentListener(passwordInputField, () -> updateState("password"));
 
         // Add components to panel
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(VERTICAL_SPACING_SMALL));
         this.add(titleLabel);
-        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalStrut(VERTICAL_SPACING_MEDIUM));
         this.add(createLabelTextPanel("username", usernameInputField));
-        this.add(Box.createVerticalStrut(10));
+        this.add(Box.createVerticalStrut(VERTICAL_SPACING_SMALL));
         this.add(createLabelTextPanel("email", emailInputField));
-        this.add(Box.createVerticalStrut(30));
+        this.add(Box.createVerticalStrut(INPUT_FIELD_HEIGHT));
         this.add(createLabelTextPanel("password", passwordInputField));
-        this.add(Box.createVerticalStrut(50));
+        this.add(Box.createVerticalStrut(VERTICAL_SPACING_EXTRA_LARGE));
         this.add(createButtonPanel());
     }
 
     private JTextField createInputField(String placeholder) {
-        JTextField inputField = new JTextField(20);
+        JTextField inputField = new JTextField(VERTICAL_SPACING_MEDIUM);
         configureInputField(inputField, placeholder);
         return inputField;
     }
 
     private JPasswordField createPasswordField() {
-        JPasswordField passwordField = new JPasswordField(20);
+        JPasswordField passwordField = new JPasswordField(VERTICAL_SPACING_MEDIUM);
         configureInputField(passwordField, "password");
         return passwordField;
     }
 
     private void configureInputField(JTextComponent inputField, String placeholder) {
-        inputField.setPreferredSize(new Dimension(400, 30));
-        inputField.setMaximumSize(new Dimension(400, 30));
-        inputField.setMinimumSize(new Dimension(400, 30));
+        inputField.setPreferredSize(new Dimension(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+        inputField.setMaximumSize(new Dimension(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+        inputField.setMinimumSize(new Dimension(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
         inputField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
-        inputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputField.setFont(new Font("Arial", Font.PLAIN, INPUT_LABEL_FONT_SIZE));
         inputField.setForeground(Color.GRAY);
         inputField.setText(placeholder);
 
@@ -108,11 +136,11 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
     private JButton createButton(String text, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 40));
-        button.setMaximumSize(new Dimension(150, 40));
+        button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        button.setMaximumSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         button.setBackground(Color.decode("#48BF67"));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Arial", Font.BOLD, BUTTON_FONT_SIZE));
         button.setOpaque(true);
         button.setContentAreaFilled(true);
         button.setBorderPainted(true);
@@ -140,9 +168,9 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         panel.setOpaque(false);
 
         JLabel label = new JLabel(labelText, JLabel.LEFT);
-        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setFont(new Font("Arial", Font.PLAIN, INPUT_LABEL_FONT_SIZE));
         panel.add(label);
-        panel.add(Box.createVerticalStrut(5));
+        panel.add(Box.createVerticalStrut(VERTICAL_SPACING_HIGH));
         panel.add(inputField);
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -151,7 +179,7 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
 
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, VERTICAL_SPACING_MEDIUM, 0));
         buttonPanel.setOpaque(false);
 
         buttonPanel.add(loginButton);
@@ -183,9 +211,11 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         RegisterState currentState = registerViewModel.getState();
         if ("username".equals(fieldType)) {
             currentState.setUsername(usernameInputField.getText());
-        } else if ("password".equals(fieldType)) {
+        }
+        else if ("password".equals(fieldType)) {
             currentState.setPassword(new String(passwordInputField.getPassword()));
-        } else if ("email".equals(fieldType)){
+        }
+        else if ("email".equals(fieldType)) {
             currentState.setEmail(emailInputField.getText());
         }
         registerViewModel.setState(currentState);
@@ -197,7 +227,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
     }
 
     private void handleLoginAction() {
-//        navigateTo("login");
         System.out.println("navigating to login");
         registerController.switchToLoginView();
     }
@@ -210,10 +239,22 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Retrieves the name of this view. This name is used for navigation
+     * purposes within the application.
+     * @return the name of this view as a {@link String}.
+     */
     public String getViewName() {
         return VIEW_NAME;
     }
 
+    /**
+     * Sets the controller responsible for handling user interactions
+     * and business logic related to registration.
+     * @param controller the {@link RegisterController} instance to associate
+     *                   with this view. It must not be null.
+     * @throws IllegalArgumentException if {@code controller} is null.
+     */
     public void setRegisterController(RegisterController controller) {
         this.registerController = controller;
     }
