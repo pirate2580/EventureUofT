@@ -192,7 +192,7 @@ public class AppBuilder {
         DisplayEventViewModel displayEventViewModel = new DisplayEventViewModel();
         DisplayEventPresenter DisplayEventPresenter = new DisplayEventPresenter(viewManagerModel, displayEventViewModel);
 
-        DisplayEventInteractor displayEventInteractor = new DisplayEventInteractor(eventDAO, DisplayEventPresenter, eventFactory);
+        DisplayEventInteractor displayEventInteractor = new DisplayEventInteractor(eventDAO, DisplayEventPresenter);
         DisplayEventController displayEventController = new DisplayEventController(displayEventInteractor);
         HomeView homeView = new HomeView(homeViewModel, displayEventController);
         homeView.setParentPanel(cardPanel);
@@ -206,7 +206,7 @@ public class AppBuilder {
         final DisplayEventOutputBoundary displayEventOutputBoundary = new DisplayEventPresenter(viewManagerModel, displayEventViewModel);
 
 
-        DisplayEventInputBoundary displayEventInteractor = new DisplayEventInteractor(eventDAO, displayEventOutputBoundary, eventFactory);
+        DisplayEventInputBoundary displayEventInteractor = new DisplayEventInteractor(eventDAO, displayEventOutputBoundary);
         ;
         DisplayEventController displayEventController = new DisplayEventController(displayEventInteractor);
         homeView = new HomeView(homeViewModel, displayEventController);

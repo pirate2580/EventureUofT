@@ -165,9 +165,12 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
+    @Override
+    public void saveEvent(Event event) {
+}
+
     /**
      * Function to delete an event from the Firebase Database.
-     *
      * @param eventName the name of the event to delete.
      */
     @Override
@@ -188,6 +191,19 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
+    /**
+     * Function to get event by the event's ID.
+     * @param eventId, the event's ID
+     * */
+    @Override
+    public Event getEventById(String eventId) {
+        return null;
+    }
+
+    /**
+     * Function to view event based off of the event's title.
+     * @param title, the title of the event.
+     * */
     @Override
     public Event viewEvent(String title) {
         try {
@@ -230,8 +246,6 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
                             tags
                     );
                 }
-            } else {
-//                System.out.println("No event found with title: " + title);
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error viewing event from Firestore: " + e.getMessage());
@@ -269,12 +283,13 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
     }
 
     /**
-     * Create event DAO
-     * @param usernameState
+     * Create event object and save it to our database.
+     * @param usernameState, the state of the username.
      * @param event to save onto the database
      */
     @Override
     public void saveEvent(String usernameState, Event event) {
+        // Store details of the event
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("creator_username", usernameState);
         eventData.put("organizer", event.getOrganizer());
@@ -287,14 +302,20 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         eventData.put("tags", event.getTags());
 
         try {
+            // If success, store event to database
             DocumentReference docRef = eventCollection.document(event.getTitle());
             WriteResult result = docRef.set(eventData).get();
             System.out.println("Event saved at: " + result.getUpdateTime());
         } catch (InterruptedException | ExecutionException e) {
+            // Otherwise, throw error message
             System.err.println("Error saving event to Firestore: " + e.getMessage());
         }
     }
 
+    /**
+     * Function to get a user's created events from the database.
+     * @param username, the user whose saved events you want to check.
+     * */
     @Override
     public List<String> getCreatedEvents(String username) {
         try {
@@ -318,6 +339,10 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
+    /**
+     * Function to notify all users participating in an event with a reminder.
+     * @param eventTitle, the title of the event you want to notify users for.
+     * */
     @Override
     public void notifyUsers(String eventTitle) {
         try {
@@ -357,17 +382,23 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
                                         "We look forward to seeing you there!");
                     }
                 } else {
+                    // Error: event has no users RSVPed to it.
                     System.out.println("No users found in RSVP list for event: " + eventTitle);
                 }
             } else {
+                // Error: event doesn't exist.
                 System.out.println("Event with title " + eventTitle + " not found.");
             }
         } catch (InterruptedException | ExecutionException e) {
+            // Error: error with notification process.
             System.err.println("Error notifying users for event " + eventTitle + ": " + e.getMessage());
         }
     }
 
-
+    /**
+     * Function to get the tags from a rawTag object.
+     * @param rawTags, what we want to get the tags from
+     * */
     private List<String> getTags(Object rawTags) {
         if (rawTags instanceof List<?>) {
             List<?> rawList = (List<?>) rawTags;
@@ -384,7 +415,6 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
 
     /**
      * Modifies an existing event in the Firestore database.
-     *
      * @param eventName The name of the event to modify.
      * @param updatedFields A map containing the fields to update and their new values.
      */
