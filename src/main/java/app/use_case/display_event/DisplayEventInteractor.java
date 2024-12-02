@@ -16,23 +16,19 @@ import app.entity.Event.EventFactory;
  * Note: EventInteractor is an implementation of the inputBoundary interface
  */
 public class DisplayEventInteractor implements DisplayEventInputBoundary {
-    private final EventDAO displayEventDataAccessObject;
+    private final DisplayEventDataAccessInterface displayEventDataAccessObject;
     private final DisplayEventOutputBoundary displayEventPresenter;
-    private final EventFactory eventFactory;
 
     /**
      * Constructs a new {@link DisplayEventInteractor}.
      *
      * @param eventDataAccessObject The DAO for accessing event data. Must not be {@code null}.
      * @param eventPresenter        The output boundary for preparing the view. Must not be {@code null}.
-     * @param eventFactory          The factory for creating event objects. Must not be {@code null}.
      */
-    public DisplayEventInteractor(EventDAO eventDataAccessObject,
-                                  DisplayEventOutputBoundary eventPresenter,
-                                  EventFactory eventFactory) {
+    public DisplayEventInteractor(DisplayEventDataAccessInterface eventDataAccessObject,
+                                  DisplayEventOutputBoundary eventPresenter) {
         this.displayEventDataAccessObject = eventDataAccessObject;
         this.displayEventPresenter = eventPresenter;
-        this.eventFactory = eventFactory;
     }
 
     /**
