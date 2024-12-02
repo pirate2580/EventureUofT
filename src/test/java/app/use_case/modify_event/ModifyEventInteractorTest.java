@@ -38,8 +38,18 @@ class ModifyEventInteractorTest {
 
 
             @Override
+            public void saveEvent(Event event) {
+
+            }
+
+            @Override
             public void deleteEvent(String eventName) {
                 deletedEventName = eventName;
+            }
+
+            @Override
+            public Event getEventById(String eventId) {
+                return null;
             }
 
 
@@ -230,8 +240,18 @@ class ModifyEventInteractorTest {
 
 
             @Override
+            public void saveEvent(Event event) {
+
+            }
+
+            @Override
             public void deleteEvent(String eventName) {
                 throw new RuntimeException("Database error during deletion");
+            }
+
+            @Override
+            public Event getEventById(String eventId) {
+                return null;
             }
 
 
@@ -277,7 +297,17 @@ class ModifyEventInteractorTest {
         modifyEventUserDataAccessObject = new ModifyEventUserDataAccessInterface() {
 
             @Override
+            public void saveEvent(Event event) {
+
+            }
+
+            @Override
             public void deleteEvent(String eventName) {
+            }
+
+            @Override
+            public Event getEventById(String eventId) {
+                return null;
             }
 
             /**
