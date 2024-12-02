@@ -8,7 +8,7 @@ import app.use_case.login.LoginOutputBoundary;
 import app.use_case.login.LoginOutputData;
 
 /**
- * Constructs a new {@link LoginPresenter}.
+ * Constructs a new LoginPresenter.
  */
 public class LoginPresenter implements LoginOutputBoundary {
     private final ViewManagerModel viewManagerModel;
@@ -31,12 +31,11 @@ public class LoginPresenter implements LoginOutputBoundary {
      * Updates the home view's state with the username from the login state,
      * transitions to the home view, and notifies the view manager to reflect
      * these changes.
-     * @param response the output data from the login use case containing login details.
-     * @param s        additional string data for processing, if applicable.
+     * @param response, the output data from the login use case containing login details.
+     * @param s, additional string data for processing, if applicable.
      */
     @Override
     public void prepareSuccessView(LoginOutputData response, String s) {
-
         final HomeState homeState = homeViewModel.getState();
         final LoginState loginState = loginViewModel.getState();
         homeState.setUsernameState(loginState.getUsername());
@@ -44,7 +43,11 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.viewManagerModel.setState(homeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
-
+    /**
+     * Function to prepare the fail view for the Login Use Case.
+     * Sets the username error for LoginState based off the error message
+     * @param errorMessage, the error message.
+     * */
     @Override
     public void prepareFailView(String errorMessage) {
         final LoginState loginState = loginViewModel.getState();
@@ -52,6 +55,9 @@ public class LoginPresenter implements LoginOutputBoundary {
         loginViewModel.firePropertyChanged();
     }
 
+    /**
+     * Function to switch to the register view from the log in view.
+     * */
     @Override
     public void switchToRegisterView() {
         viewManagerModel.setState(registerViewModel.getViewName());

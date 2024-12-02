@@ -3,9 +3,9 @@ package app.interface_adapter.home;
 import app.interface_adapter.view_event.ViewEventController;
 import app.use_case.home.HomeInputBoundary;
 /**
- * convert raw user data to something useful, and then store it in
+ * Convert raw user data to something useful, and then store it in
  * the input data or input boundary
- * AFAIK don't need anything for the home view specifically
+ * AFAIK don't need anything for the home view specifically,
  * create an input data object containing that info
  * */
 
@@ -15,6 +15,7 @@ public class HomeController {
         this.homeUseCaseInteractor = homeUseCaseInteractor;
     }
 
+    // include functions for switching to different views
     public void switchToLoginView(){
         this.homeUseCaseInteractor.switchToLoginView();
     }
