@@ -11,6 +11,7 @@ import app.entity.Event.Event;
  */
 public interface ModifyEventUserDataAccessInterface {
 
+
     /**
      * Saves an event to the database.
      * This method persists the given event to the database.
@@ -27,6 +28,7 @@ public interface ModifyEventUserDataAccessInterface {
      */
     void deleteEvent(String eventName);
 
+
     /**
      * Retrieves an event by its ID from the database.
      * This method fetches the event corresponding to the given ID.
@@ -36,6 +38,7 @@ public interface ModifyEventUserDataAccessInterface {
      */
     Event getEventById(String eventId);
 
+
     /**
      * Modifies an existing event in the Firestore database.
      *
@@ -44,3 +47,4 @@ public interface ModifyEventUserDataAccessInterface {
      */
     void modifyEvent(String eventName, Map<String, Object> updatedFields);
 }
+

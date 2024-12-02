@@ -4,7 +4,6 @@ package app.view;
 import app.interface_adapter.modify_event.ModifyEventController;
 import app.interface_adapter.modify_event.ModifyEventState;
 import app.interface_adapter.modify_event.ModifyEventViewModel;
-import app.interface_adapter.view_event.ViewEventController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -234,11 +233,25 @@ public class ModifyEventView extends JPanel implements ActionListener, PropertyC
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if (e.getSource() == modifyEventButton) {
-            ModifyEventState currentState = modifyEventViewModel.getState();
-            modifyEventController.execute(currentState.getOldTitle(), currentState.getNewTitle(), currentState.getDescription(),
-                    currentState.getDateTime(), parseInt(currentState.getCapacity()), parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()),
-                    currentState.getDeleteEvent(), currentState.getTags(), "TMP", currentState.getOrganizer());
-            System.out.println("Event created!");
+            try {
+                ModifyEventState currentState = modifyEventViewModel.getState();
+                modifyEventController.execute(currentState.getOldTitle(), currentState.getNewTitle(), currentState.getDescription(),
+                        currentState.getDateTime(), parseInt(currentState.getCapacity()), parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()),
+                        currentState.getDeleteEvent(), currentState.getTags(), "TMP", currentState.getOrganizer());
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You have modified the event: " + currentState.getOldTitle(),
+                        "Modify Event Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } catch (Exception error) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Failure: " + error.getMessage(),
+                        "Failure",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
         } else if (e.getSource() == homeButton) {
             goToHome();
             System.out.println("Went home!");
