@@ -1,10 +1,21 @@
 package app.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -14,6 +25,18 @@ import app.interface_adapter.view_created_events.ViewCreatedEventsState;
 import app.interface_adapter.view_created_events.ViewCreatedEventsViewModel;
 
 public class ViewCreatedEventsView extends JPanel implements PropertyChangeListener {
+    // Padding and Margins
+    private static final int PANEL_PADDING = 10;
+    private static final int EVENT_PADDING = 5;
+
+    // Font Sizes
+    private static final int TITLE_FONT_SIZE = 24;
+    private static final int EVENT_LABEL_FONT_SIZE = 18;
+    private static final int BUTTON_FONT_SIZE = 14;
+
+    // Border Properties
+    private static final int BORDER_THICKNESS = 1;
+    private static final Color BORDER_COLOR = Color.GRAY;
 
     private static final String VIEW_NAME = "viewCreated";
     private final ViewCreatedEventsViewModel viewCreatedEventsViewModel;
@@ -29,7 +52,7 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
 
         // Set up the panel layout
         this.setLayout(new BorderLayout());
-        this.setBorder(new EmptyBorder(10, 10, 10, 10));
+        this.setBorder(new EmptyBorder(PANEL_PADDING, PANEL_PADDING, PANEL_PADDING, PANEL_PADDING));
 
         // Panel for events
         eventsPanel = new JPanel();
@@ -63,8 +86,8 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
 
         // Add a title label at the top
         JLabel titleLabel = new JLabel("Your Created Events:");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Set a larger, bold font for the title
-        titleLabel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add some padding around the title
+        titleLabel.setFont(new Font("Arial", Font.BOLD, TITLE_FONT_SIZE));
+        titleLabel.setBorder(new EmptyBorder(PANEL_PADDING, PANEL_PADDING, PANEL_PADDING, PANEL_PADDING));
         eventsPanel.add(titleLabel);
 
         if (createdEvents != null && !createdEvents.isEmpty()) {
@@ -72,17 +95,19 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
                 // Create a panel for each event
                 JPanel eventPanel = new JPanel();
                 eventPanel.setLayout(new BorderLayout());
-                eventPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // Add padding to the panel
+                eventPanel.setBorder(new EmptyBorder(EVENT_PADDING, EVENT_PADDING, EVENT_PADDING, EVENT_PADDING));
 
                 // Create the event label
                 JLabel eventLabel = new JLabel(eventName);
-                eventLabel.setFont(new Font("Arial", Font.PLAIN, 18)); // Customize font size
+                eventLabel.setFont(new Font("Arial", Font.PLAIN, EVENT_LABEL_FONT_SIZE));
                 eventPanel.add(eventLabel, BorderLayout.WEST);
 
                 // Create the "Send Notification Email" button
                 JButton sendNotificationButton = new JButton("Send Notification Email to RSVPED users");
-                sendNotificationButton.setFont(new Font("Arial", Font.PLAIN, 14)); // Customize font size
-                sendNotificationButton.addActionListener(e -> sendNotificationEmail(eventName)); // Attach action listener
+                sendNotificationButton.setFont(new Font("Arial", Font.PLAIN, BUTTON_FONT_SIZE));
+                // Customize font size
+                sendNotificationButton.addActionListener(e -> sendNotificationEmail(eventName));
+                // Attach action listener
 
                 eventPanel.add(sendNotificationButton, BorderLayout.EAST);
 
@@ -94,11 +119,14 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
                 separator.setForeground(Color.GRAY);
                 eventsPanel.add(separator);
             }
-        } else {
+        }
+        else {
             // Add a label indicating no events if the list is empty
             JLabel noEventsLabel = new JLabel("No created events found.");
-            noEventsLabel.setFont(new Font("Arial", Font.ITALIC, 18)); // Italic font for the message
-            noEventsLabel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add some padding around the label
+            noEventsLabel.setFont(new Font("Arial", Font.ITALIC, EVENT_LABEL_FONT_SIZE));
+            // Italic font for the message
+            noEventsLabel.setBorder(new EmptyBorder(PANEL_PADDING, PANEL_PADDING, PANEL_PADDING, PANEL_PADDING));
+            // Add some padding around the label
             eventsPanel.add(noEventsLabel);
         }
 
@@ -138,6 +166,14 @@ public class ViewCreatedEventsView extends JPanel implements PropertyChangeListe
         this.viewCreatedEventsController = controller;
     }
 
+    /**
+     * Sets the controller responsible for handling the logic related to sending
+     * notifications to users who have RSVP'd for events.
+     *
+     * @param controller the {@link NotifyUserController} instance to associate with this view.
+     *                   This controller manages notification-related operations.
+     * @throws IllegalArgumentException if the provided {@code controller} is null.
+     */
     public void setNotificationController(NotifyUserController controller) {
         this.notifyUserController = controller;
     }

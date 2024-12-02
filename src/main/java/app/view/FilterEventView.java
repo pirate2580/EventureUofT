@@ -1,11 +1,21 @@
 package app.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 import java.util.ArrayList;
-import javax.swing.*;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -15,6 +25,11 @@ import app.interface_adapter.filter_event.FilterEventState;
 import app.interface_adapter.filter_event.FilterEventViewModel;
 import app.interface_adapter.view_event.ViewEventController;
 
+/**
+ * This class represents the Filter Event view in the application.
+ * It allows users to filter events based on selected categories, such as Music, Sports, Art & Culture, etc.
+ * The filtered events are then displayed dynamically on the same screen.
+ */
 public class FilterEventView extends JPanel implements PropertyChangeListener {
     private static final String VIEW_NAME = "filterEvent";
 
@@ -28,24 +43,27 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
     private final JCheckBox gamingCheckbox;
     private final JCheckBox festivalCheckbox;
 
-//    private final JTextField locationTextField;
     private final JButton submitFilterButton;
     private final JButton backButton;
-    private final JPanel eventsPanel; // Panel to hold events dynamically
-
-//    private final JList<String> filteredEventsInfo;
-//    private final JScrollPane filteredEventsScrollPane;
+    private final JPanel eventsPanel;
+    private final int border = 10;
 
     private FilterEventController filterEventController;
     private ViewEventController viewEventController;
 
+    /**
+     * Constructor for FilterEventView.
+     * Initializes the components, sets up the layout, and adds listeners for user actions.
+     *
+     * @param filterEventViewModel The ViewModel for the filter event functionality.
+     */
     public FilterEventView(FilterEventViewModel filterEventViewModel) {
         this.filterEventViewModel = filterEventViewModel;
         this.filterEventViewModel.addPropertyChangeListener(this);
 
         // Set layout to BorderLayout since we're using BorderLayout constraints
         this.setLayout(new BorderLayout());
-        this.setBorder(new EmptyBorder(10, 10, 10, 10));
+        this.setBorder(new EmptyBorder(border, border, border, border));
 
         // Create a panel for checkboxes
         JPanel checkboxPanel = new JPanel();
@@ -75,14 +93,6 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         // Add the checkbox panel to the WEST of the main panel
         add(checkboxPanel, BorderLayout.WEST);
 
-        // Create a list for filtered events
-//        filteredEventsInfo = new JList<>(new DefaultListModel<>());
-//        filteredEventsScrollPane = new JScrollPane(filteredEventsInfo);
-//        filteredEventsScrollPane.setBorder(new LineBorder(Color.GRAY, 1, true));
-//
-//        // Add the scroll pane containing the list to the CENTER
-//        add(filteredEventsScrollPane, BorderLayout.CENTER);
-        // Create a scrollable panel for events
         eventsPanel = new JPanel();
         eventsPanel.setLayout(new BoxLayout(eventsPanel, BoxLayout.Y_AXIS));
         JScrollPane eventsScrollPane = new JScrollPane(eventsPanel);
@@ -103,31 +113,62 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Applies the selected filters and triggers the filtering logic.
+     * Retrieves the selected categories and passes them to the filter event controller.
+     */
     private void applyFilters() {
         // Get selected categories
         List<String> selectedCategories = new ArrayList<>();
-        if (musicCheckbox.isSelected()) selectedCategories.add("Music");
-        if (sportsCheckbox.isSelected()) selectedCategories.add("Sports");
-        if (artCultureCheckbox.isSelected()) selectedCategories.add("Art and Culture");
-        if (foodDrinkCheckbox.isSelected()) selectedCategories.add("Food & Drink");
-        if (educationCheckbox.isSelected()) selectedCategories.add("Education");
-        if (travelCheckbox.isSelected()) selectedCategories.add("Travel");
-        if (gamingCheckbox.isSelected()) selectedCategories.add("Gaming");
-        if (festivalCheckbox.isSelected()) selectedCategories.add("Festival");
+        if (musicCheckbox.isSelected()) {
+            selectedCategories.add("Music");
+        }
+        if (sportsCheckbox.isSelected()) {
+            selectedCategories.add("Sports");
+        }
+        if (artCultureCheckbox.isSelected()) {
+            selectedCategories.add("Art and Culture");
+        }
+        if (foodDrinkCheckbox.isSelected()) {
+            selectedCategories.add("Food & Drink");
+        }
+        if (educationCheckbox.isSelected()) {
+            selectedCategories.add("Education");
+        }
+        if (travelCheckbox.isSelected()) {
+            selectedCategories.add("Travel");
+        }
+        if (gamingCheckbox.isSelected()) {
+            selectedCategories.add("Gaming");
+        }
+        if (festivalCheckbox.isSelected()) {
+            selectedCategories.add("Festival");
+        }
 
         // Execute the filter event use case
         if (filterEventController != null) {
             filterEventController.execute(selectedCategories);
-        } else {
+        }
+        else {
             // Handle the case where the controller is not set
-            JOptionPane.showMessageDialog(this, "FilterEventController is not set.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "FilterEventController is not set.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Updates the displayed events when the filtered results are received.
+     * Clears the previous events and adds the new events to the panel.
+     *
+     * @param evt The property change event.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         FilterEventState state = (FilterEventState) evt.getNewValue();
         List<Event> events = state.getFilteredEvents();
+        final int borderPropertyChange = 10;
 
         // Clear the events panel
         eventsPanel.removeAll();
@@ -136,7 +177,8 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
             for (Event event : events) {
                 JPanel eventPanel = new JPanel();
                 eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
-                eventPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                eventPanel.setBorder(new EmptyBorder(borderPropertyChange, borderPropertyChange,
+                        borderPropertyChange, borderPropertyChange));
 
                 // Ensure the panel spans the full width
                 eventPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -170,25 +212,43 @@ public class FilterEventView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Opens the detailed view of the selected event.
+     * @param event The event whose details will be displayed.
+     */
     private void viewEvent(Event event) {
-//        System.out.println(event.getTitle());
         viewEventController.execute(event.getTitle());
     }
 
+    /**
+     * Switches to the home view.
+     */
     private void goToHome() {
         filterEventController.switchToHomeView();
     }
 
+    /**
+     * Gets the name of the view.
+     *
+     * @return The view name.
+     */
     public String getViewName() {
         return VIEW_NAME;
     }
 
+    /**
+     * Sets the FilterEventController for this view.
+     * @param controller The controller to set.
+     */
     public void setFilterEventsController(FilterEventController controller) {
         this.filterEventController = controller;
     }
 
+    /**
+     * Sets the ViewEventController for this view.
+     * @param controller The controller to set.
+     */
     public void setViewEventController(ViewEventController controller) {
         this.viewEventController = controller;
     }
-
 }

@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import app.interface_adapter.ViewManagerModel;
 
 /**
- * TODO: This file copied from lab-5
  * The View Manager for the program. It listens for property change events
  * in the ViewManagerModel and updates which View should be visible.
  */

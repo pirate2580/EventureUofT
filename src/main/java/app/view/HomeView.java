@@ -1,28 +1,71 @@
 package app.view;
 
-// Import required libraries and imports
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-// Import applications specific classes for map functionality and JXMapViewer
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import org.jxmapviewer.JXMapViewer;
+import org.jxmapviewer.viewer.DefaultTileFactory;
+import org.jxmapviewer.viewer.DefaultWaypoint;
+import org.jxmapviewer.viewer.GeoPosition;
+import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.viewer.WaypointPainter;
 
 import app.interface_adapter.display_event.DisplayEventController;
 import app.interface_adapter.home.HomeController;
 import app.interface_adapter.home.HomeViewModel;
-import app.interface_adapter.view_event.ViewEventState;
-import app.interface_adapter.view_rsvp.ViewRSVPController;
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.*;
-import java.awt.geom.Point2D;
 import app.interface_adapter.view_event.ViewEventController;
-import app.interface_adapter.view_rsvp.ViewRSVPController;
 
+/**
+ * The HomeView class represents the main view of the application. It provides a graphical interface
+ * for users to interact with events, maps, and navigation functionality.
+ * This class manages the layout, components, and interactions within the home view.
+ */
 public class HomeView extends JPanel implements PropertyChangeListener {
+
+    private static final int MIN_ZOOM_LEVEL = 1;
+    private static final int MAX_ZOOM_LEVEL = 17;
+    private static final double EARTH_RADIUS = 6371000.0;
+    private static final double ZOOM_THRESHOLD_LOW = 0.000025;
+    private static final double ZOOM_THRESHOLD_MEDIUM = 0.00025;
+    private static final double ZOOM_THRESHOLD_HIGH = 0.001;
+    private static final double ZOOM_MULTIPLIER = 0.005;
+    private static final double GEO_LATITUTE = 43.6629;
+    private static final double GEO_LONGITUDE = -79.3957;
+    private static final int LOW_ZOOM_THRESHOLD = 5;
+    private static final int MEDIUM_ZOOM_THRESHOLD = 7;
+    private static final int HIGH_ZOOM_THRESHOLD = 9;
+    private static final int TILE_SIZE = 256;
+    private static final int BUTTON_WIDTH = 120;
+    private static final int BUTTON_HEIGHT = 30;
+    private static final int BUTTON_FONT_SIZE = 16;
+    private static final int WAYPOINT_RADIUS = 6;
+    private static final Map<String, Color> EVENT_TAG_COLORS = Map.of(
+            "Gaming", Color.GREEN,
+            "Music", Color.BLACK,
+            "Sports", Color.CYAN,
+            "Art and Culture", Color.ORANGE,
+            "Education", Color.PINK,
+            "Travel", Color.GRAY,
+            "Festival", Color.YELLOW
+    );
 
     // Constant for the view name for navigation purposes
     private static final String VIEW_NAME = "Home";
@@ -56,10 +99,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private JXMapViewer mapViewer;
 
     /**
-     * Constructor for the HomeView class to set up the view model,
-     * swing components, and map components.
-     * @param homeViewModel .
-     * */
+     * Constructor for the HomeView class.
+     * Initializes the view components, map viewer, and event listeners.
+     *
+     * @param homeViewModel the view model for the home view.
+     * @param displayEventController the controller for handling event display logic.
+     */
     public HomeView(HomeViewModel homeViewModel, DisplayEventController displayEventController) {
         this.homeViewModel = homeViewModel;
         this.displayEventController = displayEventController;
@@ -77,7 +122,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         viewCreatedButton = createButton("View Created", evt -> handleViewCreatedEvents());
         modifyEventButton = createButton("Modify Event", evt -> handleViewModifyEvent());
 
-
         // Set panel layout
         setLayout(new BorderLayout());
 
@@ -88,17 +132,17 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     /**
      * Function that sets parent panel in order for navigation
      * between views to be possible.
+     *
      * @param parentPanel .
-     * */
+     */
     public void setParentPanel(JPanel parentPanel) {
-
         this.parentPanel = parentPanel;
     }
 
     /**
      * Function that draws and sets up the map viewer, sidebar, and
      * zoom panel.
-     * */
+     */
     private void setupView() {
         // Set up the map viewer
         mapViewer = setupMapViewer();
@@ -138,13 +182,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * is intended to take the distance between two geopositions on our map, using the
      * Haversine formula, which is a formula commonly used for finding the distance between
      * two points on a sphere (cool new knowledge gained!)
-     * @param pos1, the first location on the map
-     * @param pos2, the second location on the map.
-     * */
+     *
+     * @param pos1 the first location on the map.
+     * @param pos2 the second location on the map.
+     */
     private double calculateDistance(GeoPosition pos1, GeoPosition pos2) {
-        // Use earth's radius in meters as a base
-        // TODO: Put this function in the controller or something? Not sure bc of GeoPosition
-        final double EARTH_RADIUS = 6371000;
 
         // Do some math and convert the latitude and longitude from degrees to radians using built-in function
         double lat1 = Math.toRadians(pos1.getLatitude());
@@ -168,28 +210,27 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         return EARTH_RADIUS * c;
     }
 
-
     /**
      * Create and set up the JXMapViewer and its
      * initial properties. Includes drawing all the waypoints
      * to the map.
-     * */
+     */
     private JXMapViewer setupMapViewer() {
         JXMapViewer mapViewer = MapViewerSingleton.getInstance();
-//
+
         TileFactoryInfo info = new TileFactoryInfo(
-                1, 17, 17, 256, true, true,
+                MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, MAX_ZOOM_LEVEL, TILE_SIZE, true, true,
                 "https://tile.openstreetmap.org/", "x", "y", "z") {
             @Override
             public String getTileUrl(int x, int y, int zoom) {
-                return this.baseURL + (17 - zoom) + "/" + x + "/" + y + ".png";
+                return this.baseURL + (MAX_ZOOM_LEVEL - zoom) + "/" + x + "/" + y + ".png";
             }
         };
 
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
 
-        GeoPosition uoftCampus = new GeoPosition(43.6629, -79.3957);
+        GeoPosition uoftCampus = new GeoPosition(GEO_LATITUTE, GEO_LONGITUDE);
         mapViewer.setZoom(1);
         mapViewer.setAddressLocation(uoftCampus);
 
@@ -206,13 +247,27 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
             for (String tag : tags) {
                 switch (tag) {
-                    case "Gaming": colour = Color.GREEN; break;
-                    case "Music": colour = Color.BLACK; break;
-                    case "Sports": colour = Color.CYAN; break;
-                    case "Art and Culture": colour = Color.ORANGE; break;
-                    case "Education": colour = Color.PINK; break;
-                    case "Travel": colour = Color.GRAY; break;
-                    case "Festival": colour = Color.YELLOW; break;
+                    case "Gaming":
+                        colour = Color.GREEN;
+                        break;
+                    case "Music":
+                        colour = Color.BLACK;
+                        break;
+                    case "Sports":
+                        colour = Color.CYAN;
+                        break;
+                    case "Art and Culture":
+                        colour = Color.ORANGE;
+                        break;
+                    case "Education":
+                        colour = Color.PINK;
+                        break;
+                    case "Travel":
+                        colour = Color.GRAY;
+                        break;
+                    case "Festival":
+                        colour = Color.YELLOW;
+                        break;
                 }
             }
             DefaultWaypoint waypoint = new DefaultWaypoint(new GeoPosition(latitude, longitude));
@@ -227,12 +282,12 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             Color color = waypointColors.getOrDefault(waypoint, Color.BLACK);
             String title = waypointTitles.getOrDefault(waypoint, "");
 
-            int radius = 6;
             g.setColor(color);
-            g.fillOval((int) point.getX() - radius, (int) point.getY() - radius, 2 * radius, 2 * radius);
+            g.fillOval((int) point.getX() - WAYPOINT_RADIUS, (int) point.getY() - WAYPOINT_RADIUS,
+                    2 * WAYPOINT_RADIUS, 2 * WAYPOINT_RADIUS);
 
             g.setColor(Color.BLACK);
-            g.drawString(title, (int) point.getX() + radius + 2, (int) point.getY());
+            g.drawString(title, (int) point.getX() + WAYPOINT_RADIUS + 2, (int) point.getY());
         });
 
         waypointPainter.setWaypoints(waypoints);
@@ -248,13 +303,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
                 GeoPosition clickedGeoPosition = mapViewer.convertPointToGeoPosition(e.getPoint());
 
                 // Check if the click is near a waypoint by looping through all waypoints...
-                // TODO: Check for a more efficient way??
                 for (DefaultWaypoint waypoint : waypoints) {
                     GeoPosition wpPosition = waypoint.getPosition();
                     double distance = calculateDistance(clickedGeoPosition, wpPosition);
 
-                    if (distance < (20 * mapViewer.getZoom())) { // Distance threshold in meters, adjusted by zoom level
-                        // Debbugging statement
+                    if (distance < (20 * mapViewer.getZoom())) {
                         System.out.println(mapViewer.getZoom());
                         String title = waypointTitles.get(waypoint);
                         viewEvent(title);
@@ -269,18 +322,19 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Open the event's info page after clicking on it
-     * @param title, the title of the event
-     * */
+     * Open the event's info page after clicking on it.
+     * @param title the title of the event
+     */
     private void viewEvent(String title) {
         viewEventController.execute(title);
     }
+
     /**
      * Add dragging functionality to the map, so that when a user
      * drags the map the screen follows the cursor and centralizes
      * the map to show the dragged location.
-     * @param mapViewer, the map viewer object.
-     * */
+     * @param mapViewer the map viewer object.
+     */
     private void setupDragFunctionality(JXMapViewer mapViewer) {
         // Start tracking the cursor's location by setting it to nothing
         final Point[] lastMousePosition = {null};
@@ -298,14 +352,17 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             public void mouseDragged(MouseEvent e) {
                 // First, adjust tiles scrolled based off of user's zoom level.
                 System.out.println(mapViewer.getZoom());
-                if(mapViewer.getZoom() <= 5){
-                    ZOOM_LEVEL = 0.000025;
-                } else if (mapViewer.getZoom() <= 7){
-                    ZOOM_LEVEL = 0.00025;
-                } else if (mapViewer.getZoom() <= 9){
-                    ZOOM_LEVEL = 0.001;
-                } else {
-                    ZOOM_LEVEL = 0.005 * mapViewer.getZoom();
+                if (mapViewer.getZoom() <= LOW_ZOOM_THRESHOLD) {
+                    ZOOM_LEVEL = ZOOM_THRESHOLD_LOW;
+                }
+                else if (mapViewer.getZoom() <= MEDIUM_ZOOM_THRESHOLD) {
+                    ZOOM_LEVEL = ZOOM_THRESHOLD_MEDIUM;
+                }
+                else if (mapViewer.getZoom() <= HIGH_ZOOM_THRESHOLD) {
+                    ZOOM_LEVEL = ZOOM_THRESHOLD_HIGH;
+                }
+                else {
+                    ZOOM_LEVEL = ZOOM_MULTIPLIER * mapViewer.getZoom();
                 }
                 // If the user moved their mouse, track the distance
                 if (lastMousePosition[0] != null) {
@@ -337,8 +394,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     /**
      * Function to zoom in on the map by
-     * decreasing mapViewer's zoom level
-     * */
+     * decreasing mapViewer's zoom level.
+     */
     private void handleZoomInAction() {
         int currentZoom = mapViewer.getZoom();
         if (currentZoom > 1) {
@@ -348,11 +405,11 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     /**
      * Function to zoom out on the map by
-     * increasing mapViewer's zoom level
-     * */
+     * increasing mapViewer's zoom level.
+     */
     private void handleZoomOutAction() {
         int currentZoom = mapViewer.getZoom();
-        if (currentZoom < 17) {
+        if (currentZoom < MAX_ZOOM_LEVEL) {
             mapViewer.setZoom(currentZoom + 1);
         }
     }
@@ -360,22 +417,21 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     /**
      * Function to switch screens to the create
      * event screen when the create event button
-     * is pressed
-     * */
-    private void handleEventAction(){
+     * is pressed.
+     */
+    private void handleEventAction() {
         homeController.switchToCreateEventView();
     }
 
     /**
      * Function to switch screens to the signup
-     * screen whenever the logout button is pressed
-     * */
+     * screen whenever the logout button is pressed.
+     */
     private void handleLogoutAction() {
         homeController.switchToLoginView();
     }
 
     private void handleFilterAction() {
-//        System.out.println("filter button test");
         homeController.switchToFilterEventView();
     }
 
@@ -387,13 +443,14 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         homeController.switchToViewCreatedEventsView();
     }
 
-    private void handleViewModifyEvent() { homeController.switchToModifyEventView(); }
+    private void handleViewModifyEvent() {
+        homeController.switchToModifyEventView();
+    }
 
     /**
      * Function to navigate from this screen to a different screen
      * using the name of the new screen.
-     * */
-
+     */
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -403,21 +460,25 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     /**
      * Function to create a button and set its desired
      * properties like size, colour, font, and interactions
-     * @param text, text you want the button to display
-     * @param actionListener, desired action listener
+     *
+     * @param text           text you want the button to display.
+     * @param actionListener desired action listener.
      **/
     private JButton createButton(String text, java.awt.event.ActionListener actionListener) {
         // Create a new button
         JButton button = new JButton(text);
+        final int createButtonWidth = BUTTON_WIDTH;
+        final int createButtonHeight = BUTTON_HEIGHT;
+        final int createButtonFontSize = BUTTON_FONT_SIZE;
 
         // Set desired dimenstions
-        button.setPreferredSize(new Dimension(120, 40));
-        button.setMaximumSize(new Dimension(120, 40));
+        button.setPreferredSize(new Dimension(createButtonWidth, createButtonHeight));
+        button.setMaximumSize(new Dimension(createButtonWidth, createButtonHeight));
 
         // Set desired colour scheme and appearance
         button.setBackground(Color.decode("#48BF67"));
         button.setForeground(Color.BLACK);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Arial", Font.BOLD, createButtonFontSize));
 
         // Add an action listener for the button
         button.addActionListener(actionListener);
@@ -427,6 +488,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
             public void mouseEntered(MouseEvent evt) {
                 button.setBackground(Color.decode("#2E7A46"));
             }
+
             // Set the background back to its original colour after hovering
             public void mouseExited(MouseEvent evt) {
                 button.setBackground(Color.decode("#48BF67"));
@@ -434,9 +496,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         });
         return button;
     }
+
     /**
      * Function to return the view name of homeview.
-     * */
+     */
     public String getViewName() {
         return VIEW_NAME;
     }
@@ -445,7 +508,6 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         this.homeController = controller;
     }
 
-    // TODO: Debug
     public void setViewEventController(ViewEventController controller) {
         this.viewEventController = controller;
     }
