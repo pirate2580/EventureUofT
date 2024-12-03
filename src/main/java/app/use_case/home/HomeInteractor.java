@@ -7,7 +7,6 @@ package app.use_case.home;
  * transitions based on user actions.
  */
 public class HomeInteractor implements HomeInputBoundary {
-
     private HomeOutputBoundary homePresenter;
 
     /**
@@ -24,8 +23,7 @@ public class HomeInteractor implements HomeInputBoundary {
      * This method is currently a placeholder and may be used for additional logic in the future.
      */
     @Override
-    public void execute() {
-    }
+    public void execute() {}
 
     /**
      * Switches to the login view.
