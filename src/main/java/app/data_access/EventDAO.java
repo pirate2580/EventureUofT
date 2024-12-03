@@ -165,9 +165,7 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
-    @Override
-    public void saveEvent(Event event) {
-}
+
 
     /**
      * Function to delete an event from the Firebase Database.
@@ -191,14 +189,6 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
-    /**
-     * Function to get event by the event's ID.
-     * @param eventId, the event's ID
-     * */
-    @Override
-    public Event getEventById(String eventId) {
-        return null;
-    }
 
     /**
      * Function to view event based off of the event's title.
