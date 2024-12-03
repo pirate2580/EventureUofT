@@ -36,21 +36,11 @@ class ModifyEventInteractorTest {
                     "2024-10-10 10:00", 50, 43.0f, -79.0f, List.of("original_tag")
             );
 
-
-            @Override
-            public void saveEvent(Event event) {
-
-            }
-
             @Override
             public void deleteEvent(String eventName) {
                 deletedEventName = eventName;
             }
 
-            @Override
-            public Event getEventById(String eventId) {
-                return null;
-            }
 
 
             @Override
@@ -239,20 +229,12 @@ class ModifyEventInteractorTest {
             private Event mockEvent;
 
 
-            @Override
-            public void saveEvent(Event event) {
-
-            }
 
             @Override
             public void deleteEvent(String eventName) {
                 throw new RuntimeException("Database error during deletion");
             }
 
-            @Override
-            public Event getEventById(String eventId) {
-                return null;
-            }
 
 
             /**
@@ -296,19 +278,11 @@ class ModifyEventInteractorTest {
 
         modifyEventUserDataAccessObject = new ModifyEventUserDataAccessInterface() {
 
-            @Override
-            public void saveEvent(Event event) {
-
-            }
 
             @Override
             public void deleteEvent(String eventName) {
             }
 
-            @Override
-            public Event getEventById(String eventId) {
-                return null;
-            }
 
             /**
              * Modifies an existing event in the Firestore database.
