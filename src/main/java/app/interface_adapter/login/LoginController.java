@@ -14,9 +14,9 @@ public class LoginController {
     private final LoginInputBoundary userLoginUseCaseInteractor;
 
     /**
-     * Constructs a new {@link LoginController}.
+     * Constructs a new LoginController.
      * @param userLoginUseCaseInteractor the interactor responsible for executing the login use case.
-     *                                   Must not be {@code null}.
+     *                                   Must not be null.
      */
     public LoginController(LoginInputBoundary userLoginUseCaseInteractor) {
         this.userLoginUseCaseInteractor = userLoginUseCaseInteractor;
@@ -24,10 +24,10 @@ public class LoginController {
 
     /**
      * Executes the login use case.
-     * Creates a {@link LoginInputData} object with the provided username and password
+     * Creates a LoginInputData object with the provided username and password
      * and delegates the execution to the use case interactor.
-     * @param username the username of the user. Must not be {@code null}.
-     * @param password the password of the user. Must not be {@code null}.
+     * @param username the username of the user. Must not be null.
+     * @param password the password of the user. Must not be null.
      */
     public void execute(String username, String password) {
         final LoginInputData loginInputData = new LoginInputData(username, password);
