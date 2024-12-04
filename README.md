@@ -73,7 +73,8 @@ The application features an interactive map of the **University of Toronto campu
 #### **Screenshots**
 
 - **Interactive Map**:
-     <img width="1512" alt="markers_on_maps" src="https://github.com/user-attachments/assets/17d79ac1-1411-455e-9e2c-7e306f786533">
+
+<img width="1512" alt="markers_on_maps" src="https://github.com/user-attachments/assets/17d79ac1-1411-455e-9e2c-7e306f786533">
 
 
 ### **3. RSVP Functionality** 📅
@@ -108,7 +109,8 @@ To enhance security and personalization, **users must register** with their emai
 #### **Screenshots**
 
 - **Registration Page**:
-     <img width="801" alt="Registration_view" src="https://github.com/user-attachments/assets/bd86819f-3eaf-466f-a91a-12d61b34c045">
+
+<img width="801" alt="Registration_view" src="https://github.com/user-attachments/assets/bd86819f-3eaf-466f-a91a-12d61b34c045">
 
 
 ### **5. Email Notifications** 📧
@@ -126,7 +128,8 @@ Users and event organizers are kept informed through **email notifications**. Th
 #### **Screenshots**
 
 - **Notify RSVPed User**:
-     <img width="1512" alt="Notification" src="https://github.com/user-attachments/assets/8c91a812-74f0-4c08-b942-e910e8600609">
+
+<img width="1512" alt="Notification" src="https://github.com/user-attachments/assets/8c91a812-74f0-4c08-b942-e910e8600609">
 
 
 ### **6. Accessibility Features** ♿
@@ -155,7 +158,8 @@ Event organizers can **view all the events** they have created for easier manage
 #### **Screenshots**
 
 - **View Created Events**:
-     <img width="1512" alt="Create_event_view" src="https://github.com/user-attachments/assets/1b356f2e-41d6-4af8-b423-1d6fed772951">
+
+<img width="1512" alt="Create_event_view" src="https://github.com/user-attachments/assets/1b356f2e-41d6-4af8-b423-1d6fed772951">
 
 
 ### **8. Modify User Details** ✏️
