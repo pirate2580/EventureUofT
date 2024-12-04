@@ -90,7 +90,8 @@ Users can **RSVP** to events, which allows them to keep track of their plans. Th
 #### **Screenshots**
 
 - **RSVP Screen**:
-     <img width="727" alt="EventDescription" src="https://github.com/user-attachments/assets/88ca823f-7055-4ff0-b983-30779d6358b4">
+  
+ <img width="727" alt="EventDescription" src="https://github.com/user-attachments/assets/88ca823f-7055-4ff0-b983-30779d6358b4">
 
 ### **4. User Registration and Login System** 🔐
 
