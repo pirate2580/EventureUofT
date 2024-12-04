@@ -459,8 +459,7 @@ Contributions are welcome and encouraged! Here’s how you can get involved:
 
 **Solution**:
 
-- **Permissions**: Verify that your browser allows access to network resources for displaying JavaScript components.
-- **JavaScript Issues**: Ensure that **JavaScript** is enabled in your browser settings.
+- **Dependencies Set Up**: Verify that the project dependencies have been setted up and Maven has built the porject successfully.
 - **Map Data Not Loaded**: Check the console logs for errors related to loading the **JXMapViewer** data. Make sure the data endpoints are properly connected.
 
 <img width="1512" alt="markers_on_maps" src="https://github.com/user-attachments/assets/4db8d14f-9d14-4a3a-bfd1-c6e9051c9d66">
