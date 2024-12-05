@@ -7,6 +7,7 @@
     - **Fiona Verzivolli**  [@FionaVerzivolli](https://github.com/FionaVerzivolli)
     - **Andrew Sasmito**    [@AndrewSasmito](https://github.com/AndrewSasmito)
     - **Edric N.H.G. Ho**          [@Edric.main(cryingFace)](https://github.com/Edric-Ho)
+    - Presentation Slides: [Click For Slides!](https://docs.google.com/presentation/d/1HSD1_LwToquN6OsTPC3G4YrxJb72FrwKeaKO-189-bI/edit?usp=sharing)
 
 - **Special Thanks**: Collaborators at the University of Toronto, including project mentors, peer reviewers, and support from the teaching team.
 
@@ -99,8 +100,10 @@ Users can **RSVP** to events, which allows them to keep track of their plans. Th
 - 
   You can RSVP here:
   
- <img width="400" alt="EventDescription" src="https://github.com/user-attachments/assets/88ca823f-7055-4ff0-b983-30779d6358b4">
+ <img width="600" alt="EventDescription" src="https://github.com/user-attachments/assets/88ca823f-7055-4ff0-b983-30779d6358b4">
  
+ <img width="600" alt="EventDescription" src="https://github.com/user-attachments/assets/ff68571c-2adc-47aa-89c5-896c5011e54f">
+
  And then your RSVPed events are shown:
  
   <img width="400" alt="EventDescription" src="https://github.com/user-attachments/assets/c88689bb-8be7-4855-b6da-657785852218">
