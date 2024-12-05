@@ -479,7 +479,7 @@ Contributions are welcome and encouraged! Here’s how you can get involved:
 - **Dependencies Set Up**: Verify that the project dependencies have been setted up and Maven has built the porject successfully.
 - **Map Data Not Loaded**: Check the console logs for errors related to loading the **JXMapViewer** data. Make sure the data endpoints are properly connected.
 
-<img width="1512" alt="markers_on_maps" src="https://github.com/user-attachments/assets/4db8d14f-9d14-4a3a-bfd1-c6e9051c9d66">
+<img width="600" alt="markers_on_maps" src="https://github.com/user-attachments/assets/a1a2b609-7ab8-4e22-bbe9-a52d7067bc98">
 
 ---
 
@@ -491,7 +491,7 @@ Contributions are welcome and encouraged! Here’s how you can get involved:
 - **Event Capacity**: Verify that the event isn’t at full capacity. The RSVP function will not allow users to join if the event has reached its limit.
 - **Network Stability**: Ensure your network connection is stable, as RSVP actions require an active connection to Firebase.
 
-<img width="1512" alt="RSVP_success_view" src="https://github.com/user-attachments/assets/3fb3c46c-f68f-4518-a877-67bd99c357d0">
+<img width="400" alt="RSVP_success_view" src="https://github.com/user-attachments/assets/3fb3c46c-f68f-4518-a877-67bd99c357d0">
 
 
 ## **Future Features** 🚀
