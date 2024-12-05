@@ -54,8 +54,14 @@ Users can **create**, **modify**, and **delete** events on campus using an intui
 #### **Screenshots**
 
 - **Event Creation Page**:
-     <img width="1512" alt="Filled_create_event_page" src="https://github.com/user-attachments/assets/38c22cdc-7b3c-4f0d-9b61-43280bd36b72">
 
+Create event:
+
+<img width="400" alt="Create_event_view" src="https://github.com/user-attachments/assets/2099489d-1016-4e48-9375-550590d2ffa0">
+
+Modify Event:
+
+<img width="400" alt="modify_event_view" src="https://github.com/user-attachments/assets/15461139-4bf2-4a78-8394-ae902d94e14a">
 
 ### **2. Interactive Campus Map** 🗺️
 
@@ -73,8 +79,7 @@ The application features an interactive map of the **University of Toronto campu
 #### **Screenshots**
 
 - **Interactive Map**:
-
-<img width="1512" alt="markers_on_maps" src="https://github.com/user-attachments/assets/17d79ac1-1411-455e-9e2c-7e306f786533">
+<img width="1012" alt="markers_on_maps" src="https://github.com/user-attachments/assets/a1a2b609-7ab8-4e22-bbe9-a52d7067bc98">
 
 
 ### **3. RSVP Functionality** 📅
@@ -91,8 +96,15 @@ Users can **RSVP** to events, which allows them to keep track of their plans. Th
 #### **Screenshots**
 
 - **RSVP Screen**:
+  You can RSVP here:
   
  <img width="727" alt="EventDescription" src="https://github.com/user-attachments/assets/88ca823f-7055-4ff0-b983-30779d6358b4">
+ 
+ And then your RSVPed events are shown:
+ 
+  <img width="727" alt="EventDescription" src="https://github.com/user-attachments/assets/c88689bb-8be7-4855-b6da-657785852218">
+
+
 
 ### **4. User Registration and Login System** 🔐
 
@@ -129,7 +141,7 @@ Users and event organizers are kept informed through **email notifications**. Th
 
 - **Notify RSVPed User**:
 
-<img width="1512" alt="Notification" src="https://github.com/user-attachments/assets/8c91a812-74f0-4c08-b942-e910e8600609">
+<img width="400" alt="Notification" src="https://github.com/user-attachments/assets/6f5e2b6c-45de-4b6e-840e-7b34ffd71ae3">
 
 
 ### **6. Accessibility Features** ♿
@@ -157,10 +169,9 @@ Event organizers can **view all the events** they have created for easier manage
 
 #### **Screenshots**
 
-- **View Created Events**:
+- **Create Event View**:
 
-<img width="1512" alt="Create_event_view" src="https://github.com/user-attachments/assets/1b356f2e-41d6-4af8-b423-1d6fed772951">
-
+<img width="400" alt="Create_event_view" src="https://github.com/user-attachments/assets/2099489d-1016-4e48-9375-550590d2ffa0">
 
 ### **8. Modify User Details** ✏️
 
@@ -495,6 +506,6 @@ Contributions are welcome and encouraged! Here’s how you can get involved:
 
 For any additional inquiries or support, feel free to contact us via the following channels:
 
-- **Email**: ________________________________
+- **Email**: uofteventhive@gmail.com
 
 Thank you for using **EventHiveUofT**! We are excited to have you join our vibrant community and help you discover amazing events on campus. 🙌
