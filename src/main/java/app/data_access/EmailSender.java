@@ -70,7 +70,6 @@ public class EmailSender {
                 .add("text", body)
                 .build();
 
-        // Build the HTTP POST request with authorization header
         Request request = new Request.Builder()
                 .url(API_BASE_URL)
                 .header("Authorization", Credentials.basic("api", API_KEY))
