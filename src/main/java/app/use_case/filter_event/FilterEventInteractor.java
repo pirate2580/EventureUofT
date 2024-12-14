@@ -28,6 +28,13 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
         this.filterEventPresenter = filterEventPresenter;
     }
 
+    /**
+     * Executes the filter event use case through validating input data, retrieving filtered events,
+     * and preparing success or failure views.
+     *
+     * @param filterEventInputData, input data containing tags to filter events, can't be null or have
+     *                              null tags
+     */
     @Override
     public void execute(FilterEventInputData filterEventInputData) {
         if (filterEventInputData.getTags().isEmpty()) {
@@ -41,6 +48,10 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
         filterEventPresenter.prepareSuccessView(filterEventOutputData);
     }
 
+
+    /**
+     * Switches the current view to HomeView by calling the presenter's function.
+     */
     @Override
     public void switchToHomeView() {
         filterEventPresenter.switchToHomeView();

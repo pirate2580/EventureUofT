@@ -1,10 +1,10 @@
 package app.use_case.register;
 
-
 /**
- * Input Data for the Register Use Case
- * The View sends data to the controller which should have an actionListener, and then
- * will prepare data one triggered
+ * Input data for the Register use case.
+ * This class holds the necessary data required for a user to register. It encapsulates the
+ * username, email, and password provided by the user. This data is passed to the controller
+ * for further processing.
  */
 public class RegisterInputData {
     private final String username;
@@ -12,12 +12,10 @@ public class RegisterInputData {
     private final String email;
 
     /**
-     * Constructor for RegisterInputData, the user registers by entering in
-     * their username, email, password, and nothing else. The two other attributes createdEvents
-     * and rsvpEvents are added to later
-     * @param username
-     * @param email
-     * @param password
+     * Constructs an instance of RegisterInputData with the provided username, email, and password.
+     * @param username The username chosen by the user.
+     * @param email The email address of the user.
+     * @param password The password chosen by the user.
      */
     public RegisterInputData(String username, String email, String password) {
         this.username = username;
@@ -25,13 +23,27 @@ public class RegisterInputData {
         this.email = email;
     }
 
+    /**
+     * Retrieves the username provided by the user.
+     * @return The username chosen by the user.
+     */
     String getUsername() {
         return username;
     }
 
+    /**
+     * Retrieves the password provided by the user.
+     * @return The password chosen by the user.
+     */
     String getPassword() {
         return password;
     }
 
-    String getEmail() { return email; }
+    /**
+     * Retrieves the email address provided by the user.
+     * @return The email address of the user.
+     */
+    String getEmail() {
+        return email;
+    }
 }

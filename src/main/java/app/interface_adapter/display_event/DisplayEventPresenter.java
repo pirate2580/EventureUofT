@@ -40,7 +40,6 @@ public class DisplayEventPresenter implements DisplayEventOutputBoundary {
      */
     @Override
     public void prepareFailView(String errorMessage) {
-        final DisplayEventState displayEventState = displayEventViewModel.getState();
         displayEventViewModel.firePropertyChanged();
     }
 }

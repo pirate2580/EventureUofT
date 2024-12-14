@@ -205,11 +205,25 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if (e.getSource() == createEventButton) {
-            CreateEventState currentState = createEventViewModel.getState();
-            createEventController.execute(currentState.getUsernameState(), currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), parseInt(currentState.getCapacity()),
-                    parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
-            // Handle button click event
-            System.out.println("Event created create event!");
+            try {
+                CreateEventState currentState = createEventViewModel.getState();
+                createEventController.execute(currentState.getUsernameState(), currentState.getTitle(), currentState.getDescription(), currentState.getDateTime(), parseInt(currentState.getCapacity()),
+                        parseFloat(currentState.getLatitude()), parseFloat(currentState.getLongitude()), currentState.getTags(), currentState.getEventId(), currentState.getOrganizer());
+                // Handle button click event
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You have created the event: " + currentState.getTitle(),
+                        "Create Event Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } catch (Exception error) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Failure: " + error.getMessage(),
+                        "Failure",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
         } else if (e.getSource() == homeButton) {
 //            navigateTo("Home");
             createEventController.switchToHomeView();

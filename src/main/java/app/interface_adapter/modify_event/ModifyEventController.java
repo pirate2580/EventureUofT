@@ -15,9 +15,9 @@ public class ModifyEventController {
     private final ModifyEventInputBoundary userEventUseCaseInteractor;
 
     /**
-     * Constructs a new {@link ModifyEventController}.
-     * @param userEventUseCaseInteractor The interactor that handles the business logic
-     *                                   for modifying events. Must not be {@code null}.
+     * Constructs a new ModifyEventController.
+     * @param userEventUseCaseInteractor, The interactor that handles the business logic
+     *                                   for modifying events. Must not be null.
      */
     public ModifyEventController(ModifyEventInputBoundary userEventUseCaseInteractor) {
         this.userEventUseCaseInteractor = userEventUseCaseInteractor;
